@@ -1,10 +1,7 @@
-import os
 import sys
 
 import numpy as np
 from numpy.linalg import LinAlgError
-
-from time import time as give_time
 
 def hist2d(azimuths, plunges,
            nbins=200, smoothing_sig=0,

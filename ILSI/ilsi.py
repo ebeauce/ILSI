@@ -1,4 +1,3 @@
-import os
 import sys
 
 import numpy as np
@@ -6,7 +5,7 @@ from numpy.linalg import LinAlgError
 
 from . import utils_stress
 
-from time import time as give_time
+#from time import time as give_time
 
 def forward_model(n_):
     """
@@ -94,7 +93,7 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
     C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array
         Posterior covariance of the data distribution.
     """
-    t_start = give_time()
+    #t_start = give_time()
     dim_D = G.shape[0]
     dim_M = G.shape[1]
     # pre-compute transposed G
@@ -153,7 +152,7 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
               'or "data_space"')
         return
     C_d_posterior = np.dot(np.dot(G, C_m_posterior), G.T)
-    t_end = give_time()
+    #t_end = give_time()
     #print('{:.3f}sec on Tarantola'.format(t_end-t_start))
     return m_inv, C_m_posterior, C_d_posterior
 
@@ -231,7 +230,7 @@ def iterative_linear_si(strikes, dips, rakes,
             Posterior covariance of the data distribution
             estimated from the Tarantola and Valette formula.
     """
-    t_start = give_time()
+    #t_start = give_time()
     # First, convert the strike/dip/rake into slip and normal vectors.
     n_earthquakes = len(strikes)
     n_ = np.zeros((n_earthquakes, 3), dtype=np.float32) # normal vectors
@@ -301,7 +300,7 @@ def iterative_linear_si(strikes, dips, rakes,
         output = output + (shear, principal_stresses, principal_directions,)
     if return_stats:
         output = output + (C_m_posterior, C_d_posterior,)
-    t_end = give_time()
+    #t_end = give_time()
     #print('iterative_linear_si finished in {:.2f}sec'.format(t_end-t_start))
     if len(output) == 1:
         return output[0]

@@ -31,6 +31,10 @@ setuptools.setup(
     ],
     license="GPL",
     package_dir={"": "."},
-    packages=setuptools.find_packages("."),
+    packages=setuptools.find_packages(),
+    install_requires=[
+        "numpy",
+        "scipy",
+        "mplstereonet"],
     python_requires=">=3.6",
 )
