@@ -31,7 +31,6 @@ setuptools.setup(
     ],
     license="GPL",
     package_dir={"": "."},
-    #packages=setuptools.find_packages(where="ILSI"),
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages("."),
     python_requires=">=3.6",
 )
