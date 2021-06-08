@@ -56,4 +56,4 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
 ```
 
 ## Tutorials
-Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2021.
+Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2021. You might need to install some extra packages to run the examples (*e.g.* seaborn or h5py).

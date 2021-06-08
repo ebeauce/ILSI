@@ -99,6 +99,27 @@ def get_CI_levels(azimuths, plunges, confidence_intervals=[95., 90.],
 
 
 def angular_residual(stress_tensor, strikes, dips, rakes):
+    """
+    Compute the angle between the direction of the resolved shear
+    stress predicted by the stress tensor and the direction of
+    slip given by the strike/dip/rake data.
+
+    Parameters
+    ------------
+    stress_tensor: (3, 3) array
+        The Cauchy stress tensor.
+    strikes: (n_earthquakes) list or array
+        Fault strikes.
+    dips: (n_earthquakes) list or array
+        Fault dips
+    rakes: (n_earthquakes) list or array
+        Fault rakes
+
+    Returns
+    ----------
+    angles: (n_earthquakes) array
+        Angles between shear stress and slip.
+    """
     angles = np.zeros(len(strikes), dtype=np.float32)
     for i in range(len(strikes)):
         angles[i] = shear_slip_angle_difference(
@@ -113,7 +134,8 @@ def aux_plane(s1, d1, r1):
     `bb.m <http://www.ceri.memphis.edu/people/olboyd/Software/Software.html>`_
     written by Andy Michael, Chen Ji and Oliver Boyd.
 
-    TAKEN FROM OBSPY's SOURCE CODE
+    Taken from <https://docs.obspy.org/_modules/obspy/imaging/beachball.html#aux_plane>
+    See Obspy project at <https://github.com/obspy/obspy>.
     """
     r2d = 180 / np.pi
 
@@ -207,12 +229,11 @@ def errors_in_data(strike, dip, rake,
                    jack_strikes_1, jack_dips_1, jack_rakes_1,
                    jack_strikes_2, jack_dips_2, jack_rakes_2):
     """
+    This routines was tailored for my applications.
     Use the multiple solutions obtained during the jackknife resampling
     of the focal mechanism inversion to compute the deviation of these
-    multiple solutions from the best solution. We are interested in computing
-    the deviation of the three components (north, west, vertical) of the slip
-    vectors from the best slip vector since the slip vectors are used in
-    the stress inversion. Because there are two possible slip vectors
+    multiple solutions from the best solution. A low deviation means a
+    good quality focal mechanism. Because there are two possible slip vectors
     for each focal mechanism solution, we systematically look among the
     jackknife solutions 1 and 2 for the closest slip vector to the target
     vector, defined by (strike, dip, rake).
@@ -271,6 +292,25 @@ def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
     x1: north
     x2: west
     x3: upward
+
+    Parameters
+    -----------
+    u: (3) array or list
+        Vector for which we want the bearing (azimuth) and plunge.
+    degrees: boolean, default to True
+        If True, returns bearing and plunge in degrees.
+        In radians otherwise.
+    hemisphere: string, default to 'lower'
+        Consider the intersection of the line defined by u
+        with the lower hemisphere if hemisphere is 'lower', or
+        with the upper hemisphere if hemisphere is 'upper'.
+
+    Returns
+    ---------
+    bearing: float
+        Angle between the north and the line.
+    plunge: float
+        Angle between the horizontal plane and the line.
     """
     r2d = 180./np.pi
     if hemisphere == 'lower' and u[2] > 0.:
@@ -295,6 +335,10 @@ def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
         return bearing, plunge
 
 def mean_angular_residual(stress_tensor, strikes, dips, rakes):
+    """
+    Mean of the absolute value of the angles returned by
+    angular_residual. See angular_residual for more info.
+    """
     return np.mean(np.abs(angular_residual(stress_tensor, strikes, dips, rakes)))
 
 def normal_slip_vectors(strike, dip, rake, direction='inward'):
@@ -311,6 +355,29 @@ def normal_slip_vectors(strike, dip, rake, direction='inward'):
     x1: north
     x2: west
     x3: upward
+
+    Parameters
+    ------------
+    strike: float
+        Strike of the fault.
+    dip: float
+        Dip of the fault.
+    rake: float
+        Rake of the fault.
+    direction: string, default to 'inward'
+        If 'inward', returns the inward normal of the HANGING wall,
+        which is the formula given in Stein and Wysession. Equivalently,
+        this is the outward normal of the foot wall.
+        If 'outward', returns the outward normal of the HANGING wall,
+        or, equivalently, the inward normal of the hanging wall.
+
+    Returns
+    -----------
+    n: (3) array
+        The fault normal.
+    d: (3) array
+        The slip vector given as the direction of motion
+        of the hanging wall w.r.t. the foot wall.
     """
     d2r = np.pi/180.
     strike = strike*d2r
@@ -336,7 +403,7 @@ def normal_slip_vectors(strike, dip, rake, direction='inward'):
 
 def R_(principal_stresses):
     """
-    Compute the shape ratio R=(sig1-sig2)/(sig1-sig3).
+    Computes the shape ratio R=(sig1-sig2)/(sig1-sig3).
 
     Parameters
     -----------
@@ -354,6 +421,28 @@ def R_(principal_stresses):
           /(principal_stresses[0]-principal_stresses[2])
 
 def reduced_stress_tensor(principal_directions, R):
+    """
+    Computes a normalized stress tensor where the most
+    and least compressive principal stresses are set to
+    -1 and +1, respectively, and the intermediate stress
+    is determined by the shape ratio.
+
+    Parameters
+    -----------
+    principal_directions: (3, 3) numpy array.
+        The three eigenvectors of the stress tensor, stored in
+        a matrix as column vectors and ordered from
+        most compressive (sigma1) to least compressive (sigma3).
+        The direction of sigma_i is given by: principal_directions[:, i] 
+    R: float
+        The shape ratio (sig1 - sig2)/(sig1 - sig3).
+       
+    Returns
+    ----------
+    stress_tensor: (3, 3) array
+        The stress tensor built from the principal directions
+        and the shape ratio.
+    """
     sig1 = -1.
     sig2 = 2.*R-1.
     sig3 = +1
@@ -399,8 +488,27 @@ def stress_tensor_eigendecomposition(stress_tensor):
 
 def strike_dip_rake(n, d):
     """
-    Invert the relationships between strike/dio/rake
+    Invert the relationships between strike/dip/rake
     and normal (n) and slip (d) vectors found in Stein.
+    n and d are required to be given as the default format
+    returned by normal_slip_vectors.
+
+    Parameters
+    -----------
+    n: (3) array
+        The outward pointing normal of the FOOT wall.
+    d: (3) array
+        The slip direction of the hanging wall w.r.t.
+        the foot wall.
+
+    Returns
+    ---------
+    strike: float
+        Strike of the fault, in degress.
+    dip: float
+        Dip of the fault, in degrees.
+    rake: float
+        Rake of the fault, in degrees.
     """
     r2d = 180./np.pi
     # ----------------
@@ -438,6 +546,22 @@ def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
     Given that the stress inversion is made under the Wallace-Bott
     assumption, shear stress on the fault is parallel to slip, then
     this angle difference is a measure of misfit.
+
+    Parameters
+    -----------
+    stress_tensor: (3, 3) array
+        The Cauchy stress tensor.
+    strike: float
+        Strike of the fault.
+    dip: float
+        Dip of the fault.
+    rake: float
+        Rake of the fault.
+
+    Returns
+    -----------
+    angle: float
+        The angle between shear stress and slip, in degrees.
     """
     # first, get the normal and slip vectors corresponding
     # to (strike, dip, rake)
