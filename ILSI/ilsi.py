@@ -284,14 +284,14 @@ def iterative_linear_si(strikes, dips, rakes,
             # user-prescribed criterion
             #print('Stop at iteration {:d}! (shear update: {:.3e})'.format(j, shear_update))
             break
-        sigma = sigma.squeeze()
-        # build full stress tensor
-        full_stress_tensor = np.array([[sigma[0], sigma[1], sigma[2]],
-                                       [sigma[1], sigma[3], sigma[4]],
-                                       [sigma[2], sigma[4], -sigma[0]-sigma[3]]])
-        norm = np.sqrt(np.sum(full_stress_tensor**2))
-        norm = 1 if norm == 0. else norm
-        full_stress_tensor /= norm
+    sigma = sigma.squeeze()
+    # build full stress tensor
+    full_stress_tensor = np.array([[sigma[0], sigma[1], sigma[2]],
+                                   [sigma[1], sigma[3], sigma[4]],
+                                   [sigma[2], sigma[4], -sigma[0]-sigma[3]]])
+    norm = np.sqrt(np.sum(full_stress_tensor**2))
+    norm = 1 if norm == 0. else norm
+    full_stress_tensor /= norm
     output = full_stress_tensor,
     if return_eigen:
         # solve the eigenvalue problem
@@ -1364,12 +1364,12 @@ def inversion_jackknife_instability(principal_directions, R,
             if iterative_method:
                 stress_tensor, _, principal_stresses, principal_directions = \
                         iterative_linear_si(fault_strikes,
-                                              fault_dips,
-                                              fault_rakes,
-                                              return_eigen=True,
-                                              Tarantola_kwargs=Tarantola_kwargs_,
-                                              max_n_iterations=max_n_iterations,
-                                              shear_update_atol=shear_udpdate_atol)
+                                            fault_dips,
+                                            fault_rakes,
+                                            return_eigen=True,
+                                            Tarantola_kwargs=Tarantola_kwargs_,
+                                            max_n_iterations=max_n_iterations,
+                                            shear_update_atol=shear_update_atol)
             else:
                 stress_tensor, principal_stresses, principal_directions = \
                         Michael1984_inversion(fault_strikes,
