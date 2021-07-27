@@ -39,7 +39,7 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
                         principal_directions, shape_ratio, strikes, dips, rakes, friction)
 ```
 
-### Inverting slickenslide data
+### Inverting slickenside data
 
 ```python
 
