@@ -1,5 +1,5 @@
 # ILSI
-Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenslide data.
+Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data.
 
 ## Reference
 Please refer the following article if you use ILSI for your research:<br>
