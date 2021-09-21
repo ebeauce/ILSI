@@ -1,9 +1,11 @@
 # ILSI
-Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data.
+Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data.<br>
+
+THIS IS STILL WORK IN PROGRESS: MINOR PHYSICAL/ALGORITHMIC ERRORS MAY BE FOUND AND WILL BE CORRECTLY IN THE COMING WEEKS.<br>
 
 ## Reference
 Please refer the following article if you use ILSI for your research:<br>
-Eric Beaucé, Michel Campillo, Robert D. van der Hilst. An Iterative Linear Method for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples. Submitted to BSSA. Preprint on ESSOAr: [doi.org/10.1002/essoar.10507639.1](doi.org/10.1002/essoar.10507639.1)
+Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples. (Being modified and will be submitted to BSSA). Preprint on ESSOAr: [doi.org/10.1002/essoar.10507639.1](doi.org/10.1002/essoar.10507639.1)
 
 ## Installation
 
