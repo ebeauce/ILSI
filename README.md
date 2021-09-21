@@ -1,7 +1,7 @@
 # ILSI
 Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data.<br>
 
-THIS IS STILL WORK IN PROGRESS: MINOR PHYSICAL/ALGORITHMIC ERRORS MAY BE FOUND AND WILL BE CORRECTLY IN THE COMING WEEKS.<br>
+THIS IS STILL WORK IN PROGRESS: MINOR PHYSICAL/ALGORITHMIC ERRORS MAY BE FOUND AND WILL BE CORRECTED IN THE COMING WEEKS.<br>
 
 ## Reference
 Please refer the following article if you use ILSI for your research:<br>
