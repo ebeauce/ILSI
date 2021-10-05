@@ -1,5 +1,5 @@
 # ILSI
-Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data.<br>
+Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data. Documentation at [https://ebeauce.github.io/ILSI/](https://ebeauce.github.io/ILSI/)<br>
 
 THIS IS STILL WORK IN PROGRESS: MINOR PHYSICAL/ALGORITHMIC ERRORS MAY BE FOUND AND WILL BE CORRECTED IN THE COMING WEEKS.<br>
 
