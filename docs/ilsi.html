@@ -89,32 +89,32 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
 
     Parameters
     -----------
-    G: (n, m) numpy array.
+    G: (n, m) numpy array
         The linear operator projecting elements of the model
         space m onto the data space: d = G.m
         n is the dimension of the data space,
         m is the dimension of the model space.
     data: (n,) or (n, 1) numpy array.
         Vector of observations.
-    C_d: (n, n) numpy array, default to None.
+    C_d: (n, n) numpy array, default to None
         Covariance matrix of the observations. It quantifies
         the errors in the observations and propagates them
         in the inversion to give more weight to the observations
         with low errors. If None, then C_d is identity.
-    C_m: (m, m) numpy array, default to None.
+    C_m: (m, m) numpy array, default to None
         Covariance matrix of the model parameters. It quantifies
         the errors in the model parameters and propagates them
         in the inversion to determine the range of acceptable
         model parameters for a given set of observations.
         If None, then C_m is identity.
-    m_prior: (m,) or (m, 1) numpy array, default to None.
+    m_prior: (m,) or (m, 1) numpy array, default to None
         If one already has a rough estimate of what the model
         parameters are, then m_prior should be filled with this estimate.
         If None, m_prior is set to zero.
 
     Returns
     ---------
-    m_inv: (m, 1) numpy array.
+    m_inv: (m, 1) numpy array
         The inverted model parameters.
     C_m_posterior: (5, 5) array
         Posterior covariance of the model parameter distribution.
@@ -345,13 +345,14 @@ def Michael1984_inversion(strikes, dips, rakes,
                           return_eigen=True,
                           return_stats=False):
     &#34;&#34;&#34;
-    Linear inversion described in Michael 1984..
-    This method assumes:
-        - The tectonic stress field is uniform.
+    Linear inversion described in Michael 1984.  
+
+    This method assumes:  
+        - The tectonic stress field is uniform.  
         - Wallace-Bott hypothesis: The slip vector points in the same
-          direction as shear stress on the fault.
+          direction as shear stress on the fault.  
         - The resolved shear stress magnitude is constant on
-          all faults.
+          all faults.  
     The parameters we invert for are the directions of the three
     principal stresses and the shape ratio. Because this inversion does not
     aim at infering the absolute stress values, we only consider the 
@@ -374,7 +375,7 @@ def Michael1984_inversion(strikes, dips, rakes,
         The rake of nodal planes 1, angle between the fault&#39;s horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    Tarantola_kwargs: Dictionary, default to None:
+    Tarantola_kwargs: Dictionary, default to None
         If not None, should contain key word arguments
         for the Tarantola and Valette inversion.
     return_eigen: boolean, default to True
@@ -1821,13 +1822,14 @@ def compute_instability_parameter(principal_directions, R, friction,
 <span>def <span class="ident">Michael1984_inversion</span></span>(<span>strikes, dips, rakes, Tarantola_kwargs=None, return_eigen=True, return_stats=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Linear inversion described in Michael 1984..
-This method assumes:
-- The tectonic stress field is uniform.
+<div class="desc"><p>Linear inversion described in Michael 1984.
+</p>
+<p>This method assumes:<br>
+- The tectonic stress field is uniform.<br>
 - Wallace-Bott hypothesis: The slip vector points in the same
-direction as shear stress on the fault.
+direction as shear stress on the fault.<br>
 - The resolved shear stress magnitude is constant on
-all faults.
+all faults.<br>
 The parameters we invert for are the directions of the three
 principal stresses and the shape ratio. Because this inversion does not
 aim at infering the absolute stress values, we only consider the
@@ -1849,7 +1851,7 @@ plane and the fault plane (0-90).</dd>
 <dd>The rake of nodal planes 1, angle between the fault's horizontal
 and the slip direction of the hanging wall w.r.t. the
 foot wall (0-360 or -180-180).</dd>
-<dt><strong><code>Tarantola_kwargs</code></strong> :&ensp;<code>Dictionary</code>, default <code>to None:</code></dt>
+<dt><strong><code>Tarantola_kwargs</code></strong> :&ensp;<code>Dictionary</code>, default <code>to None</code></dt>
 <dd>If not None, should contain key word arguments
 for the Tarantola and Valette inversion.</dd>
 <dt><strong><code>return_eigen</code></strong> :&ensp;<code>boolean</code>, default <code>to True</code></dt>
@@ -1890,13 +1892,14 @@ estimated from the Tarantola and Valette formula.</dd>
                           return_eigen=True,
                           return_stats=False):
     &#34;&#34;&#34;
-    Linear inversion described in Michael 1984..
-    This method assumes:
-        - The tectonic stress field is uniform.
+    Linear inversion described in Michael 1984.  
+
+    This method assumes:  
+        - The tectonic stress field is uniform.  
         - Wallace-Bott hypothesis: The slip vector points in the same
-          direction as shear stress on the fault.
+          direction as shear stress on the fault.  
         - The resolved shear stress magnitude is constant on
-          all faults.
+          all faults.  
     The parameters we invert for are the directions of the three
     principal stresses and the shape ratio. Because this inversion does not
     aim at infering the absolute stress values, we only consider the 
@@ -1919,7 +1922,7 @@ estimated from the Tarantola and Valette formula.</dd>
         The rake of nodal planes 1, angle between the fault&#39;s horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    Tarantola_kwargs: Dictionary, default to None:
+    Tarantola_kwargs: Dictionary, default to None
         If not None, should contain key word arguments
         for the Tarantola and Valette inversion.
     return_eigen: boolean, default to True
@@ -2009,32 +2012,34 @@ parameters are not known, we assume them to be identity. The
 inversion can be performed either in the data space or in
 the model space.</p>
 <h2 id="parameters">Parameters</h2>
-<p>G: (n, m) numpy array.
-The linear operator projecting elements of the model
+<dl>
+<dt><strong><code>G</code></strong> :&ensp;<code>(n, m) numpy array</code></dt>
+<dd>The linear operator projecting elements of the model
 space m onto the data space: d = G.m
 n is the dimension of the data space,
-m is the dimension of the model space.
-data: (n,) or (n, 1) numpy array.
-Vector of observations.
-C_d: (n, n) numpy array, default to None.
-Covariance matrix of the observations. It quantifies
+m is the dimension of the model space.</dd>
+<dt>data: (n,) or (n, 1) numpy array.</dt>
+<dt>Vector of observations.</dt>
+<dt><strong><code>C_d</code></strong> :&ensp;<code>(n, n) numpy array</code>, default <code>to None</code></dt>
+<dd>Covariance matrix of the observations. It quantifies
 the errors in the observations and propagates them
 in the inversion to give more weight to the observations
-with low errors. If None, then C_d is identity.
-C_m: (m, m) numpy array, default to None.
-Covariance matrix of the model parameters. It quantifies
+with low errors. If None, then C_d is identity.</dd>
+<dt><strong><code>C_m</code></strong> :&ensp;<code>(m, m) numpy array</code>, default <code>to None</code></dt>
+<dd>Covariance matrix of the model parameters. It quantifies
 the errors in the model parameters and propagates them
 in the inversion to determine the range of acceptable
 model parameters for a given set of observations.
-If None, then C_m is identity.
-m_prior: (m,) or (m, 1) numpy array, default to None.
-If one already has a rough estimate of what the model
+If None, then C_m is identity.</dd>
+<dt><strong><code>m_prior</code></strong> :&ensp;<code>(m,)</code> or <code>(m, 1) numpy array</code>, default <code>to None</code></dt>
+<dd>If one already has a rough estimate of what the model
 parameters are, then m_prior should be filled with this estimate.
-If None, m_prior is set to zero.</p>
+If None, m_prior is set to zero.</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt>m_inv: (m, 1) numpy array.</dt>
-<dt>The inverted model parameters.</dt>
+<dt><strong><code>m_inv</code></strong> :&ensp;<code>(m, 1) numpy array</code></dt>
+<dd>The inverted model parameters.</dd>
 <dt><strong><code>C_m_posterior</code></strong> :&ensp;<code>(5, 5) array</code></dt>
 <dd>Posterior covariance of the model parameter distribution.</dd>
 <dt><strong><code>C_d_posterior</code></strong> :&ensp;<code>(3 x n_earthquakes, 3 x n_earthquakes) array</code></dt>
@@ -2057,32 +2062,32 @@ If None, m_prior is set to zero.</p>
 
     Parameters
     -----------
-    G: (n, m) numpy array.
+    G: (n, m) numpy array
         The linear operator projecting elements of the model
         space m onto the data space: d = G.m
         n is the dimension of the data space,
         m is the dimension of the model space.
     data: (n,) or (n, 1) numpy array.
         Vector of observations.
-    C_d: (n, n) numpy array, default to None.
+    C_d: (n, n) numpy array, default to None
         Covariance matrix of the observations. It quantifies
         the errors in the observations and propagates them
         in the inversion to give more weight to the observations
         with low errors. If None, then C_d is identity.
-    C_m: (m, m) numpy array, default to None.
+    C_m: (m, m) numpy array, default to None
         Covariance matrix of the model parameters. It quantifies
         the errors in the model parameters and propagates them
         in the inversion to determine the range of acceptable
         model parameters for a given set of observations.
         If None, then C_m is identity.
-    m_prior: (m,) or (m, 1) numpy array, default to None.
+    m_prior: (m,) or (m, 1) numpy array, default to None
         If one already has a rough estimate of what the model
         parameters are, then m_prior should be filled with this estimate.
         If None, m_prior is set to zero.
 
     Returns
     ---------
-    m_inv: (m, 1) numpy array.
+    m_inv: (m, 1) numpy array
         The inverted model parameters.
     C_m_posterior: (5, 5) array
         Posterior covariance of the model parameter distribution.

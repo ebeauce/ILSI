@@ -682,7 +682,7 @@ def R_(principal_stresses):
 
     Parameters
     -----------
-    pinricpal_stresses: numpy array or list.
+    pinricpal_stresses: numpy array or list
         Contains the three eigenvalues of the stress tensor
         ordered such that:
         principal_stresses[0] > principal_stresses[1] > principal_stresses[2]
@@ -690,7 +690,7 @@ def R_(principal_stresses):
 
     Returns
     ---------
-    shape_ratio: scalar float.
+    shape_ratio: scalar float
     """
     return (principal_stresses[0]-principal_stresses[1])\
           /(principal_stresses[0]-principal_stresses[2])

@@ -61,32 +61,32 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
 
     Parameters
     -----------
-    G: (n, m) numpy array.
+    G: (n, m) numpy array
         The linear operator projecting elements of the model
         space m onto the data space: d = G.m
         n is the dimension of the data space,
         m is the dimension of the model space.
     data: (n,) or (n, 1) numpy array.
         Vector of observations.
-    C_d: (n, n) numpy array, default to None.
+    C_d: (n, n) numpy array, default to None
         Covariance matrix of the observations. It quantifies
         the errors in the observations and propagates them
         in the inversion to give more weight to the observations
         with low errors. If None, then C_d is identity.
-    C_m: (m, m) numpy array, default to None.
+    C_m: (m, m) numpy array, default to None
         Covariance matrix of the model parameters. It quantifies
         the errors in the model parameters and propagates them
         in the inversion to determine the range of acceptable
         model parameters for a given set of observations.
         If None, then C_m is identity.
-    m_prior: (m,) or (m, 1) numpy array, default to None.
+    m_prior: (m,) or (m, 1) numpy array, default to None
         If one already has a rough estimate of what the model
         parameters are, then m_prior should be filled with this estimate.
         If None, m_prior is set to zero.
 
     Returns
     ---------
-    m_inv: (m, 1) numpy array.
+    m_inv: (m, 1) numpy array
         The inverted model parameters.
     C_m_posterior: (5, 5) array
         Posterior covariance of the model parameter distribution.
@@ -166,11 +166,12 @@ def iterative_linear_si(strikes, dips, rakes,
                         return_eigen=True,
                         return_stats=False):
     """
-    Iterative stress inversion described in Beauce et al. 2021.
-    This method assumes:
-        - The tectonic stress field is uniform.
+    Iterative stress inversion described in Beauce et al. 2021.  
+
+    This method assumes:  
+        - The tectonic stress field is uniform.  
         - Wallace-Bott hypothesis: The slip vector points in the same
-          direction as shear stress on the fault.
+          direction as shear stress on the fault.  
     The parameters we invert for are the directions of the three
     principal stresses and the shape ratio. Because this inversion does not
     aim at infering the absolute stress values, we only consider the 
@@ -316,13 +317,14 @@ def Michael1984_inversion(strikes, dips, rakes,
                           return_eigen=True,
                           return_stats=False):
     """
-    Linear inversion described in Michael 1984..
-    This method assumes:
-        - The tectonic stress field is uniform.
+    Linear inversion described in Michael 1984.  
+
+    This method assumes:  
+        - The tectonic stress field is uniform.  
         - Wallace-Bott hypothesis: The slip vector points in the same
-          direction as shear stress on the fault.
+          direction as shear stress on the fault.  
         - The resolved shear stress magnitude is constant on
-          all faults.
+          all faults.  
     The parameters we invert for are the directions of the three
     principal stresses and the shape ratio. Because this inversion does not
     aim at infering the absolute stress values, we only consider the 
@@ -345,7 +347,7 @@ def Michael1984_inversion(strikes, dips, rakes,
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    Tarantola_kwargs: Dictionary, default to None:
+    Tarantola_kwargs: Dictionary, default to None
         If not None, should contain key word arguments
         for the Tarantola and Valette inversion.
     return_eigen: boolean, default to True
