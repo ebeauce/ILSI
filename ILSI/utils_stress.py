@@ -78,13 +78,15 @@ def get_CI_levels(azimuths, plunges, confidence_intervals=[95., 90.],
 
     Returns
     ---------
-    if return_count is True:
-        count: (nbins, nbins) array, integer
-            2D histogram of the lines dsecribed by azimuths and plunges.
-        lons_g: (nbins, nbins) array, float
-            2D grid of the longitudinal coordinate of each bin.
-        lats_g: (nbins, nbins) array, float
-            2D grid f the latitudinal coordinate of each bin.
+    count: (nbins, nbins) array, integer, optional
+        2D histogram of the lines dsecribed by azimuths and plunges.
+        Only provided if `return_count` is True.
+    lons_g: (nbins, nbins) array, float, optional
+        2D grid of the longitudinal coordinate of each bin.
+        Only provided if `return_count` is True.
+    lats_g: (nbins, nbins) array, float, optional
+        2D grid f the latitudinal coordinate of each bin.
+        Only provided if `return_count` is True.
     confidence_intervals: (nbins, nbins) array, float
         2D distribution of the mass.
     """
@@ -119,11 +121,12 @@ def get_CI_levels(azimuths, plunges, confidence_intervals=[95., 90.],
         return confidence_intervals
 
 def get_CI_levels_joint(azimuths, plunges, confidence_intervals=[90., 95.],
-                  nbins=200, smoothing_sig=1, return_count=False,
-                  plot=False):
+                        nbins=200, smoothing_sig=1, return_count=False,
+                        plot=False):
     """
     Computes the 2d histogram in the stereographic space
     of a collection lines described by their azimuth and plunge.
+    This is an EXPERIMENTAL function.
 
     Parameters
     -----------
@@ -143,13 +146,15 @@ def get_CI_levels_joint(azimuths, plunges, confidence_intervals=[90., 95.],
 
     Returns
     ---------
-    if return_count is True:
-        count: (nbins, nbins) array, integer
-            2D histogram of the lines dsecribed by azimuths and plunges.
-        lons_g: (nbins, nbins) array, float
-            2D grid of the longitudinal coordinate of each bin.
-        lats_g: (nbins, nbins) array, float
-            2D grid f the latitudinal coordinate of each bin.
+    count: (nbins, nbins) array, integer, optional
+        2D histogram of the lines dsecribed by azimuths and plunges.
+        Only provided if `return_count` is True.
+    lons_g: (nbins, nbins) array, float, optional
+        2D grid of the longitudinal coordinate of each bin.
+        Only provided if `return_count` is True.
+    lats_g: (nbins, nbins) array, float, optional
+        2D grid f the latitudinal coordinate of each bin.
+        Only provided if `return_count` is True.
     confidence_intervals: (nbins, nbins) array, float
         2D distribution of the mass.
     """
@@ -201,9 +206,9 @@ def angular_residual(stress_tensor, strikes, dips, rakes):
     strikes: (n_earthquakes) list or array
         Fault strikes.
     dips: (n_earthquakes) list or array
-        Fault dips
+        Fault dips.
     rakes: (n_earthquakes) list or array
-        Fault rakes
+        Fault rakes.
 
     Returns
     ----------
@@ -224,7 +229,7 @@ def aux_plane(s1, d1, r1):
     `bb.m <http://www.ceri.memphis.edu/people/olboyd/Software/Software.html>`_
     written by Andy Michael, Chen Ji and Oliver Boyd.
 
-    Taken from <https://docs.obspy.org/_modules/obspy/imaging/beachball.html#aux_plane>
+    Taken from <https://docs.obspy.org/_modules/obspy/imaging/beachball.html#aux_plane>.  
     See Obspy project at <https://github.com/obspy/obspy>.
     """
     r2d = 180 / np.pi
@@ -339,6 +344,7 @@ def compute_traction(stress_tensor, normal):
     shear_traction = traction - normal_traction
     return traction, normal_traction, shear_traction
 
+
 def errors_in_data(strike, dip, rake,
                    jack_strikes_1, jack_dips_1, jack_rakes_1,
                    jack_strikes_2, jack_dips_2, jack_rakes_2):
@@ -402,10 +408,10 @@ def errors_in_data(strike, dip, rake,
 
 def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
     """
-    The vectors are in the coordinate system (x1, x2, x3):
-    x1: north
-    x2: west
-    x3: upward
+    The vectors are in the coordinate system (x1, x2, x3):  
+    x1: north  
+    x2: west  
+    x3: upward  
 
     Parameters
     -----------
@@ -416,8 +422,8 @@ def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
         In radians otherwise.
     hemisphere: string, default to 'lower'
         Consider the intersection of the line defined by u
-        with the lower hemisphere if hemisphere is 'lower', or
-        with the upper hemisphere if hemisphere is 'upper'.
+        with the lower hemisphere if `hemisphere` is 'lower', or
+        with the upper hemisphere if `hemisphere` is 'upper'.
 
     Returns
     ---------
@@ -499,20 +505,66 @@ def mean_angular_residual(stress_tensor, strikes, dips, rakes):
     """
     return np.mean(np.abs(angular_residual(stress_tensor, strikes, dips, rakes)))
 
+def mean_kagan_angle(strikes, dips, rakes,
+                     strike0=None, dip0=None, rake0=None):
+    """Computes the mean kagan angle as a measure of dispersion.  
+
+    The mean kagan angle within a population of focal mechanisms
+    described by strikes/dips/rakes. If strike0, dip0, and rake0
+    are specified, then the mean kagan angle is computed not from
+    all pairs of focal mechanisms, but only between all focal mechanisms
+    and the reference focal mechanism described by strike0/dip0/rake0.
+    The mean kagan angle can be interpreted as a measure of dispersion
+    within the population.
+
+    Parameters
+    -----------
+    strikes: numpy array or list, float
+        Strikes of the moment tensors.
+    dips: numpy array or list, float
+        Dips of the moment tensors.
+    rakes: numpy array or list, float
+        Rakes of the moment tensors.
+    strike0: scalar, float, default to None
+        Strike of the reference moment tensor.
+    dip0: scalar, float, default to None
+        Dip of the reference moment tensor.
+    rake0: scalar, float, default to None
+        Rake of the reference moment tensor.
+
+    Returns
+    --------
+    mean_angle: scalar, float
+        Mean kagan angle between the moment tensors given as input.
+    """
+    from functools import partial
+    mts = np.zeros((len(strikes), 3, 3), dtype=np.float32)
+    for i in range(len(strikes)):
+        mts[i, ...] = strike_dip_rake_to_mt(strikes[i], dips[i], rakes[i])
+    if strike0 is not None:
+        mt0 = strike_dip_rake_to_mt(strike0, dip0, rake0)
+        angles = list(map(partial(kagan_angle, mt0), mts))
+    else:
+        angles = sum([list(map(
+            partial(kagan_angle, mts[i, ...]), mts))
+            for i in range(mts.shape[0])], [])
+    return np.mean(np.asarray(angles))
+
 def normal_slip_vectors(strike, dip, rake, direction='inward'):
     """
     Determine the normal and the slip vectors of the
     focal mechanism defined by (strike, dip, rake).
-    From Stein and Wysession 2002.
+    From Stein and Wysession 2002.  
+
     N.B.: This is the normal of the FOOT WALL and the slip
     of the HANGING WALL w.r.t the foot wall. It means that the
     normal is an inward-pointing normal for the hanging wall,
     and an outward pointing-normal for the foot wall.
 
-    The vectors are in the coordinate system (x1, x2, x3):
-    x1: north
-    x2: west
-    x3: upward
+    The vectors are in the coordinate system (x1, x2, x3):  
+    x1: north  
+    x2: west  
+    x3: upward  
 
     Parameters
     ------------
@@ -617,11 +669,11 @@ def p_t_b_axes(normal, slip):
 
 def quaternion(t, p, b):
     """
-    Formula of quaternion of rotation matrix with t (least compressive),
-    p (most compressive), b (neutral) components expressed in the
+    Formula of quaternion of rotation matrix with `t` (least compressive),
+    `p` (most compressive), `b` (neutral) components expressed in the
     (north, east, down) frame of reference.
-    t, p, b can equivalently be the sigma_3, sigma_1, sigma_2 components.
-    Make sure (t, p, b) form a right-handed basis.
+    `t`, `p`, `b` can equivalently be the sigma_3, sigma_1, sigma_2 components.
+    Make sure (`t`, `p`, `b`) form a right-handed basis.
     This routine was copied from the _tpb2q routine of the Pyrocko Python
     project (see at https://pyrocko.org/docs/current/_modules/pyrocko/moment_tensor.html#kagan_angle).
 
@@ -684,9 +736,9 @@ def R_(principal_stresses):
     -----------
     pinricpal_stresses: numpy array or list
         Contains the three eigenvalues of the stress tensor
-        ordered such that:
-        principal_stresses[0] > principal_stresses[1] > principal_stresses[2]
-        with principal_stresses[0] being the most compressional stress.
+        ordered such that:   
+        `principal_stresses[0]` < `principal_stresses[1]` < `principal_stresses[2]`
+        with `principal_stresses[0]` being the most compressional stress.
 
     Returns
     ---------
@@ -695,11 +747,36 @@ def R_(principal_stresses):
     return (principal_stresses[0]-principal_stresses[1])\
           /(principal_stresses[0]-principal_stresses[2])
 
-def random_rotation(max_angle=360.):
+def rotation(axis, angle):
+    """Compute the rotation matrix about axis with angle `angle`.  
+
+    Parameters
+    ------------
+    axis: (3) numpy array, float
+        Axis about which the rotation is computed.
+    angle: scalar, float
+        Angle, in degrees, of the rotation.
+
+    Returns
+    --------
+    R: (3, 3) numpy array, float
+        Rotation matrix of angle `angle` degrees about `axis`.
     """
-    Generate a random rotation matrix by:
-      1) Generate a random unit vector in 3D.
-      2) Generate a random rotation angle between 0 and max_angle (degrees)
+    x1, x2, x3 = axis
+    a = angle*np.pi/180.
+    # build the rotation matrix
+    ca, sa = np.cos(a), np.sin(a)
+    R = np.array([[ca + x1**2*(1.-ca), x1*x2*(1.-ca) - x3*sa, x1*x3*(1.-ca) + x2*sa],
+                  [x1*x2*(1.-ca) + x3*sa, ca + x2**2*(1.-ca), x2*x3*(1.-ca) - x1*sa],
+                  [x1*x3*(1.-ca) - x2*sa, x2*x3*(1.-ca) + x1*sa, ca + x3**2*(1.-ca)]])
+    return R
+
+def random_rotation(max_angle=360.):
+    """Generate a random rotation matrix.  
+
+    Generate a random rotation matrix by:  
+      1) Generate a random unit vector in 3D.  
+      2) Generate a random rotation angle between 0 and max_angle (degrees)  
 
     Parameters
     ------------
@@ -712,19 +789,13 @@ def random_rotation(max_angle=360.):
     R: (3, 3) numpy array
         Rotation matrix.
     """
-    d2r = np.pi/180.
     x1, x2, x3 = np.random.uniform(low=-1., high=1., size=3)
     dir_ = np.array([x1, x2, x3])
     # normalize
     dir_ /= np.linalg.norm(dir_, 2)
-    x1, x2, x3 = dir_
     # draw the angle
     a = max_angle*np.random.random()
-    # build the rotation matrix
-    ca, sa = np.cos(d2r*a), np.sin(d2r*a)
-    R = np.array([[ca + x1**2*(1.-ca), x1*x2*(1.-ca) - x3*sa, x1*x3*(1.-ca) + x2*sa],
-                  [x1*x2*(1.-ca) + x3*sa, ca + x2**2*(1.-ca), x2*x3*(1.-ca) - x1*sa],
-                  [x1*x3*(1.-ca) - x2*sa, x2*x3*(1.-ca) + x1*sa, ca + x3**2*(1.-ca)]])
+    R = rotation(dir_, a)
     return R
 
 def reduced_stress_tensor(principal_directions, R):
@@ -740,7 +811,7 @@ def reduced_stress_tensor(principal_directions, R):
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
+        The direction of sigma_i is given by: `principal_directions[:, i]`. 
     R: float
         The shape ratio (sig1 - sig2)/(sig1 - sig3).
        
@@ -778,7 +849,7 @@ def stress_tensor_eigendecomposition(stress_tensor):
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
+        The direction of sigma_i is given by: `principal_directions[:, i]`. 
     """
     try:
         principal_stresses, principal_directions = \
@@ -846,6 +917,41 @@ def strike_dip_rake(n, d):
         rake = 0.
         strike = -rake_m_strike
     return (strike*r2d)%360., dip*r2d, (rake*r2d)%360.
+
+def strike_dip_rake_to_mt(strike, dip, rake):
+    """Compute the *normalized* moment tensor described by strike/dip/rake.
+
+    Parameters
+    -----------
+    strike: scalar, float
+        Strike of the input focal mechanism.
+    dip: scalar, float
+        Dip of the input focal mechanism.
+    rake: scalar, float
+        Rake of the input focal mechanism.
+
+    Returns
+    ---------
+    mt: (3, 3) numpy array, float
+        Normalized moment tensor. Its columns are the
+        (p, b, t) axes. Note: we return (p, b, t) to be
+        consistent with our stress tensor convention (sig1, sig2, sig3).
+    """
+    # first, compute the normal and slip vectors
+    n, d = normal_slip_vectors(strike, dip, rake)
+    # second, compute the t, p, b axes
+    p, t, b = p_t_b_axes(n, d)
+    # build a matrix with columns (p b t) and make sure these form
+    # a right-handed basis, this is the eigenbasis of the moment tensor
+    U = check_right_handedness(np.stack([p, b, t], axis=1))
+    # build the matrix of eigenvalues (a double-couple is a deviatoric
+    # moment tensor with determinant = 0, see Tape and Tape 2012)
+    Lambda = np.array([[-1., 0., 0.],
+                       [0., 0., 0.],
+                       [0., 0., +1.]], dtype=np.float32)
+    mt = U.dot(Lambda.dot(U.T))
+    mt /= np.sqrt(np.sum(mt**2))
+    return mt
 
 def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
     """
