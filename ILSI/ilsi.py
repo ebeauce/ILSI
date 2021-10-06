@@ -9,7 +9,7 @@ from . import utils_stress
 
 def forward_model(n_):
     """
-    Build the forward modeling matrix G given a collection
+    Build the forward modeling matrix ``G`` given a collection
     of fault normals.
 
     Parameters
@@ -23,7 +23,7 @@ def forward_model(n_):
     ---------
     G: (3 x n_earthquakes, 5) array
         The forward modeling matrix giving the slip (shear stress)
-        directions on the faults characterized by n_, given the 5
+        directions on the faults characterized by `n_`, given the 5
         elements of the deviatoric stress tensor.
     """
     n_earthquakes = n_.shape[0]
@@ -53,7 +53,7 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
                       inversion_space='model_space'):
     """
     Returns Tarantola's and Valette's least square solution for
-    a given linear operator G and observation vector data. If the
+    a given linear operator `G` and observation vector `data`. If the
     covariance matrices of the observations and of the model
     parameters are not known, we assume them to be identity. The
     inversion can be performed either in the data space or in
@@ -66,23 +66,23 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
         space m onto the data space: d = G.m
         n is the dimension of the data space,
         m is the dimension of the model space.
-    data: (n,) or (n, 1) numpy array.
+    data: (n,) or (n, 1) numpy array
         Vector of observations.
     C_d: (n, n) numpy array, default to None
         Covariance matrix of the observations. It quantifies
         the errors in the observations and propagates them
         in the inversion to give more weight to the observations
-        with low errors. If None, then C_d is identity.
+        with low errors. If None, then `C_d` is identity.
     C_m: (m, m) numpy array, default to None
         Covariance matrix of the model parameters. It quantifies
         the errors in the model parameters and propagates them
         in the inversion to determine the range of acceptable
         model parameters for a given set of observations.
-        If None, then C_m is identity.
+        If None, then `C_m` is identity.
     m_prior: (m,) or (m, 1) numpy array, default to None
         If one already has a rough estimate of what the model
         parameters are, then m_prior should be filled with this estimate.
-        If None, m_prior is set to zero.
+        If None, `m_prior` is set to zero.
 
     Returns
     ---------
@@ -160,8 +160,8 @@ def Tarantola_Valette(G, data, C_d=None, C_d_inv=None,
 
 
 def iterative_linear_si(strikes, dips, rakes,
-                        max_n_iterations=1000,
-                        shear_update_atol=1.e-7,
+                        max_n_iterations=300,
+                        shear_update_atol=1.e-5,
                         Tarantola_kwargs=None,
                         return_eigen=True,
                         return_stats=False):
@@ -194,13 +194,13 @@ def iterative_linear_si(strikes, dips, rakes,
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    shear_update_atol: float, default to 1e-7
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     Tarantola_kwargs: Dictionary, default to None:
         If not None, should contain key word arguments
         for the Tarantola and Valette inversion.
@@ -216,22 +216,24 @@ def iterative_linear_si(strikes, dips, rakes,
     --------
     full_stress_tensor: (3, 3) numpy array
         The inverted stress tensor.
-    If return_eigen is True:
-        principal_stresses: (3,) numpy array
-            The three eigenvalues of the stress tensor, ordered
-            from most compressive (sigma1) to least compressive (sigma3).
-        principal_directions: (3, 3) numpy array
-            The three eigenvectors of the stress tensor, stored in
-            a matrix as column vectors and ordered from
-            most compressive (sigma1) to least compressive (sigma3).
-            The direction of sigma_i is given by: principal_directions[:, i] 
-    If return_stats is True:
-        C_m_posterior: (5, 5) array
-            Posterior covariance of the model parameter distribution
-            estimated from the Tarantola and Valette formula.
-        C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array
-            Posterior covariance of the data distribution
-            estimated from the Tarantola and Valette formula.
+    principal_stresses: (3,) numpy array, optional
+        The three eigenvalues of the stress tensor, ordered
+        from most compressive (sigma1) to least compressive (sigma3).
+        Only provided if `return_eigen` is True.
+    principal_directions: (3, 3) numpy array, optional
+        The three eigenvectors of the stress tensor, stored in
+        a matrix as column vectors and ordered from
+        most compressive (sigma1) to least compressive (sigma3).
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
+        Only provided if `return_eigen` is True.
+    C_m_posterior: (5, 5) array, optional
+        Posterior covariance of the model parameter distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
+    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
+        Posterior covariance of the data distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
     """
     #t_start = give_time()
     # First, convert the strike/dip/rake into slip and normal vectors.
@@ -362,22 +364,24 @@ def Michael1984_inversion(strikes, dips, rakes,
     --------
     full_stress_tensor: (3, 3) numpy array
         The inverted stress tensor.
-    If return_eigen is True:
-        principal_stresses: (3,) numpy array
-            The three eigenvalues of the stress tensor, ordered
-            from most compressive (sigma1) to least compressive (sigma3).
-        principal_directions: (3, 3) numpy array
-            The three eigenvectors of the stress tensor, stored in
-            a matrix as column vectors and ordered from
-            most compressive (sigma1) to least compressive (sigma3).
-            The direction of sigma_i is given by: principal_directions[:, i] 
-    If return_stats is True:
-        C_m_posterior: (5, 5) array
-            Posterior covariance of the model parameter distribution
-            estimated from the Tarantola and Valette formula.
-        C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array
-            Posterior covariance of the data distribution
-            estimated from the Tarantola and Valette formula.
+    principal_stresses: (3,) numpy array, optional
+        The three eigenvalues of the stress tensor, ordered
+        from most compressive (sigma1) to least compressive (sigma3).
+        Only provided if `return_eigen` is True.
+    principal_directions: (3, 3) numpy array, optional
+        The three eigenvectors of the stress tensor, stored in
+        a matrix as column vectors and ordered from
+        most compressive (sigma1) to least compressive (sigma3).
+        The direction of sigma_i is given by: `principal_directions[:, i]`. 
+        Only provided if `return_eigen` is True.
+    C_m_posterior: (5, 5) array, optional
+        Posterior covariance of the model parameter distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
+    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
+        Posterior covariance of the data distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
     """
     # First, convert the strike/dip/rake into slip and normal vectors.
     n_earthquakes = len(strikes)
@@ -434,8 +438,8 @@ def Michael1984_inversion(strikes, dips, rakes,
 
 def inversion_one_set(strikes, dips, rakes,
                       n_random_selections=20,
-                      max_n_iterations=500,
-                      shear_update_atol=1.e-7,
+                      max_n_iterations=300,
+                      shear_update_atol=1.e-5,
                       iterative_method=True,
                       Tarantola_kwargs=None,
                       return_stats=False):
@@ -459,13 +463,13 @@ def inversion_one_set(strikes, dips, rakes,
         Number of random selections of subsets of nodal planes on
         which the stress inversion is run. The final stress tensor
         is averaged over the n_random_selections solutions.
-    shear_update_atol: float, default to 1e-7
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     iterative_method: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
@@ -490,13 +494,14 @@ def inversion_one_set(strikes, dips, rakes,
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i is given by: principal_directions[:, i] 
-    If return_stats is True:
-        C_m_posterior: (5, 5) array
-            Posterior covariance of the model parameter distribution
-            estimated from the Tarantola and Valette formula.
-        C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array
-            Posterior covariance of the data distribution
-            estimated from the Tarantola and Valette formula.
+    C_m_posterior: (5, 5) array, optional
+        Posterior covariance of the model parameter distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
+    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
+        Posterior covariance of the data distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
@@ -556,8 +561,8 @@ def inversion_one_set(strikes, dips, rakes,
 def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
                         n_random_selections=1,
                         n_resamplings=100,
-                        max_n_iterations=500,
-                        shear_update_atol=1.e-7,
+                        max_n_iterations=300,
+                        shear_update_atol=1.e-5,
                         iterative_method=True,
                         Tarantola_kwargs=None,
                         bootstrap_events=False):
@@ -597,13 +602,13 @@ def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
     bootstrap_events: boolean, default to False
         If True, the resampling is also done accross earthquakes,
         following the bootstrapping method.
-    shear_update_atol: float, default to 1e-4
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     iterative_method: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
@@ -624,7 +629,7 @@ def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i for the b-th resampled data set
-        is given by: principal_directions[b, :, i] 
+        is given by: `principal_directions[b, :, i]`. 
     """
     # compute auxiliary planes
     jack_strikes_1, jack_dips_1, jack_rakes_1 = jack_strikes, jack_dips, jack_rakes
@@ -688,8 +693,8 @@ def inversion_bootstrap(strikes, dips, rakes,
                         n_random_selections=1,
                         n_resamplings=100,
                         iterative_method=True,
-                        max_n_iterations=500,
-                        shear_update_atol=1.e-7,
+                        max_n_iterations=300,
+                        shear_update_atol=1.e-5,
                         Tarantola_kwargs=None):
     """
     Inverts one set of focal mechanisms without seeking which nodal planes
@@ -717,13 +722,13 @@ def inversion_bootstrap(strikes, dips, rakes,
         the bootstrapping method (sampling with replacement).
         n_resamplings stress tensors are returned, allowing to 
         estimate uncertainties from the distribution of solutions.
-    shear_update_atol: float, default to 1e-7
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     iterative_method: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
@@ -744,7 +749,7 @@ def inversion_bootstrap(strikes, dips, rakes,
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i for the b-th resampled data set
-        is given by: principal_directions[b, :, i] 
+        is given by: `principal_directions[b, :, i]`.
     """
 
     # compute auxiliary planes
@@ -815,8 +820,8 @@ def inversion_one_set_instability(strikes, dips, rakes,
                                   n_random_selections=20,
                                   stress_tensor_update_atol=1.e-4,
                                   Tarantola_kwargs=None,
-                                  max_n_iterations=500,
-                                  shear_update_atol=1.e-7,
+                                  max_n_iterations=300,
+                                  shear_update_atol=1.e-5,
                                   n_averaging=1,
                                   verbose=True,
                                   iterative_method=True,
@@ -858,13 +863,13 @@ def inversion_one_set_instability(strikes, dips, rakes,
         Number of random selections of subsets of nodal planes on
         which the stress inversion is run. The final stress tensor
         is averaged over the n_random_selections solutions.
-    shear_update_atol: float, default to 1e-7
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     iterative_method: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
@@ -872,7 +877,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
     n_averaging: integer, default to 1
         The inversion can be sensitive to initial conditions. To improve
         reproducibility of the results it is good to repeat the inversion
-        several times and average the results. Set n_averaging to ~5 if
+        several times and average the results. Set `n_averaging` to ~5 if
         you can afford the increase in run time.
     Tarantola_kwargs: Dictionary, default to None
         If not None, should contain key word arguments
@@ -894,12 +899,12 @@ def inversion_one_set_instability(strikes, dips, rakes,
     plot: boolean, default to False
         If True, plot the set of nodal planes selected at each iteration,
         and the weight attributed to each of these planes. Can be used
-        with weighted=True to see if the inversion convergences to a
+        with `weighted=True` to see if the inversion convergences to a
         well defined set of planes.
     verbose: integer, default to 1
-        Level of verbosity.
-        0: No print statements.
-        1: Print whether the algorithm converged.
+        Level of verbosity.  
+        0: No print statements.  
+        1: Print whether the algorithm converged.  
         2: Print the stress tensor at the end of each fault plane
            selection iteration.
 
@@ -918,14 +923,15 @@ def inversion_one_set_instability(strikes, dips, rakes,
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
-    If return_stats is True:
-        C_m_posterior: (5, 5) array
-            Posterior covariance of the model parameter distribution
-            estimated from the Tarantola and Valette formula.
-        C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array
-            Posterior covariance of the data distribution
-            estimated from the Tarantola and Valette formula.
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
+    C_m_posterior: (5, 5) array, optional
+        Posterior covariance of the model parameter distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
+    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
+        Posterior covariance of the data distribution
+        estimated from the Tarantola and Valette formula.
+        Only provided if `return_stats` is True.
     """
     if plot:
         import mplstereonet
@@ -1046,8 +1052,8 @@ def inversion_jackknife_instability(principal_directions, R,
                                     Tarantola_kwargs=None,
                                     bootstrap_events=False,
                                     iterative_method=True,
-                                    max_n_iterations=500,
-                                    shear_update_atol=1.e-7,
+                                    max_n_iterations=300,
+                                    shear_update_atol=1.e-5,
                                     weighted=False,
                                     verbose=1):
     """
@@ -1061,10 +1067,10 @@ def inversion_jackknife_instability(principal_directions, R,
     of propagating the focal mechanism uncertainties into the stress
     inversion. Use the instability parameter to seek which nodal planes
     are more likely to be the fault planes (cf. B. Lund and R. Slunga 1999,
-    V. Vavrycuk 2013,2014).
+    V. Vavrycuk 2013,2014).  
 
     Use a previously determined stress tensor (e.g. the output of
-    inversion_one_set_instability) described by its principal stress
+    `inversion_one_set_instability`) described by its principal stress
     directions and shape ratio as the prior model in the Tarantola
     and Valette formula. In general, you can keep the default parameter
     values, except for n_resamplings which depends on the time you can 
@@ -1076,12 +1082,12 @@ def inversion_jackknife_instability(principal_directions, R,
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
-    R: scalar float,
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
+    R: scalar float
         Shape ratio of the reference stress tensor.
-    friction_coefficient: scalar float,
+    friction_coefficient: scalar float
         Friction value used in the instability parameter. This can be
-        the value output by inversion_one_set_instability.
+        the value output by `inversion_one_set_instability`.
     jack_strikes: (n_earthquakes, n_jackknifes) array, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
@@ -1098,13 +1104,13 @@ def inversion_jackknife_instability(principal_directions, R,
     stress_tensor_update_atol: float, default to 1.e-4
         If the RMS difference of the stress tensors between two
         iterations fall below this threshold, convergence has been reached.
-    shear_update_atol: float, default to 1e-7
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     iterative_method: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
@@ -1116,21 +1122,21 @@ def inversion_jackknife_instability(principal_directions, R,
         If True, the resampling is also done accross earthquakes,
         following the bootstrapping method.
     weighted: boolean, default to False
-        This option is exploratory. If True:
+        This option is exploratory. If True:  
             1) More weight is given to the fault planes that are clearly
                more unstable than their auxiliary counterpart in the
-               stress field estimated at iteration t-1
+               stress field estimated at iteration t-1  
             2) Randomly mixes the set of fault planes at iterations
                t-1 and t, giving larger probability to the planes
-               belonging to the set that produced the larger instability.
+               belonging to the set that produced the larger instability.  
         This option can be interesting for reaching convergence on
         data sets of bad quality.
     verbose: integer, default to 1
-        Level of verbosity.
-        0: No print statements.
-        1: Print whether the algorithm converged.
+        Level of verbosity.  
+        0: No print statements.  
+        1: Print whether the algorithm converged.  
         2: Print the stress tensor at the end of each fault plane
-           selection iteration.
+           selection iteration.  
 
     Returns
     --------
@@ -1144,7 +1150,7 @@ def inversion_jackknife_instability(principal_directions, R,
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i for the b-th resampled data set
-        is given by: principal_directions[b, :, i] 
+        is given by: `principal_directions[b, :, i]`.
     """
     # compute auxiliary planes
     jack_strikes_1, jack_dips_1, jack_rakes_1 = jack_strikes, jack_dips, jack_rakes
@@ -1204,8 +1210,8 @@ def inversion_bootstrap_instability(principal_directions, R,
                                     stress_tensor_update_atol=1.e-5,
                                     Tarantola_kwargs=None,
                                     iterative_method=True,
-                                    max_n_iterations=500,
-                                    shear_update_atol=1.e-7,
+                                    max_n_iterations=300,
+                                    shear_update_atol=1.e-5,
                                     weighted=False,
                                     verbose=1):
     """
@@ -1213,10 +1219,10 @@ def inversion_bootstrap_instability(principal_directions, R,
     to seek which nodal planes are more likely to be the fault planes
     (cf. B. Lund and R. Slunga 1999, V. Vavrycuk 2013,2014).
     Performs bootstrap resampling of the data set to return an
-    ensemble of solutions.
+    ensemble of solutions.  
 
     Use a previously determined stress tensor (e.g. the output of
-    inversion_one_set_instability) described by its principal stress
+    `inversion_one_set_instability`) described by its principal stress
     directions and shape ratio as the prior model in the Tarantola
     and Valette formula. In general, you can keep the default parameter
     values, except for n_resamplings which depends on the time you can 
@@ -1228,12 +1234,12 @@ def inversion_bootstrap_instability(principal_directions, R,
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
-    R: float,
+        The direction of sigma_i is given by: `principal_directions[:, i]`. 
+    R: float
         Shape ratio of the reference stress tensor.
-    friction_coefficient: float,
+    friction_coefficient: float
         Value of the friction coefficient used in the instability parameter.
-        This can be the value output by inversion_one_set_instability.
+        This can be the value output by `inversion_one_set_instability`.
     strikes: list or array, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
@@ -1250,13 +1256,13 @@ def inversion_bootstrap_instability(principal_directions, R,
     stress_tensor_update_atol: float, default to 1.e-4
         If the RMS difference of the stress tensors between two
         iterations fall below this threshold, convergence has been reached.
-    shear_update_atol: float, default to 1e-7
+    shear_update_atol: float, default to 1e-5
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    max_n_iterations: integer, default to 1000
+    max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
-        does not fall below shear_update_atol.
+        does not fall below `shear_update_atol`.
     iterative_method: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
@@ -1265,19 +1271,19 @@ def inversion_bootstrap_instability(principal_directions, R,
         If not None, should contain key word arguments
         for the Tarantola and Valette inversion.
     weighted: boolean, default to False
-        This option is exploratory. If True:
+        This option is exploratory. If True:  
             1) More weight is given to the fault planes that are clearly
                more unstable than their auxiliary counterpart in the
-               stress field estimated at iteration t-1
+               stress field estimated at iteration t-1  
             2) Randomly mixes the set of fault planes at iterations
                t-1 and t, giving larger probability to the planes
-               belonging to the set that produced the larger instability.
+               belonging to the set that produced the larger instability.  
         This option can be interesting for reaching convergence on
         data sets of bad quality.
     verbose: integer, default to 1
-        Level of verbosity.
-        0: No print statements.
-        1: Print whether the algorithm converged.
+        Level of verbosity.  
+        0: No print statements.  
+        1: Print whether the algorithm converged.  
         2: Print the stress tensor at the end of each fault plane
            selection iteration.
 
@@ -1293,7 +1299,7 @@ def inversion_bootstrap_instability(principal_directions, R,
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i for the b-th resampled data set
-        is given by: principal_directions[b, :, i] 
+        is given by: `principal_directions[b, :, i]`.
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
@@ -1569,8 +1575,8 @@ def find_optimal_friction(strikes_1, dips_1, rakes_1,
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
-    R: float,
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
+    R: float
         Shape ratio of the reference stress tensor.
     friction_min: float, default to 0.1
         Lower bound of explored friction values.
@@ -1620,8 +1626,8 @@ def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i] 
-    R: float,
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
+    R: float
         Shape ratio of the reference stress tensor.
     friction_min: float, default to 0.1
         Lower bound of explored friction values.
@@ -1676,7 +1682,7 @@ def compute_instability_parameter(principal_directions, R, friction,
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i is given by: principal_directions[:, i] 
-    R: float,
+    R: float
         Shape ratio of the reference stress tensor.
     strikes_1: list or array, float
         The strike of nodal planes 1, angle between north and
@@ -1707,10 +1713,15 @@ def compute_instability_parameter(principal_directions, R, friction,
     instability_parameter: (n_earthquakes, 2) array
         The instability parameter as defined in Beauce 2021 for the two
         nodal planes of each focal mechanism datum.
-    if return_fault_planes is True:
-        strikes: list or array, float
-        dips: list or array, float
-        rakes: list or array, float
+    strikes: list or array, float, optional
+        Strikes of the fault planes with largest instability.
+        Only provided if `return_fault_planes=True`.
+    dips: list or array, float, optional
+        Dips of the fault planes with largest instability.
+        Only provided if `return_fault_planes=True`.
+    rakes: list or array, float, optional
+        Rakes of the fault planes with largest instability.
+        Only provided if `return_fault_planes=True`.
     """
     # the calculation is done in the eigenbasis, therefore
     # we need to project the normal vectors onto the eigenbasis
@@ -1721,8 +1732,10 @@ def compute_instability_parameter(principal_directions, R, friction,
     d_2 = np.zeros((n_earthquakes, 3), dtype=np.float32)
     # compute the normals of the two nodal planes
     for i in range(n_earthquakes):
-        n_1[i, :], d_1[i, :] = utils_stress.normal_slip_vectors(strike_1[i], dip_1[i], rake_1[i], direction='inward')
-        n_2[i, :], d_2[i, :] = utils_stress.normal_slip_vectors(strike_2[i], dip_2[i], rake_2[i], direction='inward')
+        n_1[i, :], d_1[i, :] = utils_stress.normal_slip_vectors(
+                strike_1[i], dip_1[i], rake_1[i], direction='inward')
+        n_2[i, :], d_2[i, :] = utils_stress.normal_slip_vectors(
+                strike_2[i], dip_2[i], rake_2[i], direction='inward')
     # project the normals onto the eigenbasis
     n_1 = np.dot(n_1, principal_directions)
     n_2 = np.dot(n_2, principal_directions)
