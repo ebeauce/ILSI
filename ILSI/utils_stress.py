@@ -288,7 +288,7 @@ def aux_plane(s1, d1, r1):
     float64epsilon = 2.2204460492503131e-16
     if 1.0 < abs(z) < 1.0 + 100 * float64epsilon:
         z = np.copysign(1.0, z)
-    z = np.arccos(z)
+    z = np.arccos(round_cos(z))
     rake = 0
     if sl3 > 0:
         rake = z * r2d
@@ -446,7 +446,7 @@ def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
     # the plunge is measured downward from the end of the
     # line specified by the bearing
     # this formula is valid for p_axis[2] < 0
-    plunge = (np.arccos(u[2]) - np.pi/2.)
+    plunge = (np.arccos(round_cos(u[2])) - np.pi/2.)
     if hemisphere == 'upper':
         plunge *= -1.
     if degrees:
@@ -495,7 +495,7 @@ def kagan_angle(tensor1, tensor2):
     q = quaternion(R12[:, 0], R12[:, 1], R12[:, 2])
     # the minimum angle about some axis to superimpose the two
     # input tensors is:
-    min_angle = np.arccos(np.max(np.abs(q)))
+    min_angle = np.arccos(round_cos(np.max(np.abs(q))))
     return 2.*np.rad2deg(min_angle)
 
 def mean_angular_residual(stress_tensor, strikes, dips, rakes):
@@ -832,6 +832,29 @@ def reduced_stress_tensor(principal_directions, R):
                            np.dot(Sigma, principal_directions.T))
     return stress_tensor
 
+def round_cos(x):
+    """Clip x so that it fits with the [-1,1] interval.  
+
+    If x is slightly outside the [-1,1] because of numerical
+    imprecision, x is rounded, and can then be safely passed
+    to arccos or arcsin. If x is truly outside of [-1,1], x
+    is returned unchanged.
+
+    Parameters
+    -----------
+    x: scalar, float
+        Float variable that represents a cos or sin that
+        is supposed to be within the [-1,1] interval.
+
+    Returns
+    -----------
+    x_r: scalar, float
+       A rounded version of x, if necessary. 
+    """
+    if (abs(x) > 1.0) and (abs(x) < 1.005):
+        return 1.0*np.sign(x)
+    else:
+        return x
 
 def stress_tensor_eigendecomposition(stress_tensor):
     """
@@ -893,7 +916,7 @@ def strike_dip_rake(n, d):
     r2d = 180./np.pi
     # ----------------
     # dip is straightforward:
-    dip = np.arccos(n[2])
+    dip = np.arccos(round_cos(n[2]))
     sin_dip = np.sin(dip)
     if sin_dip != 0.:
         # ----------------
@@ -987,6 +1010,6 @@ def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
             stress_tensor, n)
     shear_dir = shear_traction/np.sqrt(np.sum(shear_traction**2))
     # the angle difference is the Arccos(dot product)
-    angle = np.arccos(np.sum(d.squeeze()*shear_dir.squeeze()))
+    angle = np.arccos(round_cos(np.sum(d.squeeze()*shear_dir.squeeze())))
     # return the result in degrees
     return angle*180./np.pi
