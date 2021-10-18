@@ -14,7 +14,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="ILSI",
-    version="1.0.1",
+    version="1.0.2",
     author="Eric Beaucé",
     author_email="ebeauce@mit.edu",
     description="Package for iterative linear stress inversion",

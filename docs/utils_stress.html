@@ -316,7 +316,7 @@ def aux_plane(s1, d1, r1):
     float64epsilon = 2.2204460492503131e-16
     if 1.0 &lt; abs(z) &lt; 1.0 + 100 * float64epsilon:
         z = np.copysign(1.0, z)
-    z = np.arccos(z)
+    z = np.arccos(round_cos(z))
     rake = 0
     if sl3 &gt; 0:
         rake = z * r2d
@@ -474,7 +474,7 @@ def get_bearing_plunge(u, degrees=True, hemisphere=&#39;lower&#39;):
     # the plunge is measured downward from the end of the
     # line specified by the bearing
     # this formula is valid for p_axis[2] &lt; 0
-    plunge = (np.arccos(u[2]) - np.pi/2.)
+    plunge = (np.arccos(round_cos(u[2])) - np.pi/2.)
     if hemisphere == &#39;upper&#39;:
         plunge *= -1.
     if degrees:
@@ -523,7 +523,7 @@ def kagan_angle(tensor1, tensor2):
     q = quaternion(R12[:, 0], R12[:, 1], R12[:, 2])
     # the minimum angle about some axis to superimpose the two
     # input tensors is:
-    min_angle = np.arccos(np.max(np.abs(q)))
+    min_angle = np.arccos(round_cos(np.max(np.abs(q))))
     return 2.*np.rad2deg(min_angle)
 
 def mean_angular_residual(stress_tensor, strikes, dips, rakes):
@@ -860,6 +860,29 @@ def reduced_stress_tensor(principal_directions, R):
                            np.dot(Sigma, principal_directions.T))
     return stress_tensor
 
+def round_cos(x):
+    &#34;&#34;&#34;Clip x so that it fits with the [-1,1] interval.  
+
+    If x is slightly outside the [-1,1] because of numerical
+    imprecision, x is rounded, and can then be safely passed
+    to arccos or arcsin. If x is truly outside of [-1,1], x
+    is returned unchanged.
+
+    Parameters
+    -----------
+    x: scalar, float
+        Float variable that represents a cos or sin that
+        is supposed to be within the [-1,1] interval.
+
+    Returns
+    -----------
+    x_r: scalar, float
+       A rounded version of x, if necessary. 
+    &#34;&#34;&#34;
+    if (abs(x) &gt; 1.0) and (abs(x) &lt; 1.005):
+        return 1.0*np.sign(x)
+    else:
+        return x
 
 def stress_tensor_eigendecomposition(stress_tensor):
     &#34;&#34;&#34;
@@ -921,7 +944,7 @@ def strike_dip_rake(n, d):
     r2d = 180./np.pi
     # ----------------
     # dip is straightforward:
-    dip = np.arccos(n[2])
+    dip = np.arccos(round_cos(n[2]))
     sin_dip = np.sin(dip)
     if sin_dip != 0.:
         # ----------------
@@ -1015,7 +1038,7 @@ def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
             stress_tensor, n)
     shear_dir = shear_traction/np.sqrt(np.sum(shear_traction**2))
     # the angle difference is the Arccos(dot product)
-    angle = np.arccos(np.sum(d.squeeze()*shear_dir.squeeze()))
+    angle = np.arccos(round_cos(np.sum(d.squeeze()*shear_dir.squeeze())))
     # return the result in degrees
     return angle*180./np.pi</code></pre>
 </details>
@@ -1206,7 +1229,7 @@ See Obspy project at <a href="https://github.com/obspy/obspy">https://github.com
     float64epsilon = 2.2204460492503131e-16
     if 1.0 &lt; abs(z) &lt; 1.0 + 100 * float64epsilon:
         z = np.copysign(1.0, z)
-    z = np.arccos(z)
+    z = np.arccos(round_cos(z))
     rake = 0
     if sl3 &gt; 0:
         rake = z * r2d
@@ -1689,7 +1712,7 @@ with the upper hemisphere if <code>hemisphere</code> is 'upper'.</dd>
     # the plunge is measured downward from the end of the
     # line specified by the bearing
     # this formula is valid for p_axis[2] &lt; 0
-    plunge = (np.arccos(u[2]) - np.pi/2.)
+    plunge = (np.arccos(round_cos(u[2])) - np.pi/2.)
     if hemisphere == &#39;upper&#39;:
         plunge *= -1.
     if degrees:
@@ -1850,7 +1873,7 @@ the two tensors.</dd>
     q = quaternion(R12[:, 0], R12[:, 1], R12[:, 2])
     # the minimum angle about some axis to superimpose the two
     # input tensors is:
-    min_angle = np.arccos(np.max(np.abs(q)))
+    min_angle = np.arccos(round_cos(np.max(np.abs(q))))
     return 2.*np.rad2deg(min_angle)</code></pre>
 </details>
 </dd>
@@ -2417,6 +2440,57 @@ and the shape ratio.</dd>
     return R</code></pre>
 </details>
 </dd>
+<dt id="ILSI.utils_stress.round_cos"><code class="name flex">
+<span>def <span class="ident">round_cos</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip x so that it fits with the [-1,1] interval.
+</p>
+<p>If x is slightly outside the [-1,1] because of numerical
+imprecision, x is rounded, and can then be safely passed
+to arccos or arcsin. If x is truly outside of [-1,1], x
+is returned unchanged.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>scalar, float</code></dt>
+<dd>Float variable that represents a cos or sin that
+is supposed to be within the [-1,1] interval.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>x_r</code></strong> :&ensp;<code>scalar, float</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>A rounded version of x, if necessary.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def round_cos(x):
+    &#34;&#34;&#34;Clip x so that it fits with the [-1,1] interval.  
+
+    If x is slightly outside the [-1,1] because of numerical
+    imprecision, x is rounded, and can then be safely passed
+    to arccos or arcsin. If x is truly outside of [-1,1], x
+    is returned unchanged.
+
+    Parameters
+    -----------
+    x: scalar, float
+        Float variable that represents a cos or sin that
+        is supposed to be within the [-1,1] interval.
+
+    Returns
+    -----------
+    x_r: scalar, float
+       A rounded version of x, if necessary. 
+    &#34;&#34;&#34;
+    if (abs(x) &gt; 1.0) and (abs(x) &lt; 1.005):
+        return 1.0*np.sign(x)
+    else:
+        return x</code></pre>
+</details>
+</dd>
 <dt id="ILSI.utils_stress.shear_slip_angle_difference"><code class="name flex">
 <span>def <span class="ident">shear_slip_angle_difference</span></span>(<span>stress_tensor, strike, dip, rake)</span>
 </code></dt>
@@ -2481,7 +2555,7 @@ this angle difference is a measure of misfit.</p>
             stress_tensor, n)
     shear_dir = shear_traction/np.sqrt(np.sum(shear_traction**2))
     # the angle difference is the Arccos(dot product)
-    angle = np.arccos(np.sum(d.squeeze()*shear_dir.squeeze()))
+    angle = np.arccos(round_cos(np.sum(d.squeeze()*shear_dir.squeeze())))
     # return the result in degrees
     return angle*180./np.pi</code></pre>
 </details>
@@ -2598,7 +2672,7 @@ the foot wall.</dd>
     r2d = 180./np.pi
     # ----------------
     # dip is straightforward:
-    dip = np.arccos(n[2])
+    dip = np.arccos(round_cos(n[2]))
     sin_dip = np.sin(dip)
     if sin_dip != 0.:
         # ----------------
@@ -2724,6 +2798,7 @@ consistent with our stress tensor convention (sig1, sig2, sig3).</dd>
 <li><code><a title="ILSI.utils_stress.random_rotation" href="#ILSI.utils_stress.random_rotation">random_rotation</a></code></li>
 <li><code><a title="ILSI.utils_stress.reduced_stress_tensor" href="#ILSI.utils_stress.reduced_stress_tensor">reduced_stress_tensor</a></code></li>
 <li><code><a title="ILSI.utils_stress.rotation" href="#ILSI.utils_stress.rotation">rotation</a></code></li>
+<li><code><a title="ILSI.utils_stress.round_cos" href="#ILSI.utils_stress.round_cos">round_cos</a></code></li>
 <li><code><a title="ILSI.utils_stress.shear_slip_angle_difference" href="#ILSI.utils_stress.shear_slip_angle_difference">shear_slip_angle_difference</a></code></li>
 <li><code><a title="ILSI.utils_stress.stress_tensor_eigendecomposition" href="#ILSI.utils_stress.stress_tensor_eigendecomposition">stress_tensor_eigendecomposition</a></code></li>
 <li><code><a title="ILSI.utils_stress.strike_dip_rake" href="#ILSI.utils_stress.strike_dip_rake">strike_dip_rake</a></code></li>
