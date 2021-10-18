@@ -4,6 +4,8 @@ import numpy as np
 from numpy.linalg import LinAlgError
 
 from . import utils_stress
+        
+from functools import partial
 
 #from time import time as give_time
 
@@ -1055,7 +1057,7 @@ def inversion_jackknife_instability(principal_directions, R,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
                                     weighted=False,
-                                    verbose=1):
+                                    parallel=False):
     """
     This routine was tailored for one of my application, but it can
     be of interest to others. Each earthquake comes with an ensemble
@@ -1131,12 +1133,8 @@ def inversion_jackknife_instability(principal_directions, R,
                belonging to the set that produced the larger instability.  
         This option can be interesting for reaching convergence on
         data sets of bad quality.
-    verbose: integer, default to 1
-        Level of verbosity.  
-        0: No print statements.  
-        1: Print whether the algorithm converged.  
-        2: Print the stress tensor at the end of each fault plane
-           selection iteration.  
+    parallel: boolean, default to False
+        If True, resampling is run in parallel.
 
     Returns
     --------
@@ -1173,34 +1171,32 @@ def inversion_jackknife_instability(principal_directions, R,
             jack_strikes_1.flatten(), jack_dips_1.flatten(), jack_rakes_1.flatten()
     jack_strikes_2, jack_dips_2, jack_rakes_2 = \
             jack_strikes_2.flatten(), jack_dips_2.flatten(), jack_rakes_2.flatten()
-    for b in range(n_resamplings):
-        if b%100 == 0:
-            print(f'---------- Bootstrapping {b+1}/{n_resamplings} ----------')
-        bootstrap_fm = np.random.randint(0, n_jackknife, size=n_earthquakes)
-        if bootstrap_events:
-            bootstrap_ev = np.random.choice(np.arange(n_earthquakes), size=n_earthquakes)
-            bootstrap_fm = bootstrap_ev*n_jackknife + bootstrap_fm
-        else:
-            bootstrap_fm = np.arange(n_earthquakes)*n_jackknife + bootstrap_fm
-        strikes_1_b, dips_1_b, rakes_1_b = \
-                jack_strikes_1[bootstrap_fm], jack_dips_1[bootstrap_fm], jack_rakes_1[bootstrap_fm]
-        strikes_2_b, dips_2_b, rakes_2_b = \
-                jack_strikes_2[bootstrap_fm], jack_dips_2[bootstrap_fm], jack_rakes_2[bootstrap_fm]
-        stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
-                stress_tensor_main, friction_coefficient,
-                strikes_1_b, dips_1_b, rakes_1_b, strikes_2_b, dips_2_b, rakes_2_b,
-                n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-                iterative_method=iterative_method, weighted=weighted,
-                max_n_iterations=max_n_iterations,
-                shear_update_atol=shear_update_atol,
-                stress_tensor_update_atol=stress_tensor_update_atol,
-                verbose=verbose, plot=False)
-        jack_stress_tensors[b, ...] = stress_tensor
-        jack_principal_stresses[b, ...], jack_principal_directions[b, ...] = \
-                utils_stress.stress_tensor_eigendecomposition(stress_tensor)
-        # ! in previous version, the p_dir and p_stress were not computed at the end of the loop!!
-        #jack_principal_stresses[b, ...] = principal_stresses
-        #jack_principal_directions[b, ...] = principal_directions
+    n_jackknife = None if bootstrap_events else n_jackknife
+    _bootstrap_solution_p = partial(_bootstrap_solution,
+            strikes_1=jack_strikes_1, dips_1=jack_dips_1, rakes_1=jack_rakes_1,
+            strikes_2=jack_strikes_2, dips_2=jack_dips_2, rakes_2=jack_rakes_2,
+            stress_tensor_main=stress_tensor_main,
+            friction_coefficient=friction_coefficient,
+            stress_tensor_update_atol=stress_tensor_update_atol,
+            n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
+            iterative_method=iterative_method,
+            weighted=weighted, max_n_iterations=max_n_iterations,
+            shear_update_atol=shear_update_atol,
+            n_jackknife=n_jackknife)
+    if parallel:
+        import concurrent.futures
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            results = list(executor.map(_bootstrap_solution_p, range(n_resamplings)))
+        jack_stress_tensors = np.asarray([results[b][0] for b in range(n_resamplings)])
+        jack_principal_stresses = np.asarray([results[b][1] for b in range(n_resamplings)])
+        jack_principal_directions = np.asarray([results[b][2] for b in range(n_resamplings)])
+    else:
+        for b in range(n_resamplings):
+            if b%100 == 0:
+                print(f'---------- Bootstrapping {b+1}/{n_resamplings} ----------')
+            jack_stress_tensors[b, ...],\
+                    jack_principal_stresses[b, ...],\
+                    jack_principal_directions[b, ...] = _bootstrap_solution_p(b)
     return jack_stress_tensors, jack_principal_stresses, jack_principal_directions
 
 def inversion_bootstrap_instability(principal_directions, R,
@@ -1213,7 +1209,7 @@ def inversion_bootstrap_instability(principal_directions, R,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
                                     weighted=False,
-                                    verbose=1):
+                                    parallel=False):
     """
     Invert one set of focal mechanisms with the instability parameter
     to seek which nodal planes are more likely to be the fault planes
@@ -1280,12 +1276,8 @@ def inversion_bootstrap_instability(principal_directions, R,
                belonging to the set that produced the larger instability.  
         This option can be interesting for reaching convergence on
         data sets of bad quality.
-    verbose: integer, default to 1
-        Level of verbosity.  
-        0: No print statements.  
-        1: Print whether the algorithm converged.  
-        2: Print the stress tensor at the end of each fault plane
-           selection iteration.
+    parallel: boolean, default to False
+        If True, resampling is run in parallel.
 
     Returns
     --------
@@ -1318,31 +1310,76 @@ def inversion_bootstrap_instability(principal_directions, R,
     boot_stress_tensors = np.zeros((n_resamplings, 3, 3), dtype=np.float32)
     boot_principal_stresses = np.zeros((n_resamplings, 3), dtype=np.float32)
     boot_principal_directions = np.zeros((n_resamplings, 3, 3), dtype=np.float32)
-    for b in range(n_resamplings):
-        if b%100 == 0:
-            print(f'---------- Bootstrapping {b+1}/{n_resamplings} ----------')
-        bootstrap_set = np.random.choice(
-                np.arange(n_earthquakes), replace=True, size=n_earthquakes)
-        strikes_1_b, dips_1_b, rakes_1_b = \
-                strikes_1[bootstrap_set], dips_1[bootstrap_set], rakes_1[bootstrap_set]
-        strikes_2_b, dips_2_b, rakes_2_b = \
-                strikes_2[bootstrap_set], dips_2[bootstrap_set], rakes_2[bootstrap_set]
-        stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
-                stress_tensor_main, friction_coefficient,
-                strikes_1_b, dips_1_b, rakes_1_b, strikes_2_b, dips_2_b, rakes_2_b,
-                n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-                iterative_method=iterative_method, weighted=weighted,
-                max_n_iterations=max_n_iterations,
-                shear_update_atol=shear_update_atol,
-                stress_tensor_update_atol=stress_tensor_update_atol,
-                verbose=verbose, plot=False)
-        boot_stress_tensors[b, ...] = stress_tensor
-        boot_principal_stresses[b, ...], boot_principal_directions[b, ...] = \
-                utils_stress.stress_tensor_eigendecomposition(stress_tensor)
-        # ! in previous version, the p_dir and p_stress were not computed at the end of the loop!!
-        #boot_principal_stresses[b, ...] = principal_stresses
-        #boot_principal_directions[b, ...] = principal_directions
+    _bootstrap_solution_p = partial(_bootstrap_solution,
+            strikes_1=strikes_1, dips_1=dips_1, rakes_1=rakes_1,
+            strikes_2=strikes_2, dips_2=dips_2, rakes_2=rakes_2,
+            stress_tensor_main=stress_tensor_main,
+            friction_coefficient=friction_coefficient,
+            stress_tensor_update_atol=stress_tensor_update_atol,
+            n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
+            iterative_method=iterative_method,
+            weighted=weighted, max_n_iterations=max_n_iterations,
+            shear_update_atol=shear_update_atol)
+    if parallel:
+        import concurrent.futures
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            results = list(executor.map(_bootstrap_solution_p, range(n_resamplings)))
+        boot_stress_tensors = np.asarray([results[b][0] for b in range(n_resamplings)])
+        boot_principal_stresses = np.asarray([results[b][1] for b in range(n_resamplings)])
+        boot_principal_directions = np.asarray([results[b][2] for b in range(n_resamplings)])
+    else:
+        for b in range(n_resamplings):
+            if b%100 == 0:
+                print(f'---------- Bootstrapping {b+1}/{n_resamplings} ----------')
+            boot_stress_tensors[b, ...], \
+                    boot_principal_stresses[b, ...],\
+                    boot_principal_directions[b, ...] = _bootstrap_solution_p(b)
     return boot_stress_tensors, boot_principal_stresses, boot_principal_directions
+
+def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
+                        strikes_2, dips_2, rakes_2,
+                        stress_tensor_main, friction_coefficient,
+                        stress_tensor_update_atol, n_stress_iter,
+                        Tarantola_kwargs, iterative_method,
+                        weighted, max_n_iterations, shear_update_atol,
+                        n_jackknife=None):
+    """ Used to parallelize resampling.  
+    
+    Should not be used directly. If `n_jackknife` is provided, this function
+    assumes that strikes, dips, and rakes are given in the "jackknife" format,
+    where blocks of `n_jackknifes` contiguous samples are for `n_jackknifes`
+    possible solutions of the *same* focal mechanism. Resampling is then
+    performed only among the jackknife solutions, and each earthquake still
+    appears one time, as in the original data set. Therefore, this resampling
+    method only propagates the uncertainties in the focal mechanisms, and not
+    the uncertainties related to spatial sampling.
+    """
+    if n_jackknife is None:
+        bootstrap_set = np.random.choice(
+                np.arange(len(strikes_1)), replace=True, size=len(strikes_1))
+    else:
+        # strikes_1/dips_1/etc... come with contiguous blocks
+        # of n_jackknife focal mechanisms that are different
+        # possible solutions of the same earthquake, and we
+        # only sample from these without sampling with replacement
+        # among earthquakes
+        n_earthquakes = len(strikes_1)//n_jackknife
+        bootstrap_set = np.arange(n_earthquakes)*n_jackknife\
+                + np.random.randint(0, n_jackknife, size=n_earthquakes)
+    strikes_1_b, dips_1_b, rakes_1_b = \
+            strikes_1[bootstrap_set], dips_1[bootstrap_set], rakes_1[bootstrap_set]
+    strikes_2_b, dips_2_b, rakes_2_b = \
+            strikes_2[bootstrap_set], dips_2[bootstrap_set], rakes_2[bootstrap_set]
+    stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
+            stress_tensor_main, friction_coefficient,
+            strikes_1_b, dips_1_b, rakes_1_b, strikes_2_b, dips_2_b, rakes_2_b,
+            n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
+            iterative_method=iterative_method,
+            weighted=weighted, max_n_iterations=max_n_iterations,
+            shear_update_atol=shear_update_atol,
+            stress_tensor_update_atol=stress_tensor_update_atol,
+            verbose=0, plot=False)
+    return (stress_tensor,) + utils_stress.stress_tensor_eigendecomposition(stress_tensor) 
 
 
 def _stress_inversion_instability(stress_tensor0, friction_coefficient,
