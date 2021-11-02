@@ -442,7 +442,7 @@ def inversion_one_set(strikes, dips, rakes,
                       n_random_selections=20,
                       max_n_iterations=300,
                       shear_update_atol=1.e-5,
-                      iterative_method=True,
+                      variable_shear=True,
                       Tarantola_kwargs=None,
                       return_stats=False):
     """
@@ -472,7 +472,7 @@ def inversion_one_set(strikes, dips, rakes,
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    iterative_method: boolean, default to True
+    variable_shear: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
         due to Michael 1984.
@@ -528,7 +528,7 @@ def inversion_one_set(strikes, dips, rakes,
         selected_dips = dips[flat_indexes]
         selected_rakes = rakes[flat_indexes]
         # invert this subset of nodal planes
-        if iterative_method:
+        if variable_shear:
             # invert for both the stress tensor and values
             # of (normalized) resolved shear stress magnitude
             stress_tensor, C_m_post, C_d_post = \
@@ -565,7 +565,7 @@ def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
                         n_resamplings=100,
                         max_n_iterations=300,
                         shear_update_atol=1.e-5,
-                        iterative_method=True,
+                        variable_shear=True,
                         Tarantola_kwargs=None,
                         bootstrap_events=False):
     """
@@ -611,7 +611,7 @@ def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    iterative_method: boolean, default to True
+    variable_shear: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
         due to Michael 1984.
@@ -665,7 +665,7 @@ def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
         selected_dips = jack_dips[flat_indexes]
         selected_rakes = jack_rakes[flat_indexes]
         # invert this subset of nodal planes
-        if iterative_method:
+        if variable_shear:
             # invert for both the stress tensor and values
             # of (normalized) resolved shear stress magnitude
             stress_tensor = \
@@ -694,7 +694,7 @@ def inversion_jackknife(jack_strikes, jack_dips, jack_rakes,
 def inversion_bootstrap(strikes, dips, rakes,
                         n_random_selections=1,
                         n_resamplings=100,
-                        iterative_method=True,
+                        variable_shear=True,
                         max_n_iterations=300,
                         shear_update_atol=1.e-5,
                         Tarantola_kwargs=None):
@@ -731,7 +731,7 @@ def inversion_bootstrap(strikes, dips, rakes,
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    iterative_method: boolean, default to True
+    variable_shear: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
         due to Michael 1984.
@@ -785,7 +785,7 @@ def inversion_bootstrap(strikes, dips, rakes,
         selected_dips = dips[flat_indexes]
         selected_rakes = rakes[flat_indexes]
         # invert this subset of nodal planes
-        if iterative_method:
+        if variable_shear:
             stress_tensor = \
                     iterative_linear_si(selected_strikes,
                                         selected_dips,
@@ -826,7 +826,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
                                   shear_update_atol=1.e-5,
                                   n_averaging=1,
                                   verbose=True,
-                                  iterative_method=True,
+                                  variable_shear=True,
                                   return_stats=False,
                                   weighted=False,
                                   plot=False):
@@ -872,7 +872,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    iterative_method: boolean, default to True
+    variable_shear: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
         due to Michael 1984.
@@ -971,7 +971,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
             selected_dips = dips[flat_indexes]
             selected_rakes = rakes[flat_indexes]
             # invert this subset of nodal planes
-            if iterative_method:
+            if variable_shear:
                 stress_tensor = \
                         iterative_linear_si(
                                 selected_strikes, selected_dips, selected_rakes,
@@ -1007,7 +1007,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
                 avg_stress_tensor, friction_coefficient,
                 strikes_1, dips_1, rakes_1, strikes_2, dips_2, rakes_2,
                 n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-                iterative_method=iterative_method, weighted=weighted,
+                variable_shear=variable_shear, weighted=weighted,
                 max_n_iterations=max_n_iterations,
                 shear_update_atol=shear_update_atol,
                 stress_tensor_update_atol=stress_tensor_update_atol,
@@ -1053,7 +1053,7 @@ def inversion_jackknife_instability(principal_directions, R,
                                     stress_tensor_update_atol=1.e-4,
                                     Tarantola_kwargs=None,
                                     bootstrap_events=False,
-                                    iterative_method=True,
+                                    variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
                                     weighted=False,
@@ -1113,7 +1113,7 @@ def inversion_jackknife_instability(principal_directions, R,
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    iterative_method: boolean, default to True
+    variable_shear: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
         due to Michael 1984.
@@ -1179,7 +1179,7 @@ def inversion_jackknife_instability(principal_directions, R,
             friction_coefficient=friction_coefficient,
             stress_tensor_update_atol=stress_tensor_update_atol,
             n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-            iterative_method=iterative_method,
+            variable_shear=variable_shear,
             weighted=weighted, max_n_iterations=max_n_iterations,
             shear_update_atol=shear_update_atol,
             n_jackknife=n_jackknife)
@@ -1205,7 +1205,7 @@ def inversion_bootstrap_instability(principal_directions, R,
                                     n_stress_iter=10,
                                     stress_tensor_update_atol=1.e-5,
                                     Tarantola_kwargs=None,
-                                    iterative_method=True,
+                                    variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
                                     weighted=False,
@@ -1259,7 +1259,7 @@ def inversion_bootstrap_instability(principal_directions, R,
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    iterative_method: boolean, default to True
+    variable_shear: boolean, default to True
         If True, use the iterative linear method described in
         Beauce et al. 2021, else use the classic linear method
         due to Michael 1984.
@@ -1317,7 +1317,7 @@ def inversion_bootstrap_instability(principal_directions, R,
             friction_coefficient=friction_coefficient,
             stress_tensor_update_atol=stress_tensor_update_atol,
             n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-            iterative_method=iterative_method,
+            variable_shear=variable_shear,
             weighted=weighted, max_n_iterations=max_n_iterations,
             shear_update_atol=shear_update_atol)
     if parallel:
@@ -1340,7 +1340,7 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
                         strikes_2, dips_2, rakes_2,
                         stress_tensor_main, friction_coefficient,
                         stress_tensor_update_atol, n_stress_iter,
-                        Tarantola_kwargs, iterative_method,
+                        Tarantola_kwargs, variable_shear,
                         weighted, max_n_iterations, shear_update_atol,
                         n_jackknife=None):
     """ Used to parallelize resampling.  
@@ -1374,7 +1374,7 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
             stress_tensor_main, friction_coefficient,
             strikes_1_b, dips_1_b, rakes_1_b, strikes_2_b, dips_2_b, rakes_2_b,
             n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-            iterative_method=iterative_method,
+            variable_shear=variable_shear,
             weighted=weighted, max_n_iterations=max_n_iterations,
             shear_update_atol=shear_update_atol,
             stress_tensor_update_atol=stress_tensor_update_atol,
@@ -1396,7 +1396,7 @@ def _stress_inversion_instability(stress_tensor0, friction_coefficient,
     Tarantola_kwargs = kwargs.get('Tarantola_kwargs', None)
     n_stress_iter = kwargs.get('n_stress_iter', 10)
     weighted = kwargs.get('weighted', False)
-    iterative_method = kwargs.get('iterative_method', True)
+    variable_shear = kwargs.get('variable_shear', True)
     max_n_iterations = kwargs.get('max_n_iterations', 500)
     shear_update_atol = kwargs.get('shear_update_atol', 1.e-7)
     stress_tensor_update_atol = kwargs.get('stress_tensor_update_atol', 1.e-4)
@@ -1481,7 +1481,7 @@ def _stress_inversion_instability(stress_tensor0, friction_coefficient,
         else:
             Tarantola_kwargs['C_d'] = np.diag(1./weights)
         Tarantola_kwargs['C_d_inv'] = np.linalg.inv(Tarantola_kwargs['C_d'])
-        if iterative_method:
+        if variable_shear:
             stress_tensor, _, principal_stresses, principal_directions, C_m_post, C_d_post =\
                     iterative_linear_si(
                             fault_strikes, fault_dips, fault_rakes, return_eigen=True,

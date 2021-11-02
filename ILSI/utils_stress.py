@@ -863,8 +863,9 @@ def stress_tensor_eigendecomposition(stress_tensor):
     stress_tensor: (3, 3) numpy array.
         The stress tensor for which to solve the
         eigenvalue problem.
+
     Returns
-    --------
+    -----------
     principal_stresses: (3,) numpy array.
         The three eigenvalues of the stress tensor, ordered
         from most compressive (sigma1) to least compressive (sigma3).
