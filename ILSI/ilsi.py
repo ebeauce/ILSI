@@ -825,6 +825,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
                                   max_n_iterations=300,
                                   shear_update_atol=1.e-5,
                                   n_averaging=1,
+                                  signed_instability=True,
                                   verbose=True,
                                   variable_shear=True,
                                   return_stats=False,
@@ -881,6 +882,11 @@ def inversion_one_set_instability(strikes, dips, rakes,
         reproducibility of the results it is good to repeat the inversion
         several times and average the results. Set `n_averaging` to ~5 if
         you can afford the increase in run time.
+    signed_instability: boolean, default to True
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
     Tarantola_kwargs: Dictionary, default to None
         If not None, should contain key word arguments
         for the Tarantola and Valette inversion.
@@ -1011,6 +1017,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
                 max_n_iterations=max_n_iterations,
                 shear_update_atol=shear_update_atol,
                 stress_tensor_update_atol=stress_tensor_update_atol,
+                signed_instability=signed_instability,
                 verbose=verbose, plot=plot)
         final_stress_tensor += stress_tensor
     final_stress_tensor /= float(n_averaging)
@@ -1029,7 +1036,8 @@ def inversion_one_set_instability(strikes, dips, rakes,
             compute_instability_parameter(principal_directions, R, friction_coefficient,
                                           strikes_1, dips_1, rakes_1,
                                           strikes_2, dips_2, rakes_2,
-                                          return_fault_planes=True)
+                                          return_fault_planes=True,
+                                          signed_instability=signed_instability)
     optimal_friction = find_optimal_friction_one_set(
             fault_strikes, fault_dips, fault_rakes,
             principal_directions, R,
@@ -1053,9 +1061,11 @@ def inversion_jackknife_instability(principal_directions, R,
                                     stress_tensor_update_atol=1.e-4,
                                     Tarantola_kwargs=None,
                                     bootstrap_events=False,
+                                    n_earthquakes=None,
                                     variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
+                                    signed_instability=True,
                                     weighted=False,
                                     parallel=False):
     """
@@ -1110,6 +1120,11 @@ def inversion_jackknife_instability(principal_directions, R,
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
+    signed_instability: boolean, default to True
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
@@ -1171,7 +1186,8 @@ def inversion_jackknife_instability(principal_directions, R,
             jack_strikes_1.flatten(), jack_dips_1.flatten(), jack_rakes_1.flatten()
     jack_strikes_2, jack_dips_2, jack_rakes_2 = \
             jack_strikes_2.flatten(), jack_dips_2.flatten(), jack_rakes_2.flatten()
-    n_jackknife = None if bootstrap_events else n_jackknife
+    #n_jackknife = None if bootstrap_events else n_jackknife
+    n_earthquakes = n_earthquakes if bootstrap_events else None
     _bootstrap_solution_p = partial(_bootstrap_solution,
             strikes_1=jack_strikes_1, dips_1=jack_dips_1, rakes_1=jack_rakes_1,
             strikes_2=jack_strikes_2, dips_2=jack_dips_2, rakes_2=jack_rakes_2,
@@ -1182,7 +1198,8 @@ def inversion_jackknife_instability(principal_directions, R,
             variable_shear=variable_shear,
             weighted=weighted, max_n_iterations=max_n_iterations,
             shear_update_atol=shear_update_atol,
-            n_jackknife=n_jackknife)
+            n_jackknife=n_jackknife, n_earthquakes=n_earthquakes,
+            signed_instability=signed_instability)
     if parallel:
         import concurrent.futures
         with concurrent.futures.ProcessPoolExecutor() as executor:
@@ -1208,6 +1225,7 @@ def inversion_bootstrap_instability(principal_directions, R,
                                     variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
+                                    signed_instability=True,
                                     weighted=False,
                                     parallel=False):
     """
@@ -1256,6 +1274,11 @@ def inversion_bootstrap_instability(principal_directions, R,
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
+    signed_instability: boolean, default to True
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
@@ -1319,7 +1342,8 @@ def inversion_bootstrap_instability(principal_directions, R,
             n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
             variable_shear=variable_shear,
             weighted=weighted, max_n_iterations=max_n_iterations,
-            shear_update_atol=shear_update_atol)
+            shear_update_atol=shear_update_atol,
+            signed_instability=signed_instability)
     if parallel:
         import concurrent.futures
         with concurrent.futures.ProcessPoolExecutor() as executor:
@@ -1342,7 +1366,7 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
                         stress_tensor_update_atol, n_stress_iter,
                         Tarantola_kwargs, variable_shear,
                         weighted, max_n_iterations, shear_update_atol,
-                        n_jackknife=None):
+                        n_jackknife=None, n_earthquakes=None, signed_instability=True):
     """ Used to parallelize resampling.  
     
     Should not be used directly. If `n_jackknife` is provided, this function
@@ -1354,10 +1378,11 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
     method only propagates the uncertainties in the focal mechanisms, and not
     the uncertainties related to spatial sampling.
     """
-    if n_jackknife is None:
+    if n_jackknife is None and n_earthquakes is None:
         bootstrap_set = np.random.choice(
                 np.arange(len(strikes_1)), replace=True, size=len(strikes_1))
-    else:
+    elif n_earthquakes is None:
+        # default jackknife mode:
         # strikes_1/dips_1/etc... come with contiguous blocks
         # of n_jackknife focal mechanisms that are different
         # possible solutions of the same earthquake, and we
@@ -1365,6 +1390,12 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
         # among earthquakes
         n_earthquakes = len(strikes_1)//n_jackknife
         bootstrap_set = np.arange(n_earthquakes)*n_jackknife\
+                + np.random.randint(0, n_jackknife, size=n_earthquakes)
+    else:
+        # n_earthquakes is specified, bootstrap on jackknife solutions
+        # AND on events
+        bootstrap_set = np.random.choice(
+                np.arange(n_earthquakes), replace=True, size=n_earthquakes)*n_jackknife\
                 + np.random.randint(0, n_jackknife, size=n_earthquakes)
     strikes_1_b, dips_1_b, rakes_1_b = \
             strikes_1[bootstrap_set], dips_1[bootstrap_set], rakes_1[bootstrap_set]
@@ -1378,7 +1409,7 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
             weighted=weighted, max_n_iterations=max_n_iterations,
             shear_update_atol=shear_update_atol,
             stress_tensor_update_atol=stress_tensor_update_atol,
-            verbose=0, plot=False)
+            signed_instability=signed_instability, verbose=0, plot=False)
     return (stress_tensor,) + utils_stress.stress_tensor_eigendecomposition(stress_tensor) 
 
 
@@ -1399,6 +1430,7 @@ def _stress_inversion_instability(stress_tensor0, friction_coefficient,
     variable_shear = kwargs.get('variable_shear', True)
     max_n_iterations = kwargs.get('max_n_iterations', 500)
     shear_update_atol = kwargs.get('shear_update_atol', 1.e-7)
+    signed_instability = kwargs.get('signed_instability', True)
     stress_tensor_update_atol = kwargs.get('stress_tensor_update_atol', 1.e-4)
     verbose = kwargs.get('verbose', 1)
     plot = kwargs.get('plot', False)
@@ -1443,6 +1475,7 @@ def _stress_inversion_instability(stress_tensor0, friction_coefficient,
                 compute_instability_parameter(principal_directions, R, friction_coefficient,
                                               strikes_1, dips_1, rakes_1,
                                               strikes_2, dips_2, rakes_2,
+                                              signed_instability=signed_instability,
                                               return_fault_planes=True)
         total_instability = np.mean(np.max(instability, axis=-1))
         total_differential_instability = np.mean(np.abs(instability[:, 1] - instability[:, 0]))
@@ -1581,7 +1614,8 @@ def find_optimal_friction(strikes_1, dips_1, rakes_1,
                           principal_directions, R,
                           friction_min=0.1,
                           friction_max=0.8,
-                          friction_step=0.05):
+                          friction_step=0.05,
+                          signed_instability=True):
     """
     Find the friction that maximizes the instability parameter I
     based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.
@@ -1635,14 +1669,16 @@ def find_optimal_friction(strikes_1, dips_1, rakes_1,
         I_ = compute_instability_parameter(
                    principal_directions, R, fric,
                    strikes_1, dips_1, rakes_1,
-                   strikes_2, dips_2, rakes_2)
+                   strikes_2, dips_2, rakes_2,
+                   signed_instability=signed_instability)
         I[i] = np.sum(np.max(I_, axis=-1))
     optimal_friction = friction[I.argmax()]
     return optimal_friction
 
 def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
                                   principal_directions, R,
-                                  friction_min=0.2, friction_max=0.8, friction_step=0.05):
+                                  friction_min=0.2, friction_max=0.8, friction_step=0.05,
+                                  signed_instability=True):
     """
     Find the friction that maximizes the instability parameter I
     based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.
@@ -1689,7 +1725,8 @@ def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
         I_ = compute_instability_parameter(
                    principal_directions, R, fric,
                    strikes_1, dips_1, rakes_1,
-                   strikes_2, dips_2, rakes_2)
+                   strikes_2, dips_2, rakes_2,
+                   signed_instability=signed_instability)
         # only look at instability on nodal planes #1
         I[i] = np.sum(I_[:, 0])
     optimal_friction = friction[I.argmax()]
@@ -1698,7 +1735,8 @@ def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
 def compute_instability_parameter(principal_directions, R, friction,
                                   strike_1, dip_1, rake_1,
                                   strike_2, dip_2, rake_2,
-                                  return_fault_planes=False):
+                                  return_fault_planes=False,
+                                  signed_instability=True):
     """
     Compute the instability parameter as introduced by Lund and Slunga 1999,
     re-used by Vavrycuk 2013-2014 and modified by Beauce 2021.
@@ -1810,11 +1848,12 @@ def compute_instability_parameter(principal_directions, R, friction,
     sign_dot_1 = np.sign(np.sum(shear_1_vec*d_1, axis=-1))
     sign_dot_2 = np.sign(np.sum(shear_2_vec*d_2, axis=-1))
     #print(sign_dot_1)
-    # multiplying the instability parameter by the sign of the
-    # dot product between shear direction and slip direction is
-    # the difference with the instability parameter defined in Vavrycuk 2013
-    I_1 *= sign_dot_1
-    I_2 *= sign_dot_2
+    if signed_instability:
+        # multiplying the instability parameter by the sign of the
+        # dot product between shear direction and slip direction is
+        # the difference with the instability parameter defined in Vavrycuk 2013
+        I_1 *= sign_dot_1
+        I_2 *= sign_dot_2
 
     if return_fault_planes:
         strikes = np.zeros(n_earthquakes, dtype=np.float32)
