@@ -851,7 +851,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
                                   max_n_iterations=300,
                                   shear_update_atol=1.e-5,
                                   n_averaging=1,
-                                  signed_instability=True,
+                                  signed_instability=False,
                                   verbose=True,
                                   variable_shear=True,
                                   return_stats=False,
@@ -908,7 +908,7 @@ def inversion_one_set_instability(strikes, dips, rakes,
         reproducibility of the results it is good to repeat the inversion
         several times and average the results. Set `n_averaging` to ~5 if
         you can afford the increase in run time.
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
@@ -1091,7 +1091,7 @@ def inversion_jackknife_instability(principal_directions, R,
                                     variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
-                                    signed_instability=True,
+                                    signed_instability=False,
                                     weighted=False,
                                     parallel=False):
     &#34;&#34;&#34;
@@ -1251,7 +1251,7 @@ def inversion_bootstrap_instability(principal_directions, R,
                                     variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
-                                    signed_instability=True,
+                                    signed_instability=False,
                                     weighted=False,
                                     parallel=False):
     &#34;&#34;&#34;
@@ -1300,7 +1300,7 @@ def inversion_bootstrap_instability(principal_directions, R,
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
@@ -1392,7 +1392,7 @@ def _bootstrap_solution(_, strikes_1, dips_1, rakes_1,
                         stress_tensor_update_atol, n_stress_iter,
                         Tarantola_kwargs, variable_shear,
                         weighted, max_n_iterations, shear_update_atol,
-                        n_jackknife=None, n_earthquakes=None, signed_instability=True):
+                        n_jackknife=None, n_earthquakes=None, signed_instability=False):
     &#34;&#34;&#34; Used to parallelize resampling.  
     
     Should not be used directly. If `n_jackknife` is provided, this function
@@ -1641,7 +1641,7 @@ def find_optimal_friction(strikes_1, dips_1, rakes_1,
                           friction_min=0.1,
                           friction_max=0.8,
                           friction_step=0.05,
-                          signed_instability=True):
+                          signed_instability=False):
     &#34;&#34;&#34;
     Find the friction that maximizes the instability parameter I
     based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.
@@ -1682,6 +1682,11 @@ def find_optimal_friction(strikes_1, dips_1, rakes_1,
     friction_step: float, default to 0.05
         Step employed in the grid search of the friction value
         that maximizes the instability parameter.
+    signed_instability: boolean, default to False
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
 
     Returns
     --------
@@ -1704,7 +1709,7 @@ def find_optimal_friction(strikes_1, dips_1, rakes_1,
 def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
                                   principal_directions, R,
                                   friction_min=0.2, friction_max=0.8, friction_step=0.05,
-                                  signed_instability=True):
+                                  signed_instability=False):
     &#34;&#34;&#34;
     Find the friction that maximizes the instability parameter I
     based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.
@@ -1735,6 +1740,11 @@ def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
     friction_step: float, default to 0.05
         Step employed in the grid search of the friction value
         that maximizes the instability parameter.
+    signed_instability: boolean, default to False
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
 
     Returns
     --------
@@ -1762,7 +1772,7 @@ def compute_instability_parameter(principal_directions, R, friction,
                                   strike_1, dip_1, rake_1,
                                   strike_2, dip_2, rake_2,
                                   return_fault_planes=False,
-                                  signed_instability=True):
+                                  signed_instability=False):
     &#34;&#34;&#34;
     Compute the instability parameter as introduced by Lund and Slunga 1999,
     re-used by Vavrycuk 2013-2014 and modified by Beauce 2021.
@@ -1808,6 +1818,11 @@ def compute_instability_parameter(principal_directions, R, friction,
     return_fault_planes: boolean, default to False
         If True, return the strikes, dips, rakes of the selected
         fault planes.
+    signed_instability: boolean, default to False
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
 
     Returns
     --------
@@ -2252,7 +2267,7 @@ If None, <code>m_prior</code> is set to zero.</dd>
 </details>
 </dd>
 <dt id="ILSI.ilsi.compute_instability_parameter"><code class="name flex">
-<span>def <span class="ident">compute_instability_parameter</span></span>(<span>principal_directions, R, friction, strike_1, dip_1, rake_1, strike_2, dip_2, rake_2, return_fault_planes=False, signed_instability=True)</span>
+<span>def <span class="ident">compute_instability_parameter</span></span>(<span>principal_directions, R, friction, strike_1, dip_1, rake_1, strike_2, dip_2, rake_2, return_fault_planes=False, signed_instability=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the instability parameter as introduced by Lund and Slunga 1999,
@@ -2298,6 +2313,11 @@ foot wall (0-360 or -180-180).</dd>
 <dt><strong><code>return_fault_planes</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
 <dd>If True, return the strikes, dips, rakes of the selected
 fault planes.</dd>
+<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
+<dd>If True, the instability parameter ranges from -1 to +1. Negative
+values mean that the predicted and observed slip have opposite
+directions. If False, the instability parameter is the one
+defined in Vavrycuk 2013, 2014.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2322,7 +2342,7 @@ Only provided if <code>return_fault_planes=True</code>.</dd>
                                   strike_1, dip_1, rake_1,
                                   strike_2, dip_2, rake_2,
                                   return_fault_planes=False,
-                                  signed_instability=True):
+                                  signed_instability=False):
     &#34;&#34;&#34;
     Compute the instability parameter as introduced by Lund and Slunga 1999,
     re-used by Vavrycuk 2013-2014 and modified by Beauce 2021.
@@ -2368,6 +2388,11 @@ Only provided if <code>return_fault_planes=True</code>.</dd>
     return_fault_planes: boolean, default to False
         If True, return the strikes, dips, rakes of the selected
         fault planes.
+    signed_instability: boolean, default to False
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
 
     Returns
     --------
@@ -2459,7 +2484,7 @@ Only provided if <code>return_fault_planes=True</code>.</dd>
 </details>
 </dd>
 <dt id="ILSI.ilsi.find_optimal_friction"><code class="name flex">
-<span>def <span class="ident">find_optimal_friction</span></span>(<span>strikes_1, dips_1, rakes_1, strikes_2, dips_2, rakes_2, principal_directions, R, friction_min=0.1, friction_max=0.8, friction_step=0.05, signed_instability=True)</span>
+<span>def <span class="ident">find_optimal_friction</span></span>(<span>strikes_1, dips_1, rakes_1, strikes_2, dips_2, rakes_2, principal_directions, R, friction_min=0.1, friction_max=0.8, friction_step=0.05, signed_instability=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Find the friction that maximizes the instability parameter I
@@ -2500,6 +2525,11 @@ The direction of sigma_i is given by: <code>principal_directions[:, i]</code>.</
 <dt><strong><code>friction_step</code></strong> :&ensp;<code>float</code>, default <code>to 0.05</code></dt>
 <dd>Step employed in the grid search of the friction value
 that maximizes the instability parameter.</dd>
+<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
+<dd>If True, the instability parameter ranges from -1 to +1. Negative
+values mean that the predicted and observed slip have opposite
+directions. If False, the instability parameter is the one
+defined in Vavrycuk 2013, 2014.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2516,7 +2546,7 @@ that maximizes the instability parameter.</dd>
                           friction_min=0.1,
                           friction_max=0.8,
                           friction_step=0.05,
-                          signed_instability=True):
+                          signed_instability=False):
     &#34;&#34;&#34;
     Find the friction that maximizes the instability parameter I
     based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.
@@ -2557,6 +2587,11 @@ that maximizes the instability parameter.</dd>
     friction_step: float, default to 0.05
         Step employed in the grid search of the friction value
         that maximizes the instability parameter.
+    signed_instability: boolean, default to False
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
 
     Returns
     --------
@@ -2578,7 +2613,7 @@ that maximizes the instability parameter.</dd>
 </details>
 </dd>
 <dt id="ILSI.ilsi.find_optimal_friction_one_set"><code class="name flex">
-<span>def <span class="ident">find_optimal_friction_one_set</span></span>(<span>strikes_1, dips_1, rakes_1, principal_directions, R, friction_min=0.2, friction_max=0.8, friction_step=0.05, signed_instability=True)</span>
+<span>def <span class="ident">find_optimal_friction_one_set</span></span>(<span>strikes_1, dips_1, rakes_1, principal_directions, R, friction_min=0.2, friction_max=0.8, friction_step=0.05, signed_instability=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Find the friction that maximizes the instability parameter I
@@ -2609,6 +2644,11 @@ The direction of sigma_i is given by: <code>principal_directions[:, i]</code>.</
 <dt><strong><code>friction_step</code></strong> :&ensp;<code>float</code>, default <code>to 0.05</code></dt>
 <dd>Step employed in the grid search of the friction value
 that maximizes the instability parameter.</dd>
+<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
+<dd>If True, the instability parameter ranges from -1 to +1. Negative
+values mean that the predicted and observed slip have opposite
+directions. If False, the instability parameter is the one
+defined in Vavrycuk 2013, 2014.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2622,7 +2662,7 @@ that maximizes the instability parameter.</dd>
 <pre><code class="python">def find_optimal_friction_one_set(strikes_1, dips_1, rakes_1,
                                   principal_directions, R,
                                   friction_min=0.2, friction_max=0.8, friction_step=0.05,
-                                  signed_instability=True):
+                                  signed_instability=False):
     &#34;&#34;&#34;
     Find the friction that maximizes the instability parameter I
     based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.
@@ -2653,6 +2693,11 @@ that maximizes the instability parameter.</dd>
     friction_step: float, default to 0.05
         Step employed in the grid search of the friction value
         that maximizes the instability parameter.
+    signed_instability: boolean, default to False
+        If True, the instability parameter ranges from -1 to +1. Negative
+        values mean that the predicted and observed slip have opposite
+        directions. If False, the instability parameter is the one
+        defined in Vavrycuk 2013, 2014.
 
     Returns
     --------
@@ -2923,7 +2968,7 @@ is given by: <code>principal_directions[b, :, i]</code>.</dd>
 </details>
 </dd>
 <dt id="ILSI.ilsi.inversion_bootstrap_instability"><code class="name flex">
-<span>def <span class="ident">inversion_bootstrap_instability</span></span>(<span>principal_directions, R, strikes, dips, rakes, friction_coefficient, n_resamplings=100, n_stress_iter=10, stress_tensor_update_atol=1e-05, Tarantola_kwargs=None, variable_shear=True, max_n_iterations=300, shear_update_atol=1e-05, signed_instability=True, weighted=False, parallel=False)</span>
+<span>def <span class="ident">inversion_bootstrap_instability</span></span>(<span>principal_directions, R, strikes, dips, rakes, friction_coefficient, n_resamplings=100, n_stress_iter=10, stress_tensor_update_atol=1e-05, Tarantola_kwargs=None, variable_shear=True, max_n_iterations=300, shear_update_atol=1e-05, signed_instability=False, weighted=False, parallel=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Invert one set of focal mechanisms with the instability parameter
@@ -2970,7 +3015,7 @@ iterations fall below this threshold, convergence has been reached.</dd>
 <dd>Convergence criterion on the shear stress magnitude updates.
 Convergence is reached when the RMS difference between two
 estimates of shear stress magnitudes falls below that threshold.</dd>
-<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to True</code></dt>
+<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
 <dd>If True, the instability parameter ranges from -1 to +1. Negative
 values mean that the predicted and observed slip have opposite
 directions. If False, the instability parameter is the one
@@ -3025,7 +3070,7 @@ is given by: <code>principal_directions[b, :, i]</code>.</dd>
                                     variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
-                                    signed_instability=True,
+                                    signed_instability=False,
                                     weighted=False,
                                     parallel=False):
     &#34;&#34;&#34;
@@ -3074,7 +3119,7 @@ is given by: <code>principal_directions[b, :, i]</code>.</dd>
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
@@ -3365,7 +3410,7 @@ is given by: <code>principal_directions[b, :, i]</code>.</dd>
 </details>
 </dd>
 <dt id="ILSI.ilsi.inversion_jackknife_instability"><code class="name flex">
-<span>def <span class="ident">inversion_jackknife_instability</span></span>(<span>principal_directions, R, jack_strikes, jack_dips, jack_rakes, friction_coefficient, n_resamplings=100, n_stress_iter=10, stress_tensor_update_atol=0.0001, Tarantola_kwargs=None, bootstrap_events=False, n_earthquakes=None, variable_shear=True, max_n_iterations=300, shear_update_atol=1e-05, signed_instability=True, weighted=False, parallel=False)</span>
+<span>def <span class="ident">inversion_jackknife_instability</span></span>(<span>principal_directions, R, jack_strikes, jack_dips, jack_rakes, friction_coefficient, n_resamplings=100, n_stress_iter=10, stress_tensor_update_atol=0.0001, Tarantola_kwargs=None, bootstrap_events=False, n_earthquakes=None, variable_shear=True, max_n_iterations=300, shear_update_atol=1e-05, signed_instability=False, weighted=False, parallel=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This routine was tailored for one of my application, but it can
@@ -3478,7 +3523,7 @@ is given by: <code>principal_directions[b, :, i]</code>.</dd>
                                     variable_shear=True,
                                     max_n_iterations=300,
                                     shear_update_atol=1.e-5,
-                                    signed_instability=True,
+                                    signed_instability=False,
                                     weighted=False,
                                     parallel=False):
     &#34;&#34;&#34;
@@ -3820,7 +3865,7 @@ Only provided if <code>return_stats</code> is True.</dd>
 </details>
 </dd>
 <dt id="ILSI.ilsi.inversion_one_set_instability"><code class="name flex">
-<span>def <span class="ident">inversion_one_set_instability</span></span>(<span>strikes, dips, rakes, friction_min=0.1, friction_max=0.8, friction_step=0.05, n_stress_iter=10, n_random_selections=20, stress_tensor_update_atol=0.0001, Tarantola_kwargs=None, max_n_iterations=300, shear_update_atol=1e-05, n_averaging=1, signed_instability=True, verbose=True, variable_shear=True, return_stats=False, weighted=False, plot=False)</span>
+<span>def <span class="ident">inversion_one_set_instability</span></span>(<span>strikes, dips, rakes, friction_min=0.1, friction_max=0.8, friction_step=0.05, n_stress_iter=10, n_random_selections=20, stress_tensor_update_atol=0.0001, Tarantola_kwargs=None, max_n_iterations=300, shear_update_atol=1e-05, n_averaging=1, signed_instability=False, verbose=True, variable_shear=True, return_stats=False, weighted=False, plot=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Invert one set of focal mechanisms with the instability parameter
@@ -3872,7 +3917,7 @@ due to Michael 1984.</dd>
 reproducibility of the results it is good to repeat the inversion
 several times and average the results. Set <code>n_averaging</code> to ~5 if
 you can afford the increase in run time.</dd>
-<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to True</code></dt>
+<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
 <dd>If True, the instability parameter ranges from -1 to +1. Negative
 values mean that the predicted and observed slip have opposite
 directions. If False, the instability parameter is the one
@@ -3943,7 +3988,7 @@ Only provided if <code>return_stats</code> is True.</dd>
                                   max_n_iterations=300,
                                   shear_update_atol=1.e-5,
                                   n_averaging=1,
-                                  signed_instability=True,
+                                  signed_instability=False,
                                   verbose=True,
                                   variable_shear=True,
                                   return_stats=False,
@@ -4000,7 +4045,7 @@ Only provided if <code>return_stats</code> is True.</dd>
         reproducibility of the results it is good to repeat the inversion
         several times and average the results. Set `n_averaging` to ~5 if
         you can afford the increase in run time.
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
