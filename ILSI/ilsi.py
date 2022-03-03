@@ -1120,7 +1120,7 @@ def inversion_jackknife_instability(principal_directions, R,
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
@@ -1430,7 +1430,7 @@ def _stress_inversion_instability(stress_tensor0, friction_coefficient,
     variable_shear = kwargs.get('variable_shear', True)
     max_n_iterations = kwargs.get('max_n_iterations', 500)
     shear_update_atol = kwargs.get('shear_update_atol', 1.e-7)
-    signed_instability = kwargs.get('signed_instability', True)
+    signed_instability = kwargs.get('signed_instability', False)
     stress_tensor_update_atol = kwargs.get('stress_tensor_update_atol', 1.e-4)
     verbose = kwargs.get('verbose', 1)
     plot = kwargs.get('plot', False)

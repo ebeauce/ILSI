@@ -1146,7 +1146,7 @@ def inversion_jackknife_instability(principal_directions, R,
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
@@ -1456,7 +1456,7 @@ def _stress_inversion_instability(stress_tensor0, friction_coefficient,
     variable_shear = kwargs.get(&#39;variable_shear&#39;, True)
     max_n_iterations = kwargs.get(&#39;max_n_iterations&#39;, 500)
     shear_update_atol = kwargs.get(&#39;shear_update_atol&#39;, 1.e-7)
-    signed_instability = kwargs.get(&#39;signed_instability&#39;, True)
+    signed_instability = kwargs.get(&#39;signed_instability&#39;, False)
     stress_tensor_update_atol = kwargs.get(&#39;stress_tensor_update_atol&#39;, 1.e-4)
     verbose = kwargs.get(&#39;verbose&#39;, 1)
     plot = kwargs.get(&#39;plot&#39;, False)
@@ -3463,7 +3463,7 @@ iterations fall below this threshold, convergence has been reached.</dd>
 <dd>Convergence criterion on the shear stress magnitude updates.
 Convergence is reached when the RMS difference between two
 estimates of shear stress magnitudes falls below that threshold.</dd>
-<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to True</code></dt>
+<dt><strong><code>signed_instability</code></strong> :&ensp;<code>boolean</code>, default <code>to False</code></dt>
 <dd>If True, the instability parameter ranges from -1 to +1. Negative
 values mean that the predicted and observed slip have opposite
 directions. If False, the instability parameter is the one
@@ -3578,7 +3578,7 @@ is given by: <code>principal_directions[b, :, i]</code>.</dd>
         Convergence criterion on the shear stress magnitude updates.
         Convergence is reached when the RMS difference between two
         estimates of shear stress magnitudes falls below that threshold. 
-    signed_instability: boolean, default to True
+    signed_instability: boolean, default to False
         If True, the instability parameter ranges from -1 to +1. Negative
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
