@@ -41,7 +41,8 @@ def random_data_HH2001(N, stress_tensor=None):
 
 def random_data_failure(N, stress_tensor, friction_coefficient, min_instability,
                         max_acceptance_probability=0.5, random_friction=0.,
-                        naive_uniform=True, plot_density=False):
+                        naive_uniform=True, plot_density=False, positive_compression=True,
+                        ax=None):
     """
     """
     np.random.seed(0)
@@ -95,12 +96,22 @@ def random_data_failure(N, stress_tensor, friction_coefficient, min_instability,
     half[angle2 < angle1] = -1.
     fig = plot_dataset_Mohr(
             stress_tensor, strikes, dips, shear_sign=half, title='_Mohr',
-            plot_density=plot_density)
-    ax = fig.get_axes()[0]
+            plot_density=plot_density, positive_compression=positive_compression,
+            ax=ax)
+    if ax is None:
+        ax = fig.get_axes()[0]
     normal_stresses = np.linspace(-0.50, 0.75, 100)
     Ic = shear_stress1 - friction_coefficient*(p_sig[0] - normal_stress1)
-    cohesion = Ic*min_instability + friction_coefficient*p_sig[0]
-    Mohr_crit = cohesion - friction_coefficient*normal_stresses
+    if positive_compression:
+        # to please the reviewer, mix conventions
+        normal_stress1 *= -1.
+        p_sig *= -1.
+        normal_stresses *= -1.
+        cohesion = Ic*min_instability - friction_coefficient*p_sig[0]
+        Mohr_crit = cohesion + friction_coefficient*normal_stresses
+    else:
+        cohesion = Ic*min_instability + friction_coefficient*p_sig[0]
+        Mohr_crit = cohesion - friction_coefficient*normal_stresses
     ax.plot(normal_stresses, Mohr_crit, color='C3')
     ax.plot(normal_stresses, -1.*Mohr_crit, color='C3')
     ax.plot(normal_stress1, shear_stress1, marker='o', color='k', markersize=10)
@@ -109,7 +120,8 @@ def random_data_failure(N, stress_tensor, friction_coefficient, min_instability,
 
 def plot_dataset_Mohr(stress_tensor, strikes, dips,
                       shear_sign=None, title=None,
-                      plot_density=False, ax=None):
+                      plot_density=False, ax=None,
+                      positive_compression=False):
     import matplotlib.pyplot as plt
     # eigendecomposition
     p_stress, p_dir = utils_stress.stress_tensor_eigendecomposition(
@@ -133,8 +145,15 @@ def plot_dataset_Mohr(stress_tensor, strikes, dips,
     if shear_sign is not None:
         shear_mag *= shear_sign
     normal_comp = np.sum(normal_traction*normals, axis=-1)
+    if positive_compression:
+        normal_comp *= -1.
+        sig1, sig2, sig3 = -1.*p_stress
     for i, s in enumerate([sig1, sig2, sig3]):
-        ax.text(s-0.10, -0.04, r'$\sigma_{{{:d}}}$'.format(i+1))
+        if positive_compression:
+            label  = r"$\sigma_{{{:d}}}^{{'}}$".format(i+1) 
+        else:
+            label = r'$\sigma_{{{:d}}}$'.format(i+1)
+        ax.text(s-0.10, -0.04, label)
     if plot_density:
         import seaborn as sns
         sns.kdeplot(x=normal_comp, y=shear_mag, ax=ax, fill=True, cmap='inferno', bw_adjust=0.4)
@@ -146,11 +165,14 @@ def plot_dataset_Mohr(stress_tensor, strikes, dips,
     ax.grid()
     ax.axhline(0., color='k', lw=1.0)
     ax.set_ylabel(r'Shear stress $\tau$')
-    ax.set_xlabel(r'Normal stress $\sigma$')
+    if positive_compression:
+        ax.set_xlabel(r"Normal stress $\sigma^{'}$")
+    else:
+        ax.set_xlabel(r'Normal stress $\sigma$')
     #ax.legend(loc='lower left', handlelength=0.5)
     return fig
 
-def plot_dataset_PT(strikes, dips, rakes, figname=None, stress_tensor=None):
+def plot_dataset_PT(strikes, dips, rakes, figname=None, stress_tensor=None, ax=None):
     import mplstereonet as mpl
     import matplotlib.pyplot as plt
     # compute all normal and slip vectors
@@ -163,8 +185,11 @@ def plot_dataset_PT(strikes, dips, rakes, figname=None, stress_tensor=None):
         p_or[i, :] = utils_stress.get_bearing_plunge(p)
         t_or[i, :] = utils_stress.get_bearing_plunge(t)
     # plot
-    fig = plt.figure(f'PT_axes{figname}', figsize=(18, 9))
-    ax = fig.add_subplot(111, projection='stereonet')
+    if ax is None:
+        fig = plt.figure(f'PT_axes{figname}', figsize=(18, 9))
+        ax = fig.add_subplot(111, projection='stereonet')
+    else:
+        fig = ax.get_figure()
     ax.line(t_or[:, 1], t_or[:, 0], marker='v', color='C0')
     ax.line(p_or[:, 1], p_or[:, 0], marker='o', color='C3')
     ax.line(t_or[0, 1], t_or[0, 0], marker='v', color='C0', label='T-axis')
