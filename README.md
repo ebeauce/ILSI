@@ -3,7 +3,7 @@ Package for iterative linear stress inversion (ILSI) of focal mechanism data and
 
 ## Reference
 Please refer the following article if you use ILSI for your research (I will update the reference when the paper will be accepted):<br>
-Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples. (Being modified and will be submitted to BSSA). Preprint on ESSOAr: [doi.org/10.1002/essoar.10507639.1](doi.org/10.1002/essoar.10507639.1)
+Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method with Variable Shear Stress Magnitudes for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples, BSSA 2022 - in press. (Updated!) Preprint on ESSOAr: [10.1002/essoar.10507639.3](10.1002/essoar.10507639.3)
 
 ## Installation
 
@@ -57,3 +57,7 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
 
 ## Tutorials
 Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2021. You might need to install some extra packages to run the examples (*e.g.* seaborn or h5py).
+
+## Questions?
+
+If you encounter issues or difficulties with ILSI, don't hesitate to open a new issue or pull request on Github, or contact me at: ebeauce@ldeo.columbia.edu
