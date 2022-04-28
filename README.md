@@ -2,8 +2,8 @@
 Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data. Documentation at [https://ebeauce.github.io/ILSI/](https://ebeauce.github.io/ILSI/)<br>
 
 ## Reference
-Please refer the following article if you use ILSI for your research (I will update the reference when the paper will be accepted):<br>
-Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method with Variable Shear Stress Magnitudes for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples, BSSA 2022 - in press. (Updated!) Preprint on ESSOAr: [10.1002/essoar.10507639.3](10.1002/essoar.10507639.3)
+Please refer the following article if you use ILSI for your research:<br>
+Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method with Variable Shear Stress Magnitudes for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples, *Bulletin of the Seismological Society of America*, 2022. DOI: [https://doi.org/10.1785/0120210319](https://doi.org/10.1785/0120210319)
 
 ## Installation
 
@@ -56,7 +56,7 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
 ```
 
 ## Tutorials
-Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2021. You might need to install some extra packages to run the examples (*e.g.* seaborn or h5py).
+Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2022. See the list of required packages at the top of the scripts. The `plotFMC` and `functionsFMC` librairies are from the FMC repository available at [https://github.com/Jose-Alvarez/FMC](https://github.com/Jose-Alvarez/FMC).
 
 ## Questions?
 
