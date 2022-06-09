@@ -817,6 +817,7 @@ def inversion_bootstrap(strikes, dips, rakes,
 
 
 def inversion_one_set_instability(strikes, dips, rakes,
+                                  friction_coefficient=0.6,
                                   friction_min=0.1, friction_max=0.8,
                                   friction_step=0.05, n_stress_iter=10,
                                   n_random_selections=20,
@@ -849,6 +850,11 @@ def inversion_one_set_instability(strikes, dips, rakes,
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
+    friction_coefficient: float or None, default to 0.6
+        If not None, the inversion is made assuming a friction coefficient
+        equal to `friction_coefficient`. If None, the friction coefficient
+        is taken as the one that maximizes instability based on a first
+        approximation of the stress tensor.
     friction_min: float, default to 0.1
         Lower bound of explored friction values.
     friction_max: float, default to 0.8
@@ -958,6 +964,8 @@ def inversion_one_set_instability(strikes, dips, rakes,
     dips = np.hstack((dips_1.reshape(-1, 1), dips_2.reshape(-1, 1))).flatten()
     rakes = np.hstack((rakes_1.reshape(-1, 1), rakes_2.reshape(-1, 1))).flatten()
     final_stress_tensor = np.zeros((3, 3), dtype=np.float32)
+    if friction_coefficient is None:
+        final_friction_coefficient = 0.
     for i in range(n_averaging):
         if verbose > 0:
             print(f'-------- {i+1}/{n_averaging} ----------')
@@ -996,59 +1004,81 @@ def inversion_one_set_instability(strikes, dips, rakes,
         R = utils_stress.R_(principal_stresses)
         if verbose > 0:
             print('Initial shape ratio: {:.2f}'.format(R))
-        # uncomment the following lines if you want the friction parameter
-        # to be derived from the initial stress tensor guess
-        # (prone to overfitting)
-        #friction_coefficient = find_optimal_friction(strikes_1, dips_1, rakes_1,
-        #                                             strikes_2, dips_2, rakes_2,
-        #                                             principal_directions, R,
-        #                                             friction_min=friction_min,
-        #                                             friction_max=friction_max,
-        #                                             friction_step=friction_step)
-        # uncomment the following line if you want to use a fixed friction value
-        # I suggest to use 0.6 as it is a reasonable value and this does not
-        # greatly influence the results anyway
-        friction_coefficient = 0.60
-        stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
-                avg_stress_tensor, friction_coefficient,
-                strikes_1, dips_1, rakes_1, strikes_2, dips_2, rakes_2,
-                n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
-                variable_shear=variable_shear, weighted=weighted,
-                max_n_iterations=max_n_iterations,
-                shear_update_atol=shear_update_atol,
-                stress_tensor_update_atol=stress_tensor_update_atol,
-                signed_instability=signed_instability,
-                verbose=verbose, plot=plot)
+        if friction_coefficient is None:
+            # loop over friction coefficients:
+            # repeat the inversion and keep the friction coefficient
+            # that gave the largest average instability across fault planes
+            # (prone to overfitting)
+            friction = np.arange(friction_min, friction_max+friction_step, friction_step)
+            n_fric = len(friction)
+            Imax = -1000.
+            for j, mu_j in enumerate(friction):
+                stress_tensor_j, C_m_post_j, C_d_post_j = _stress_inversion_instability(
+                        avg_stress_tensor, mu_j,
+                        strikes_1, dips_1, rakes_1, strikes_2, dips_2, rakes_2,
+                        n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
+                        variable_shear=variable_shear, weighted=weighted,
+                        max_n_iterations=max_n_iterations,
+                        shear_update_atol=shear_update_atol,
+                        stress_tensor_update_atol=stress_tensor_update_atol,
+                        signed_instability=signed_instability,
+                        verbose=verbose, plot=plot)
+                principal_stresses, principal_directions = \
+                        utils_stress.stress_tensor_eigendecomposition(stress_tensor)
+                I_j = compute_instability_parameter(
+                                principal_directions, R, mu_j,
+                                strikes_1, dips_1, rakes_1,
+                                strikes_2, dips_2, rakes_2,
+                                return_fault_planes=False,
+                                signed_instability=signed_instability)
+                I_j = np.sum(np.max(I_j, axis=-1))
+                if I_j > Imax:
+                    # new best solution
+                    Imax = I_j
+                    stress_tensor, C_m_post, C_d_post = \
+                            stress_tensor_j, C_m_post_j, C_d_post_j
+                    friction_coefficient = mu_j
+        else:
+            # friction coefficient was given by user
+            stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
+                    avg_stress_tensor, friction_coefficient,
+                    strikes_1, dips_1, rakes_1, strikes_2, dips_2, rakes_2,
+                    n_stress_iter=n_stress_iter, Tarantola_kwargs=Tarantola_kwargs,
+                    variable_shear=variable_shear, weighted=weighted,
+                    max_n_iterations=max_n_iterations,
+                    shear_update_atol=shear_update_atol,
+                    stress_tensor_update_atol=stress_tensor_update_atol,
+                    signed_instability=signed_instability,
+                    verbose=verbose, plot=plot)
         final_stress_tensor += stress_tensor
+        if friction_coefficient is None:
+            # friction coefficient is being inverted for
+            final_friction_coefficient += friction_coefficient
     final_stress_tensor /= float(n_averaging)
+    if friction_coefficient is None:
+        friction_coefficient = final_friction_coefficient/float(n_averaging)
     principal_stresses, principal_directions = \
             utils_stress.stress_tensor_eigendecomposition(final_stress_tensor)
     R = utils_stress.R_(principal_stresses)
-    # uncomment if you want to evaluate the friction
-    # coefficient that maximizes instability, given
-    # the stress tensor that was inverted
-    # note: this is certainly a weird computation since we compute
-    # the instability parameter to select the fault planes, and
-    # then search for the value of friction coefficient that maximizes
-    # the instability parameter on this set of fault planes, but this
-    # new value would in turn select new fault planes...
-    instability, fault_strikes, fault_dips, fault_rakes =\
-            compute_instability_parameter(principal_directions, R, friction_coefficient,
-                                          strikes_1, dips_1, rakes_1,
-                                          strikes_2, dips_2, rakes_2,
-                                          return_fault_planes=True,
-                                          signed_instability=signed_instability)
-    optimal_friction = find_optimal_friction_one_set(
-            fault_strikes, fault_dips, fault_rakes,
-            principal_directions, R,
-            friction_min=friction_min,
-            friction_max=friction_max,
-            friction_step=friction_step)
+    ## given the inverted stress tensor, search the friction coefficient
+    ## that maximizes the average instability across all fault planes
+    #instability, fault_strikes, fault_dips, fault_rakes =\
+    #        compute_instability_parameter(principal_directions, R, friction_coefficient,
+    #                                      strikes_1, dips_1, rakes_1,
+    #                                      strikes_2, dips_2, rakes_2,
+    #                                      return_fault_planes=True,
+    #                                      signed_instability=signed_instability)
+    #optimal_friction = find_optimal_friction_one_set(
+    #        fault_strikes, fault_dips, fault_rakes,
+    #        principal_directions, R,
+    #        friction_min=friction_min,
+    #        friction_max=friction_max,
+    #        friction_step=friction_step)
     if verbose > 0:
         print('Final results:')
         print('Stress tensor:\n', final_stress_tensor)
         print('Shape ratio: {:.2f}'.format(R))
-    output = (final_stress_tensor, optimal_friction,\
+    output = (final_stress_tensor, friction_coefficient,\
               principal_stresses, principal_directions,)
     if return_stats:
         output = output + (C_m_post, C_d_post,)
