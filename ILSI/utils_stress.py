@@ -3,9 +3,8 @@ import sys
 import numpy as np
 from numpy.linalg import LinAlgError
 
-def hist2d(azimuths, plunges,
-           nbins=200, smoothing_sig=0,
-           plot=False):
+
+def hist2d(azimuths, plunges, nbins=200, smoothing_sig=0, plot=False):
     """
     Computes the 2d histogram in the stereographic space
     of a collection lines described by their azimuth and plunge.
@@ -28,22 +27,30 @@ def hist2d(azimuths, plunges,
     """
     import mplstereonet
     from scipy.ndimage.filters import gaussian_filter
+
     # convert azimuths and plunges to longitudes and latitudes
     # on a stereographic plot
     lons, lats = mplstereonet.stereonet_math.line(plunges, azimuths)
     count, lon_bins, lat_bins = np.histogram2d(
-            lons, lats, range=([-np.pi/2., np.pi/2.], [-np.pi/2., np.pi/2.]), bins=nbins)
-    lons_g, lats_g = np.meshgrid((lon_bins[1:] + lon_bins[:-1])/2.,
-                                 (lat_bins[1:] + lat_bins[:-1])/2.,
-                                 indexing='ij')
+        lons,
+        lats,
+        range=([-np.pi / 2.0, np.pi / 2.0], [-np.pi / 2.0, np.pi / 2.0]),
+        bins=nbins,
+    )
+    lons_g, lats_g = np.meshgrid(
+        (lon_bins[1:] + lon_bins[:-1]) / 2.0,
+        (lat_bins[1:] + lat_bins[:-1]) / 2.0,
+        indexing="ij",
+    )
     if smoothing_sig > 0:
         count = gaussian_filter(count, smoothing_sig)
     if plot:
-        fig = plt.figure('2d_histogram_stereo', figsize=(18, 9))
-        ax = fig.add_subplot(111, projection='stereonet')
+        fig = plt.figure("2d_histogram_stereo", figsize=(18, 9))
+        ax = fig.add_subplot(111, projection="stereonet")
         pcl = ax.pcolormesh(lons_g, lats_g, count)
         plt.colorbar(mappable=pcl)
     return count, lons_g, lats_g
+
 
 def joint_CDF(count):
     # normalize the histogram
@@ -53,9 +60,16 @@ def joint_CDF(count):
     joint = np.cumsum(np.cumsum(density, axis=0), axis=1)
     return joint
 
-def get_CI_levels(azimuths, plunges, confidence_intervals=[95., 90.],
-                  nbins=200, smoothing_sig=1, return_count=False,
-                  plot=False):
+
+def get_CI_levels(
+    azimuths,
+    plunges,
+    confidence_intervals=[95.0, 90.0],
+    nbins=200,
+    smoothing_sig=1,
+    return_count=False,
+    plot=False,
+):
     """
     Computes the 2d histogram in the stereographic space
     of a collection lines described by their azimuth and plunge.
@@ -91,38 +105,46 @@ def get_CI_levels(azimuths, plunges, confidence_intervals=[95., 90.],
         2D distribution of the mass.
     """
     from scipy.interpolate import interp1d
+
     # get histogram on a 2d grid
     count, lons_g, lats_g = hist2d(
-            azimuths, plunges, nbins=nbins, smoothing_sig=smoothing_sig)
+        azimuths, plunges, nbins=nbins, smoothing_sig=smoothing_sig
+    )
     # flatten the count array and sort it from largest to smallest
     count_vector = np.sort(count.copy().flatten())[::-1]
     # compute the "CDF" of the counts
-    count_CDF = np.hstack(
-            ([0.], np.cumsum(count_vector)/count_vector.sum(), [1.]))
-    count_vector = np.hstack(([count_vector.max()+1.], count_vector, [0.]))
-    # build an interpolator that gives the count number 
+    count_CDF = np.hstack(([0.0], np.cumsum(count_vector) / count_vector.sum(), [1.0]))
+    count_vector = np.hstack(([count_vector.max() + 1.0], count_vector, [0.0]))
+    # build an interpolator that gives the count number
     # for a given % of the total mass
-    mass_dist = interp1d(100.*count_CDF, count_vector)
+    mass_dist = interp1d(100.0 * count_CDF, count_vector)
     mass_dist_ = lambda x: mass_dist(x).item()
-    confidence_intervals = list(
-            map(mass_dist_, [k for k in confidence_intervals]))
+    confidence_intervals = list(map(mass_dist_, [k for k in confidence_intervals]))
     if plot:
         import matplotlib.pyplot as plt
-        fig = plt.figure('2d_histogram_stereo', figsize=(18, 9))
-        ax = fig.add_subplot(111, projection='stereonet')
+
+        fig = plt.figure("2d_histogram_stereo", figsize=(18, 9))
+        ax = fig.add_subplot(111, projection="stereonet")
         pcl = ax.pcolormesh(lons_g, lats_g, count)
         ax.contour(
-                lons_g, lats_g, count,
-                levels=confidence_intervals, zorder=2, cmap='jet')
+            lons_g, lats_g, count, levels=confidence_intervals, zorder=2, cmap="jet"
+        )
         plt.colorbar(mappable=pcl)
     if return_count:
         return count, lons_g, lats_g, confidence_intervals
     else:
         return confidence_intervals
 
-def get_CI_levels_joint(azimuths, plunges, confidence_intervals=[90., 95.],
-                        nbins=200, smoothing_sig=1, return_count=False,
-                        plot=False):
+
+def get_CI_levels_joint(
+    azimuths,
+    plunges,
+    confidence_intervals=[90.0, 95.0],
+    nbins=200,
+    smoothing_sig=1,
+    return_count=False,
+    plot=False,
+):
     """
     Computes the 2d histogram in the stereographic space
     of a collection lines described by their azimuth and plunge.
@@ -159,39 +181,46 @@ def get_CI_levels_joint(azimuths, plunges, confidence_intervals=[90., 95.],
         2D distribution of the mass.
     """
     from scipy.interpolate import interp1d
+
     # get histogram on a 2d grid
     count, lons_g, lats_g = hist2d(
-            azimuths, plunges, nbins=nbins, smoothing_sig=smoothing_sig)
+        azimuths, plunges, nbins=nbins, smoothing_sig=smoothing_sig
+    )
     # compute the joint cumulative distribution function (CDF)
     joint = joint_CDF(count)
     # because we define the (1-2a) confidence interval from the
     # a-th and the (1-a)-th percentiles, we conveniently define the
     # following function:
-    g = 2.*np.abs(joint - 0.5)*100.
+    g = 2.0 * np.abs(joint - 0.5) * 100.0
     # all points for which g < 1-2a are within the 1-2a confidence interval
     if plot:
         import matplotlib.pyplot as plt
+
         confidence_intervals.sort()
-        fig = plt.figure('2d_histogram_stereo', figsize=(18, 9))
-        ax1 = fig.add_subplot(221, projection='stereonet')
+        fig = plt.figure("2d_histogram_stereo", figsize=(18, 9))
+        ax1 = fig.add_subplot(221, projection="stereonet")
         pcl1 = ax1.pcolormesh(lons_g, lats_g, count)
-        ax1.contour(lons_g, lats_g, g,
-                    levels=confidence_intervals, zorder=2, cmap='jet')
+        ax1.contour(
+            lons_g, lats_g, g, levels=confidence_intervals, zorder=2, cmap="jet"
+        )
         plt.colorbar(mappable=pcl1)
-        ax2 = fig.add_subplot(222, projection='stereonet')
+        ax2 = fig.add_subplot(222, projection="stereonet")
         pcl2 = ax2.pcolormesh(lons_g, lats_g, joint)
-        ax2.contour(lons_g, lats_g, g,
-                    levels=confidence_intervals, zorder=2, cmap='jet')
+        ax2.contour(
+            lons_g, lats_g, g, levels=confidence_intervals, zorder=2, cmap="jet"
+        )
         plt.colorbar(mappable=pcl2)
-        ax3 = fig.add_subplot(223, projection='stereonet')
+        ax3 = fig.add_subplot(223, projection="stereonet")
         pcl3 = ax3.pcolormesh(lons_g, lats_g, g)
-        ax3.contour(lons_g, lats_g, g,
-                    levels=confidence_intervals, zorder=2, cmap='jet')
+        ax3.contour(
+            lons_g, lats_g, g, levels=confidence_intervals, zorder=2, cmap="jet"
+        )
         plt.colorbar(mappable=pcl3)
     if return_count:
         return count, lons_g, lats_g, confidence_intervals
     else:
         return confidence_intervals
+
 
 def angular_residual(stress_tensor, strikes, dips, rakes):
     """
@@ -218,18 +247,20 @@ def angular_residual(stress_tensor, strikes, dips, rakes):
     angles = np.zeros(len(strikes), dtype=np.float32)
     for i in range(len(strikes)):
         angles[i] = shear_slip_angle_difference(
-                stress_tensor, strikes[i], dips[i], rakes[i])
+            stress_tensor, strikes[i], dips[i], rakes[i]
+        )
     return angles
+
 
 def aux_plane(s1, d1, r1):
     """
     Get Strike and dip of second plane.
-    
+
     Adapted from MATLAB script
     `bb.m <http://www.ceri.memphis.edu/people/olboyd/Software/Software.html>`_
     written by Andy Michael, Chen Ji and Oliver Boyd.
 
-    Taken from <https://docs.obspy.org/_modules/obspy/imaging/beachball.html#aux_plane>.  
+    Taken from <https://docs.obspy.org/_modules/obspy/imaging/beachball.html#aux_plane>.
     See Obspy project at <https://github.com/obspy/obspy>.
     """
     r2d = 180 / np.pi
@@ -238,7 +269,7 @@ def aux_plane(s1, d1, r1):
         """
         Finds strike and dip of plane given normal vector having components n, e,
         and u.
-        
+
         Adapted from MATLAB script
         `bb.m <http://www.ceri.memphis.edu/people/olboyd/Software/Software.html>`_
         written by Andy Michael, Chen Ji and Oliver Boyd.
@@ -260,11 +291,11 @@ def aux_plane(s1, d1, r1):
         return (strike, dip)
 
     # modified by me:
-    if r1 > 180.:
+    if r1 > 180.0:
         # convert rake between 0 and 360
         # to rake between -180 and +180
-        r1 = r1-360.
-    
+        r1 = r1 - 360.0
+
     z = (s1 + 90) / r2d
     z2 = d1 / r2d
     z3 = r1 / r2d
@@ -273,14 +304,14 @@ def aux_plane(s1, d1, r1):
     sl2 = np.cos(z3) * np.sin(z) - np.sin(z3) * np.cos(z) * np.cos(z2)
     sl3 = np.sin(z3) * np.sin(z2)
     (strike, dip) = _strike_dip(sl2, sl1, sl3)
-    
+
     n1 = np.sin(z) * np.sin(z2)  # normal vector to plane 1
     n2 = np.cos(z) * np.sin(z2)
     h1 = -sl2  # strike vector of plane 2
     h2 = sl1
     # note h3=0 always so we leave it out
     # n3 = np.cos(z2)
-    
+
     z = h1 * n1 + h2 * n2
     z = z / np.sqrt(h1 * h1 + h2 * h2)
     # we might get above 1.0 only due to floating point
@@ -294,7 +325,8 @@ def aux_plane(s1, d1, r1):
         rake = z * r2d
     if sl3 <= 0:
         rake = -z * r2d
-    return strike%360., dip, rake%360.
+    return strike % 360.0, dip, rake % 360.0
+
 
 def check_right_handedness(basis):
     """
@@ -320,6 +352,7 @@ def check_right_handedness(basis):
     vector3 = np.cross(vector1, vector2)
     return np.stack([vector1, vector2, vector3], axis=1)
 
+
 def compute_traction(stress_tensor, normal):
     """
     Parameters
@@ -339,15 +372,22 @@ def compute_traction(stress_tensor, normal):
         Tangential component of the tractions.
     """
     traction = np.dot(stress_tensor, normal.T).T
-    normal_traction = np.sum(traction*normal, axis=-1)[:, np.newaxis]\
-                      *normal
+    normal_traction = np.sum(traction * normal, axis=-1)[:, np.newaxis] * normal
     shear_traction = traction - normal_traction
     return traction, normal_traction, shear_traction
 
 
-def errors_in_data(strike, dip, rake,
-                   jack_strikes_1, jack_dips_1, jack_rakes_1,
-                   jack_strikes_2, jack_dips_2, jack_rakes_2):
+def errors_in_data(
+    strike,
+    dip,
+    rake,
+    jack_strikes_1,
+    jack_dips_1,
+    jack_rakes_1,
+    jack_strikes_2,
+    jack_dips_2,
+    jack_rakes_2,
+):
     """
     This routines was tailored for my applications.
     Use the multiple solutions obtained during the jackknife resampling
@@ -361,7 +401,7 @@ def errors_in_data(strike, dip, rake,
     (strike, dip, rake)_2 of the best focal mechanism solution, and
     average the outputs.
     """
-    r2d = 180./np.pi
+    r2d = 180.0 / np.pi
     n_jackknife = len(jack_strikes_1)
     # slip vector from the best nodal plane
     _, slip_vector_best = normal_slip_vectors(strike, dip, rake)
@@ -374,18 +414,24 @@ def errors_in_data(strike, dip, rake,
     slip_angles = np.zeros(n_jackknife, dtype=np.float32)
     for i in range(n_jackknife):
         _, slip_vectors[i, 0, :] = normal_slip_vectors(
-                jack_strikes_1[i], jack_dips_1[i], jack_rakes_1[i])
+            jack_strikes_1[i], jack_dips_1[i], jack_rakes_1[i]
+        )
         _, slip_vectors[i, 1, :] = normal_slip_vectors(
-                jack_strikes_2[i], jack_dips_2[i], jack_rakes_2[i])
+            jack_strikes_2[i], jack_dips_2[i], jack_rakes_2[i]
+        )
     # a little bit of clipping is necessary in case of numerical errors
     # putting the scalar products sligthly above or below +1/-1.
-    scalar_prod1 = np.clip(np.sum(slip_vectors[:, 0, :]*slip_vector_best, axis=-1), -1., +1.)
-    scalar_prod2 = np.clip(np.sum(slip_vectors[:, 1, :]*slip_vector_best, axis=-1), -1., +1.)
+    scalar_prod1 = np.clip(
+        np.sum(slip_vectors[:, 0, :] * slip_vector_best, axis=-1), -1.0, +1.0
+    )
+    scalar_prod2 = np.clip(
+        np.sum(slip_vectors[:, 1, :] * slip_vector_best, axis=-1), -1.0, +1.0
+    )
     angles_1 = np.arccos(scalar_prod1)
     angles_2 = np.arccos(scalar_prod2)
     abs_angles_1 = np.abs(np.arccos(scalar_prod1))
     abs_angles_2 = np.abs(np.arccos(scalar_prod2))
-    slip_angles = np.minimum(abs_angles_1, abs_angles_2)*r2d
+    slip_angles = np.minimum(abs_angles_1, abs_angles_2) * r2d
     mask1 = abs_angles_1 < abs_angles_2
     slip_angles[mask1] *= np.sign(angles_1[mask1])
     mask2 = abs_angles_2 <= abs_angles_1
@@ -397,21 +443,22 @@ def errors_in_data(strike, dip, rake,
     # we can now use the standard deviations on each of the
     # 3 components to estimate errors in the data and use
     # Tarantola and Valette formula
-    dev_n = 1.42*np.median(np.abs(slip_vectors_[:, 0] - slip_vector_best[0]))
-    dev_w = 1.42*np.median(np.abs(slip_vectors_[:, 1] - slip_vector_best[1]))
-    dev_z = 1.42*np.median(np.abs(slip_vectors_[:, 2] - slip_vector_best[2]))
-    #for i in range(3):
+    dev_n = 1.42 * np.median(np.abs(slip_vectors_[:, 0] - slip_vector_best[0]))
+    dev_w = 1.42 * np.median(np.abs(slip_vectors_[:, 1] - slip_vector_best[1]))
+    dev_z = 1.42 * np.median(np.abs(slip_vectors_[:, 2] - slip_vector_best[2]))
+    # for i in range(3):
     #    plt.hist(slip_vectors_[:, i], bins=20)
     #    plt.axvline(slip_vector_best[i], lw=2, color='C{:d}'.format(i))
-    #plt.show()
+    # plt.show()
     return dev_n, dev_w, dev_z
 
-def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
+
+def get_bearing_plunge(u, degrees=True, hemisphere="lower"):
     """
-    The vectors are in the coordinate system (x1, x2, x3):  
-    x1: north  
-    x2: west  
-    x3: upward  
+    The vectors are in the coordinate system (x1, x2, x3):
+    x1: north
+    x2: west
+    x3: upward
 
     Parameters
     -----------
@@ -432,27 +479,28 @@ def get_bearing_plunge(u, degrees=True, hemisphere='lower'):
     plunge: float
         Angle between the horizontal plane and the line.
     """
-    r2d = 180./np.pi
-    if hemisphere == 'lower' and u[2] > 0.:
+    r2d = 180.0 / np.pi
+    if hemisphere == "lower" and u[2] > 0.0:
         # we need to consider the end of the line
         # that plunges downward and crosses the
         # lower hemisphere
-        u = -1.*u
-    elif hemisphere == 'upper' and u[2] < 0.:
-        u = -1.*u
+        u = -1.0 * u
+    elif hemisphere == "upper" and u[2] < 0.0:
+        u = -1.0 * u
     # the trigonometric sense is the opposite of the azimuthal sense,
     # therefore we need a -1 multiplicative factor
-    bearing = -1.*np.arctan2(u[1], u[0])
+    bearing = -1.0 * np.arctan2(u[1], u[0])
     # the plunge is measured downward from the end of the
     # line specified by the bearing
     # this formula is valid for p_axis[2] < 0
-    plunge = (np.arccos(round_cos(u[2])) - np.pi/2.)
-    if hemisphere == 'upper':
-        plunge *= -1.
+    plunge = np.arccos(round_cos(u[2])) - np.pi / 2.0
+    if hemisphere == "upper":
+        plunge *= -1.0
     if degrees:
-        return (bearing*r2d)%360., plunge*r2d
+        return (bearing * r2d) % 360.0, plunge * r2d
     else:
         return bearing, plunge
+
 
 def kagan_angle(tensor1, tensor2):
     """
@@ -474,21 +522,29 @@ def kagan_angle(tensor1, tensor2):
         the two tensors.
     """
     theta = np.pi
-    Rx = np.array([[1., 0., 0.],
-                   [0., np.cos(theta), -np.sin(theta)],
-                   [0., np.sin(theta), np.cos(theta)]])
+    Rx = np.array(
+        [
+            [1.0, 0.0, 0.0],
+            [0.0, np.cos(theta), -np.sin(theta)],
+            [0.0, np.sin(theta), np.cos(theta)],
+        ]
+    )
     # first, compute the eigendecomposition of each tensor using
     # the stress tensor eigendecomposition routine, i.e. that returns
     # the eigen values and vectors ordered from the most to least
     # compressive axes
     # make sure to do the change of basis from
     # (north, west, up) to (north, east, down)
-    #eigval1, eigvec1 = stress_tensor_eigendecomposition(Rx.dot(tensor1.dot(Rx.T)))
-    #eigval2, eigvec2 = stress_tensor_eigendecomposition(Rx.dot(tensor2.dot(Rx.T)))
+    # eigval1, eigvec1 = stress_tensor_eigendecomposition(Rx.dot(tensor1.dot(Rx.T)))
+    # eigval2, eigvec2 = stress_tensor_eigendecomposition(Rx.dot(tensor2.dot(Rx.T)))
     eigval1, eigvec1 = stress_tensor_eigendecomposition(tensor1)
     eigval2, eigvec2 = stress_tensor_eigendecomposition(tensor2)
-    eigvec1 = check_right_handedness(np.stack([eigvec1[:, 2], eigvec1[:, 0], eigvec1[:, 1]], axis=1))
-    eigvec2 = check_right_handedness(np.stack([eigvec2[:, 2], eigvec2[:, 0], eigvec2[:, 1]], axis=1))
+    eigvec1 = check_right_handedness(
+        np.stack([eigvec1[:, 2], eigvec1[:, 0], eigvec1[:, 1]], axis=1)
+    )
+    eigvec2 = check_right_handedness(
+        np.stack([eigvec2[:, 2], eigvec2[:, 0], eigvec2[:, 1]], axis=1)
+    )
     # second, compute the rotation matrix that takes one basis to the other
     R12 = np.dot(eigvec1.T, eigvec2)
     # compute the quaternion associated with this rotation matrix
@@ -496,7 +552,8 @@ def kagan_angle(tensor1, tensor2):
     # the minimum angle about some axis to superimpose the two
     # input tensors is:
     min_angle = np.arccos(round_cos(np.max(np.abs(q))))
-    return 2.*np.rad2deg(min_angle)
+    return 2.0 * np.rad2deg(min_angle)
+
 
 def mean_angular_residual(stress_tensor, strikes, dips, rakes):
     """
@@ -505,9 +562,9 @@ def mean_angular_residual(stress_tensor, strikes, dips, rakes):
     """
     return np.mean(np.abs(angular_residual(stress_tensor, strikes, dips, rakes)))
 
-def mean_kagan_angle(strikes, dips, rakes,
-                     strike0=None, dip0=None, rake0=None):
-    """Computes the mean kagan angle as a measure of dispersion.  
+
+def mean_kagan_angle(strikes, dips, rakes, strike0=None, dip0=None, rake0=None):
+    """Computes the mean kagan angle as a measure of dispersion.
 
     The mean kagan angle within a population of focal mechanisms
     described by strikes/dips/rakes. If strike0, dip0, and rake0
@@ -538,6 +595,7 @@ def mean_kagan_angle(strikes, dips, rakes,
         Mean kagan angle between the moment tensors given as input.
     """
     from functools import partial
+
     mts = np.zeros((len(strikes), 3, 3), dtype=np.float32)
     for i in range(len(strikes)):
         mts[i, ...] = strike_dip_rake_to_mt(strikes[i], dips[i], rakes[i])
@@ -545,26 +603,31 @@ def mean_kagan_angle(strikes, dips, rakes,
         mt0 = strike_dip_rake_to_mt(strike0, dip0, rake0)
         angles = list(map(partial(kagan_angle, mt0), mts))
     else:
-        angles = sum([list(map(
-            partial(kagan_angle, mts[i, ...]), mts))
-            for i in range(mts.shape[0])], [])
+        angles = sum(
+            [
+                list(map(partial(kagan_angle, mts[i, ...]), mts))
+                for i in range(mts.shape[0])
+            ],
+            [],
+        )
     return np.mean(np.asarray(angles))
 
-def normal_slip_vectors(strike, dip, rake, direction='inward'):
+
+def normal_slip_vectors(strike, dip, rake, direction="inward"):
     """
     Determine the normal and the slip vectors of the
     focal mechanism defined by (strike, dip, rake).
-    From Stein and Wysession 2002.  
+    From Stein and Wysession 2002.
 
     N.B.: This is the normal of the FOOT WALL and the slip
     of the HANGING WALL w.r.t the foot wall. It means that the
     normal is an inward-pointing normal for the hanging wall,
     and an outward pointing-normal for the foot wall.
 
-    The vectors are in the coordinate system (x1, x2, x3):  
-    x1: north  
-    x2: west  
-    x3: upward  
+    The vectors are in the coordinate system (x1, x2, x3):
+    x1: north
+    x2: west
+    x3: upward
 
     Parameters
     ------------
@@ -589,27 +652,33 @@ def normal_slip_vectors(strike, dip, rake, direction='inward'):
         The slip vector given as the direction of motion
         of the hanging wall w.r.t. the foot wall.
     """
-    d2r = np.pi/180.
-    strike = strike*d2r
-    dip = dip*d2r
-    rake = rake*d2r
-    n = np.array([-np.sin(dip)*np.sin(strike),
-                  -np.sin(dip)*np.cos(strike),
-                  np.cos(dip)])
-    if direction == 'inward':
+    d2r = np.pi / 180.0
+    strike = strike * d2r
+    dip = dip * d2r
+    rake = rake * d2r
+    n = np.array(
+        [-np.sin(dip) * np.sin(strike), -np.sin(dip) * np.cos(strike), np.cos(dip)]
+    )
+    if direction == "inward":
         # this formula already gives the inward-pointing
         # normal of the hanging wall
         pass
-    elif direction == 'outward':
-        n *= -1.
+    elif direction == "outward":
+        n *= -1.0
     else:
         print('direction should be either "inward" or "outward"')
         return
     # slip on the hanging wall
-    d = np.array([np.cos(rake)*np.cos(strike) + np.sin(rake)*np.cos(dip)*np.sin(strike),
-                  -np.cos(rake)*np.sin(strike) + np.sin(rake)*np.cos(dip)*np.cos(strike),
-                  np.sin(rake)*np.sin(dip)])
+    d = np.array(
+        [
+            np.cos(rake) * np.cos(strike) + np.sin(rake) * np.cos(dip) * np.sin(strike),
+            -np.cos(rake) * np.sin(strike)
+            + np.sin(rake) * np.cos(dip) * np.cos(strike),
+            np.sin(rake) * np.sin(dip),
+        ]
+    )
     return n, d
+
 
 def principal_faults(stress_tensor, friction_coefficient):
     """
@@ -635,21 +704,21 @@ def principal_faults(stress_tensor, friction_coefficient):
     """
     # first, compute the angle between sigma 1 and the normal
     # of the most unstable plane
-    lbd = np.pi/4. + 1./2.*np.arctan(friction_coefficient)
+    lbd = np.pi / 4.0 + 1.0 / 2.0 * np.arctan(friction_coefficient)
     # the coordinates of the fault normal in the eigenbasis is:
-    n1 = np.array([np.cos(lbd), 0., np.sin(lbd)])
-    n2 = np.array([np.cos(lbd), 0., np.sin(-1.*lbd)])
+    n1 = np.array([np.cos(lbd), 0.0, np.sin(lbd)])
+    n2 = np.array([np.cos(lbd), 0.0, np.sin(-1.0 * lbd)])
     # compute the eigenbasis
-    principal_sig, principal_dir = stress_tensor_eigendecomposition(
-            stress_tensor)
+    principal_sig, principal_dir = stress_tensor_eigendecomposition(stress_tensor)
     n1 = np.dot(principal_dir, n1[:, np.newaxis])
     n2 = np.dot(principal_dir, n2[:, np.newaxis])
     return n1, n2
 
+
 def p_t_b_axes(normal, slip):
     """
     Determine the P (most compressive), T (least compressive)
-    and B (intermediate, or neutral axis) axes 
+    and B (intermediate, or neutral axis) axes
     from the normal and the slip vectors, following
     Stein and Wysession 2002, Section 4.5.2.
     (P, T, B) forms an orthogonal basis.
@@ -666,6 +735,7 @@ def p_t_b_axes(normal, slip):
     b = np.cross(normal, slip)
     b /= np.sqrt(np.sum(b**2))
     return p, t, b
+
 
 def quaternion(t, p, b):
     """
@@ -690,11 +760,11 @@ def quaternion(t, p, b):
         the matrix (t, p, b), where t, p, b are column vectors.
     """
     eps = 0.0001
-    x1, x2, x3 = np.float64(t), np.float64(p), np.float64(b) 
-    q0 = 1. + x1[0] + x2[1] + x3[2]
-    q1 = 1. + x1[0] - x2[1] - x3[2]
-    q2 = 1. - x1[0] + x2[1] - x3[2]
-    q3 = 1. - x1[0] - x2[1] + x3[2]
+    x1, x2, x3 = np.float64(t), np.float64(p), np.float64(b)
+    q0 = 1.0 + x1[0] + x2[1] + x3[2]
+    q1 = 1.0 + x1[0] - x2[1] - x3[2]
+    q2 = 1.0 - x1[0] + x2[1] - x3[2]
+    q3 = 1.0 - x1[0] - x2[1] + x3[2]
 
     q = np.zeros(4, dtype=np.float64)
     if q0 > eps:
@@ -718,11 +788,11 @@ def quaternion(t, p, b):
         q[2] = x3[0] + x1[2]
         q[3] = x3[1] + x2[2]
     else:
-        print('Could not find the lowest component!')
+        print("Could not find the lowest component!")
         sys.exit(0)
 
     # normalize the components of the quaternion
-    q[1:] /= 4.0*q[0]
+    q[1:] /= 4.0 * q[0]
     q /= np.sqrt(np.sum(q**2))
 
     return q
@@ -736,7 +806,7 @@ def R_(principal_stresses):
     -----------
     pinricpal_stresses: numpy array or list
         Contains the three eigenvalues of the stress tensor
-        ordered such that:   
+        ordered such that:
         `principal_stresses[0]` < `principal_stresses[1]` < `principal_stresses[2]`
         with `principal_stresses[0]` being the most compressional stress.
 
@@ -744,11 +814,13 @@ def R_(principal_stresses):
     ---------
     shape_ratio: scalar float
     """
-    return (principal_stresses[0]-principal_stresses[1])\
-          /(principal_stresses[0]-principal_stresses[2])
+    return (principal_stresses[0] - principal_stresses[1]) / (
+        principal_stresses[0] - principal_stresses[2]
+    )
+
 
 def rotation(axis, angle):
-    """Compute the rotation matrix about axis with angle `angle`.  
+    """Compute the rotation matrix about axis with angle `angle`.
 
     Parameters
     ------------
@@ -763,20 +835,37 @@ def rotation(axis, angle):
         Rotation matrix of angle `angle` degrees about `axis`.
     """
     x1, x2, x3 = axis
-    a = angle*np.pi/180.
+    a = angle * np.pi / 180.0
     # build the rotation matrix
     ca, sa = np.cos(a), np.sin(a)
-    R = np.array([[ca + x1**2*(1.-ca), x1*x2*(1.-ca) - x3*sa, x1*x3*(1.-ca) + x2*sa],
-                  [x1*x2*(1.-ca) + x3*sa, ca + x2**2*(1.-ca), x2*x3*(1.-ca) - x1*sa],
-                  [x1*x3*(1.-ca) - x2*sa, x2*x3*(1.-ca) + x1*sa, ca + x3**2*(1.-ca)]])
+    R = np.array(
+        [
+            [
+                ca + x1**2 * (1.0 - ca),
+                x1 * x2 * (1.0 - ca) - x3 * sa,
+                x1 * x3 * (1.0 - ca) + x2 * sa,
+            ],
+            [
+                x1 * x2 * (1.0 - ca) + x3 * sa,
+                ca + x2**2 * (1.0 - ca),
+                x2 * x3 * (1.0 - ca) - x1 * sa,
+            ],
+            [
+                x1 * x3 * (1.0 - ca) - x2 * sa,
+                x2 * x3 * (1.0 - ca) + x1 * sa,
+                ca + x3**2 * (1.0 - ca),
+            ],
+        ]
+    )
     return R
 
-def random_rotation(max_angle=360.):
-    """Generate a random rotation matrix.  
 
-    Generate a random rotation matrix by:  
-      1) Generate a random unit vector in 3D.  
-      2) Generate a random rotation angle between 0 and max_angle (degrees)  
+def random_rotation(max_angle=360.0):
+    """Generate a random rotation matrix.
+
+    Generate a random rotation matrix by:
+      1) Generate a random unit vector in 3D.
+      2) Generate a random rotation angle between 0 and max_angle (degrees)
 
     Parameters
     ------------
@@ -789,14 +878,15 @@ def random_rotation(max_angle=360.):
     R: (3, 3) numpy array
         Rotation matrix.
     """
-    x1, x2, x3 = np.random.uniform(low=-1., high=1., size=3)
+    x1, x2, x3 = np.random.uniform(low=-1.0, high=1.0, size=3)
     dir_ = np.array([x1, x2, x3])
     # normalize
     dir_ /= np.linalg.norm(dir_, 2)
     # draw the angle
-    a = max_angle*np.random.random()
+    a = max_angle * np.random.random()
     R = rotation(dir_, a)
     return R
+
 
 def reduced_stress_tensor(principal_directions, R):
     """
@@ -811,29 +901,29 @@ def reduced_stress_tensor(principal_directions, R):
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: `principal_directions[:, i]`. 
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
     R: float
         The shape ratio (sig1 - sig2)/(sig1 - sig3).
-       
+
     Returns
     ----------
     stress_tensor: (3, 3) array
         The stress tensor built from the principal directions
         and the shape ratio.
     """
-    sig1 = -1.
-    sig2 = 2.*R-1.
+    sig1 = -1.0
+    sig2 = 2.0 * R - 1.0
     sig3 = +1
     Sigma = np.diag(np.array([sig1, sig2, sig3]))
     Sigma /= np.sqrt(np.sum(Sigma**2))
     # make sure the principal directions form a right-handed basis
     principal_directions = check_right_handedness(principal_directions)
-    stress_tensor = np.dot(principal_directions,
-                           np.dot(Sigma, principal_directions.T))
+    stress_tensor = np.dot(principal_directions, np.dot(Sigma, principal_directions.T))
     return stress_tensor
 
+
 def round_cos(x):
-    """Clip x so that it fits with the [-1,1] interval.  
+    """Clip x so that it fits with the [-1,1] interval.
 
     If x is slightly outside the [-1,1] because of numerical
     imprecision, x is rounded, and can then be safely passed
@@ -849,12 +939,13 @@ def round_cos(x):
     Returns
     -----------
     x_r: scalar, float
-       A rounded version of x, if necessary. 
+       A rounded version of x, if necessary.
     """
     if (abs(x) > 1.0) and (abs(x) < 1.005):
-        return 1.0*np.sign(x)
+        return 1.0 * np.sign(x)
     else:
         return x
+
 
 def stress_tensor_eigendecomposition(stress_tensor):
     """
@@ -873,15 +964,14 @@ def stress_tensor_eigendecomposition(stress_tensor):
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: `principal_directions[:, i]`. 
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
     """
     try:
-        principal_stresses, principal_directions = \
-                              np.linalg.eigh(stress_tensor)
+        principal_stresses, principal_directions = np.linalg.eigh(stress_tensor)
     except LinAlgError:
         print(stress_tensor)
         sys.exit()
-    #order = np.argsort(principal_stresses)[::-1]
+    # order = np.argsort(principal_stresses)[::-1]
     order = np.argsort(principal_stresses)
     # reorder from most compressive to most extensional
     # with tension positive convention
@@ -889,6 +979,7 @@ def stress_tensor_eigendecomposition(stress_tensor):
     principal_stresses = principal_stresses[order]
     principal_directions = check_right_handedness(principal_directions[:, order])
     return principal_stresses, principal_directions
+
 
 def strike_dip_rake(n, d):
     """
@@ -914,33 +1005,34 @@ def strike_dip_rake(n, d):
     rake: float
         Rake of the fault, in degrees.
     """
-    r2d = 180./np.pi
+    r2d = 180.0 / np.pi
     # ----------------
     # dip is straightforward:
     dip = np.arccos(round_cos(n[2]))
     sin_dip = np.sin(dip)
-    if sin_dip != 0.:
+    if sin_dip != 0.0:
         # ----------------
         # strike is more complicated because it spans 0-360 degrees
-        sin_strike = -n[0]/sin_dip
-        cos_strike = -n[1]/sin_dip
+        sin_strike = -n[0] / sin_dip
+        cos_strike = -n[1] / sin_dip
         strike = np.arctan2(sin_strike, cos_strike)
         # ---------------
         # rake is even more complicated
-        sin_rake = d[2]/sin_dip
-        cos_rake = (d[0] - sin_rake*np.cos(dip)*sin_strike)/cos_strike
+        sin_rake = d[2] / sin_dip
+        cos_rake = (d[0] - sin_rake * np.cos(dip) * sin_strike) / cos_strike
         rake = np.arctan2(sin_rake, cos_rake)
     else:
-        print('Dip is zero! The strike and rake cannot be determined')
+        print("Dip is zero! The strike and rake cannot be determined")
         # the solution is ill-defined, we can only
         # determine rake - strike
         cos_rake_m_strike = d[0]
         sin_rake_m_strike = d[1]
         rake_m_strike = np.arctan2(sin_rake_m_strike, cos_rake_m_strike)
         # fix arbitrarily the rake to zero
-        rake = 0.
+        rake = 0.0
         strike = -rake_m_strike
-    return (strike*r2d)%360., dip*r2d, (rake*r2d)%360.
+    return (strike * r2d) % 360.0, dip * r2d, (rake * r2d) % 360.0
+
 
 def strike_dip_rake_to_mt(strike, dip, rake):
     """Compute the *normalized* moment tensor described by strike/dip/rake.
@@ -970,12 +1062,13 @@ def strike_dip_rake_to_mt(strike, dip, rake):
     U = check_right_handedness(np.stack([p, b, t], axis=1))
     # build the matrix of eigenvalues (a double-couple is a deviatoric
     # moment tensor with determinant = 0, see Tape and Tape 2012)
-    Lambda = np.array([[-1., 0., 0.],
-                       [0., 0., 0.],
-                       [0., 0., +1.]], dtype=np.float32)
+    Lambda = np.array(
+        [[-1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, +1.0]], dtype=np.float32
+    )
     mt = U.dot(Lambda.dot(U.T))
     mt /= np.sqrt(np.sum(mt**2))
     return mt
+
 
 def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
     """
@@ -1004,13 +1097,12 @@ def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
     """
     # first, get the normal and slip vectors corresponding
     # to (strike, dip, rake)
-    n, d = normal_slip_vectors(strike, dip, rake, direction='inward')
-    n = n.reshape(1, -1) # make sure it's a row vector
+    n, d = normal_slip_vectors(strike, dip, rake, direction="inward")
+    n = n.reshape(1, -1)  # make sure it's a row vector
     # second, compute the shear stress on the fault
-    traction, normal_traction, shear_traction = compute_traction(
-            stress_tensor, n)
-    shear_dir = shear_traction/np.sqrt(np.sum(shear_traction**2))
+    traction, normal_traction, shear_traction = compute_traction(stress_tensor, n)
+    shear_dir = shear_traction / np.sqrt(np.sum(shear_traction**2))
     # the angle difference is the Arccos(dot product)
-    angle = np.arccos(round_cos(np.sum(d.squeeze()*shear_dir.squeeze())))
+    angle = np.arccos(round_cos(np.sum(d.squeeze() * shear_dir.squeeze())))
     # return the result in degrees
-    return angle*180./np.pi
+    return angle * 180.0 / np.pi
