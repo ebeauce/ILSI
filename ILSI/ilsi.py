@@ -77,13 +77,15 @@ def Tarantola_Valette(
         space m onto the data space: d = G.m
         n is the dimension of the data space,
         m is the dimension of the model space.
-    data: (n,) or (n, 1) numpy array
-        Vector of observations.
+    data: (3k,) or (3k, 1) or (k, 3) numpy array
+        Vector of observations. k is the number of focal mechanisms. `data`
+        is reshaped to (n=3k, 1) before the inversion.
     C_d: (n, n) numpy array, default to None
         Covariance matrix of the observations. It quantifies
         the errors in the observations and propagates them
         in the inversion to give more weight to the observations
-        with low errors. If None, then `C_d` is identity.
+        with low errors. If None, then `C_d` is filled with zeros
+        (assume no error in data).
     C_m: (m, m) numpy array, default to None
         Covariance matrix of the model parameters. It quantifies
         the errors in the model parameters and propagates them
@@ -110,7 +112,8 @@ def Tarantola_Valette(
     # pre-compute transposed G
     # Gt = G.T
     if C_d is None:
-        C_d = np.identity(dim_D, dtype=np.float32)
+        #C_d = np.identity(dim_D, dtype=np.float32)
+        C_d = np.zeros((dim_D, dim_D), dtype=np.float32)
         C_d_inv = np.identity(dim_D, dtype=np.float32)
     elif C_d_inv is None and inversion_space == "model_space":
         try:
