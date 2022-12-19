@@ -1204,7 +1204,7 @@ def inversion_one_set_instability(
                         C_m_post_j,
                         C_d_post_j,
                     )
-                    friction_coefficient = mu_j
+                    best_friction_coefficient = mu_j
         else:
             # friction coefficient was given by user
             stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
@@ -1230,7 +1230,7 @@ def inversion_one_set_instability(
         final_stress_tensor += stress_tensor
         if friction_coefficient is None:
             # friction coefficient is being inverted for
-            final_friction_coefficient += friction_coefficient
+            final_friction_coefficient += best_friction_coefficient
     final_stress_tensor /= float(n_averaging)
     if friction_coefficient is None:
         friction_coefficient = final_friction_coefficient / float(n_averaging)
