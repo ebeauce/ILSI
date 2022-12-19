@@ -176,7 +176,7 @@ def iterative_linear_si(
     rakes,
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
     return_eigen=True,
     return_stats=False,
 ):
@@ -216,9 +216,11 @@ def iterative_linear_si(
     max_n_iterations: integer, default to 300
         The maximum number of iterations if shear stress magnitude update
         does not fall below `shear_update_atol`.
-    Tarantola_kwargs: Dictionary, default to None:
+    Tarantola_kwargs: Dictionary, default to {}:
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
     return_eigen: boolean, default to True
         If True, returns the eigendecomposition of the inverted
         stress tensor in addition to returning the stress tensor.
@@ -357,7 +359,7 @@ def iterative_linear_si(
 
 
 def Michael1984_inversion(
-    strikes, dips, rakes, Tarantola_kwargs=None, return_eigen=True, return_stats=False
+    strikes, dips, rakes, Tarantola_kwargs={}, return_eigen=True, return_stats=False
 ):
     """
     Linear inversion described in Michael 1984.
@@ -390,9 +392,11 @@ def Michael1984_inversion(
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
     return_eigen: boolean, default to True
         If True, returns the eigendecomposition of the inverted
         stress tensor in addition to returning the stress tensor.
@@ -500,7 +504,7 @@ def inversion_one_set(
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
     variable_shear=True,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
     return_stats=False,
 ):
     """
@@ -534,9 +538,11 @@ def inversion_one_set(
         If True, use the iterative linear method described in
         Beauce et al. 2022, else use the classic linear method
         due to Michael 1984.
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
     return_stats: boolean, default to True
         If True, the posterior data and model parameter distributions
         estimated from the Tarantola and Valette formula
@@ -646,7 +652,7 @@ def inversion_jackknife(
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
     variable_shear=True,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
     bootstrap_events=False,
 ):
     """
@@ -696,9 +702,12 @@ def inversion_jackknife(
         If True, use the iterative linear method described in
         Beauce et al. 2022, else use the classic linear method
         due to Michael 1984.
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
+
 
     Returns
     --------
@@ -803,7 +812,7 @@ def inversion_bootstrap(
     variable_shear=True,
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
 ):
     """
     Inverts one set of focal mechanisms without seeking which nodal planes
@@ -842,9 +851,12 @@ def inversion_bootstrap(
         If True, use the iterative linear method described in
         Beauce et al. 2022, else use the classic linear method
         due to Michael 1984.
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
+
 
     Returns
     --------
@@ -941,7 +953,7 @@ def inversion_one_set_instability(
     n_stress_iter=10,
     n_random_selections=20,
     stress_tensor_update_atol=1.0e-4,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
     n_averaging=1,
@@ -1013,9 +1025,11 @@ def inversion_one_set_instability(
         values mean that the predicted and observed slip have opposite
         directions. If False, the instability parameter is the one
         defined in Vavrycuk 2013, 2014.
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
     return_stats: boolean, default to True
         If True, the posterior data and model parameter distributions
         estimated from the Tarantola and Valette formula
@@ -1267,7 +1281,7 @@ def inversion_jackknife_instability(
     n_resamplings=100,
     n_stress_iter=10,
     stress_tensor_update_atol=1.0e-4,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
     bootstrap_events=False,
     n_earthquakes=None,
     variable_shear=True,
@@ -1341,9 +1355,11 @@ def inversion_jackknife_instability(
         If True, use the iterative linear method described in
         Beauce et al. 2022, else use the classic linear method
         due to Michael 1984.
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
     bootstrap_events: boolean, default to False
         If True, the resampling is also done accross earthquakes,
         following the bootstrapping method.
@@ -1465,7 +1481,7 @@ def inversion_bootstrap_instability(
     n_resamplings=100,
     n_stress_iter=10,
     stress_tensor_update_atol=1.0e-5,
-    Tarantola_kwargs=None,
+    Tarantola_kwargs={},
     variable_shear=True,
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
@@ -1531,9 +1547,11 @@ def inversion_bootstrap_instability(
         If True, use the iterative linear method described in
         Beauce et al. 2022, else use the classic linear method
         due to Michael 1984.
-    Tarantola_kwargs: Dictionary, default to None
+    Tarantola_kwargs: Dictionary, default to {}
         If not None, should contain key word arguments
-        for the Tarantola and Valette inversion.
+        for the Tarantola and Valette inversion. An empty dictionary
+        uses the default values in `Tarantola_Valette`. If None, uses
+        the Moore-Penrose inverse.
     weighted: boolean, default to False
         This option is exploratory. If True:
             1) More weight is given to the fault planes that are clearly
@@ -1735,7 +1753,7 @@ def _stress_inversion_instability(
     in Beauce et al. 2022). This function should be not called directly by
     the user.
     """
-    Tarantola_kwargs = kwargs.get("Tarantola_kwargs", None)
+    Tarantola_kwargs = kwargs.get("Tarantola_kwargs", {})
     n_stress_iter = kwargs.get("n_stress_iter", 10)
     weighted = kwargs.get("weighted", False)
     variable_shear = kwargs.get("variable_shear", True)
