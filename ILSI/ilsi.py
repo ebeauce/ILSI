@@ -227,7 +227,7 @@ def iterative_linear_si(
     Returns
     --------
     full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor.
+        The inverted stress tensor in the (north, west, up) coordinate system.
     principal_stresses: (3,) numpy array, optional
         The three eigenvalues of the stress tensor, ordered
         from most compressive (sigma1) to least compressive (sigma3).
@@ -398,7 +398,7 @@ def Michael1984_inversion(
     Returns
     --------
     full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor.
+        The inverted stress tensor in the (north, west, up) coordinate system.
     principal_stresses: (3,) numpy array, optional
         The three eigenvalues of the stress tensor, ordered
         from most compressive (sigma1) to least compressive (sigma3).
@@ -538,7 +538,7 @@ def inversion_one_set(
     Returns
     --------
     full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor.
+        The inverted stress tensor in the (north, west, up) coordinate system.
     principal_stresses: (3,) numpy array
         The three eigenvalues of the stress tensor, ordered
         from most compressive (sigma1) to least compressive (sigma3).
@@ -702,7 +702,7 @@ def inversion_jackknife(
     Returns
     --------
     jack_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors.
+        The inverted stress tensors in the (north, west, up) coordinate system.
     jack_principal_stresses: (n_resamplings, 3) numpy array
         The three eigenvalues of the stress tensors, ordered
         from most compressive (sigma1) to least compressive (sigma3).
@@ -851,7 +851,7 @@ def inversion_bootstrap(
     Returns
     --------
     boot_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors.
+        The inverted stress tensors in the (north, west, up) coordinate system.
     boot_principal_stresses: (n_resamplings, 3) numpy array
         The three eigenvalues of the stress tensors, ordered
         from most compressive (sigma1) to least compressive (sigma3).
@@ -1050,7 +1050,7 @@ def inversion_one_set_instability(
     Returns
     --------
     full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor.
+        The inverted stress tensor in the (north, west, up) coordinate system.
     optimal_friction: float
         The friction value that maximizes the instability parameter
         found during the grid search.
@@ -1363,7 +1363,7 @@ def inversion_jackknife_instability(
     Returns
     --------
     jack_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors.
+        The inverted stress tensors in the (north, west, up) coordinate system.
     jack_principal_stresses: (n_resamplings, 3) numpy array
         The three eigenvalues of the stress tensors, ordered
         from most compressive (sigma1) to least compressive (sigma3).
@@ -1556,7 +1556,7 @@ def inversion_bootstrap_instability(
     Returns
     --------
     boot_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors.
+        The inverted stress tensors in the (north, west, up) coordinate system.
     boot_principal_stresses: (n_resamplings, 3) numpy array
         The three eigenvalues of the stress tensors, ordered
         from most compressive (sigma1) to least compressive (sigma3).
