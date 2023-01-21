@@ -250,12 +250,10 @@ def iterative_linear_si(
     # t_start = give_time()
     # First, convert the strike/dip/rake into slip and normal vectors.
     n_earthquakes = len(strikes)
-    n_ = np.zeros((n_earthquakes, 3), dtype=np.float32)  # normal vectors
-    d_ = np.zeros((n_earthquakes, 3), dtype=np.float32)  # slip vectors
-    for i in range(n_earthquakes):
-        n_[i, :], d_[i, :] = utils_stress.normal_slip_vectors(
-            strikes[i], dips[i], rakes[i], direction="inward"
-        )
+    n_, d_ = utils_stress.normal_slip_vectors(
+            strikes, dips, rakes, direction="inward"
+            )
+    n_, d_ = n_.T, d_.T
     # Next, define the matrix that relates the stress tensor
     # to the observed slip vectors, given the fault geometries
     # characterized by the normal vectors.
@@ -1173,10 +1171,6 @@ def inversion_one_set_instability(
                     verbose=verbose,
                     plot=plot,
                 )
-                #(
-                #    principal_stresses,
-                #    principal_directions,
-                #) = utils_stress.stress_tensor_eigendecomposition(stress_tensor)
                 I_j = compute_instability_parameter(
                     principal_directions,
                     R,
@@ -1744,6 +1738,9 @@ def _stress_inversion_instability(
     stress_tensor_update_atol = kwargs.get("stress_tensor_update_atol", 1.0e-4)
     verbose = kwargs.get("verbose", 1)
     plot = kwargs.get("plot", False)
+    criterion_on_noconvergence = kwargs.get(
+            "criterion_on_noconvergence", "residuals"
+            )
     if Tarantola_kwargs is None:
         Tarantola_kwargs = {}
     else:
@@ -1903,45 +1900,38 @@ def _stress_inversion_instability(
             )
         R = utils_stress.R_(principal_stresses)
         stress_diff = np.sum((stress_tensor - stress_tensor0) ** 2)
-        # ------------------------------------
-        # Compute residuals in case the instability loop doesn't converge
-        # ------------------------------------
-        # normal and slip vectors
-        n_, d_ = utils_stress.normal_slip_vectors(
-            fault_strikes, fault_dips, fault_rakes
-        )
-        _, _, shear_traction = utils_stress.compute_traction(stress_tensor, n_.T)
-        # compute shear stress magnitudes
-        shear_mag = np.sqrt(np.sum(shear_traction**2, axis=-1))
-        if variable_shear:
-            res = (shear_traction - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
-        else:
-            res = (shear_traction - np.mean(shear_mag) * d_.T).reshape(-1, 1)
-        residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
-        if residuals < best_residuals:
-            # One possibility: update prior model at this stage
-            #Tarantola_kwargs["m_prior"] = np.array(
-            #    [
-            #        stress_tensor[0, 0],
-            #        stress_tensor[0, 1],
-            #        stress_tensor[0, 2],
-            #        stress_tensor[1, 1],
-            #        stress_tensor[1, 2],
-            #    ]
-            #).reshape(-1, 1)
-            # store best results
-            best_residuals = float(residuals)
-            best_stress_tensor = stress_tensor.copy()
-            best_C_m_post = C_m_post.copy()
-            best_C_d_post = C_d_post.copy()
-            # uncomment the following lines if you want to update the
-            # friction parameter
-            # optimal_friction = find_optimal_friction_one_set(
-            #        fault_strikes, fault_dips, fault_rakes,
-            #        principal_directions, R,
-            #        friction_min=friction_min,
-            #        friction_max=friction_max,
-            #        friction_step=friction_step)
+        if criterion_on_noconvergence == "residuals":
+            # ------------------------------------
+            # Compute residuals in case the instability loop doesn't converge
+            # ------------------------------------
+            # normal and slip vectors
+            n_, d_ = utils_stress.normal_slip_vectors(
+                fault_strikes, fault_dips, fault_rakes
+            )
+            _, _, shear_traction = utils_stress.compute_traction(stress_tensor, n_.T)
+            # compute shear stress magnitudes
+            shear_mag = np.sqrt(np.sum(shear_traction**2, axis=-1))
+            if variable_shear:
+                res = (shear_traction - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
+            else:
+                res = (shear_traction - np.mean(shear_mag) * d_.T).reshape(-1, 1)
+            residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
+            if residuals < best_residuals:
+                # One possibility: update prior model at this stage
+                #Tarantola_kwargs["m_prior"] = np.array(
+                #    [
+                #        stress_tensor[0, 0],
+                #        stress_tensor[0, 1],
+                #        stress_tensor[0, 2],
+                #        stress_tensor[1, 1],
+                #        stress_tensor[1, 2],
+                #    ]
+                #).reshape(-1, 1)
+                # store best results
+                best_residuals = float(residuals)
+                best_stress_tensor = stress_tensor.copy()
+                best_C_m_post = C_m_post.copy()
+                best_C_d_post = C_d_post.copy()
         if plot:
             fig = plt.figure("iteration_{:d}".format(n))
             ax1 = fig.add_subplot(2, 2, 1, projection="stereonet")
