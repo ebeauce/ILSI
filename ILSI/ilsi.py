@@ -306,7 +306,8 @@ def iterative_linear_si(
         # -----------------------------
         # compute shear magnitudes
         shear0 = shear.copy()
-        shear = np.sqrt(np.sum((G @ sigma).reshape(n_earthquakes, 3) ** 2, axis=-1))
+        predicted_shear = (G @ sigma).reshape(n_earthquakes, 3)
+        shear = np.sqrt(np.sum(predicted_shear ** 2, axis=-1))
         shear_update = np.sqrt(np.mean((shear - shear0) ** 2))
         # print('Shear stress update: {:.3e}'.format(shear_update))
         if shear_update < shear_update_atol:
@@ -326,29 +327,25 @@ def iterative_linear_si(
     norm = np.sqrt(np.sum(full_stress_tensor**2))
     norm = 1 if norm == 0.0 else norm
     full_stress_tensor /= norm
-    output = (full_stress_tensor,)
+    # return output in dictionary
+    output = {}
+    output["stress_tensor"] = full_stress_tensor
+    output["predicted_shear_stress"] = predicted_shear
     if return_eigen:
         # solve the eigenvalue problem
         (
             principal_stresses,
             principal_directions,
         ) = utils_stress.stress_tensor_eigendecomposition(full_stress_tensor)
-        output = output + (
-            shear,
-            principal_stresses,
-            principal_directions,
-        )
+        output["shear_stress_magnitudes"] = shear
+        output["principal_stresses"] = principal_stresses
+        output["principal_directions"] = principal_directions
     if return_stats:
-        output = output + (
-            C_m_posterior,
-            C_d_posterior,
-        )
+        output["C_d_posterior"] = C_d_posterior
+        output["C_m_posterior"] = C_m_posterior
     # t_end = give_time()
     # print('iterative_linear_si finished in {:.2f}sec'.format(t_end-t_start))
-    if len(output) == 1:
-        return output[0]
-    else:
-        return output
+    return output
 
 
 def Michael1984_inversion(
@@ -460,26 +457,22 @@ def Michael1984_inversion(
     norm = np.sqrt(np.sum(full_stress_tensor**2))
     norm = 1 if norm == 0.0 else norm
     full_stress_tensor /= norm
-    output = (full_stress_tensor,)
+    # return output in dictionary
+    output = {}
+    output["stress_tensor"] = full_stress_tensor
+    output["predicted_shear_stress"] = (G @ sigma).reshape(n_earthquakes, 3)
     if return_eigen:
         # solve the eigenvalue problem
         (
             principal_stresses,
             principal_directions,
         ) = utils_stress.stress_tensor_eigendecomposition(full_stress_tensor)
-        output = output + (
-            principal_stresses,
-            principal_directions,
-        )
+        output["principal_stresses"] = principal_stresses
+        output["principal_directions"] = principal_directions
     if return_stats:
-        output = output + (
-            C_m_posterior,
-            C_d_posterior,
-        )
-    if len(output) == 1:
-        return output[0]
-    else:
-        return output
+        output["C_d_posterior"] = C_d_posterior
+        output["C_m_posterior"] = C_m_posterior
+    return output
 
 
 # ---------------------------------------------------
@@ -498,6 +491,7 @@ def inversion_one_set(
     shear_update_atol=1.0e-5,
     variable_shear=True,
     Tarantola_kwargs={},
+    return_eigen=True,
     return_stats=False,
 ):
     """
@@ -591,7 +585,7 @@ def inversion_one_set(
         if variable_shear:
             # invert for both the stress tensor and values
             # of (normalized) resolved shear stress magnitude
-            stress_tensor, C_m_post, C_d_post = iterative_linear_si(
+            output_ = iterative_linear_si(
                 selected_strikes,
                 selected_dips,
                 selected_rakes,
@@ -604,7 +598,7 @@ def inversion_one_set(
         else:
             # invert only for the stress tensor, assuming
             # constant shear stress on all faults
-            stress_tensor, C_m_post, C_d_post = Michael1984_inversion(
+            output_ = Michael1984_inversion(
                 selected_strikes,
                 selected_dips,
                 selected_rakes,
@@ -613,26 +607,29 @@ def inversion_one_set(
                 return_stats=True,
             )
         # add them to the average
-        avg_stress_tensor += stress_tensor
-        avg_C_m_posterior += C_m_post
-        avg_C_d_posterior += C_d_post
+        avg_stress_tensor += output_["stress_tensor"]
+        avg_C_m_posterior += output_["C_m_posterior"] 
+        avg_C_d_posterior += output_["C_d_posterior"]
     avg_stress_tensor /= float(n_random_selections)
     avg_C_m_posterior /= float(n_random_selections)
     avg_C_d_posterior /= float(n_random_selections)
-    (
-        principal_stresses,
-        principal_directions,
-    ) = utils_stress.stress_tensor_eigendecomposition(avg_stress_tensor)
-    output = (
-        avg_stress_tensor,
-        principal_stresses,
-        principal_directions,
-    )
+    norm = np.sqrt(np.sum(avg_stress_tensor**2))
+    norm = 1 if norm == 0.0 else norm
+    avg_stress_tensor /= norm
+    # return output in dictionary
+    output = {}
+    output["stress_tensor"] = avg_stress_tensor
+    if return_eigen:
+        # solve the eigenvalue problem
+        (
+            principal_stresses,
+            principal_directions,
+        ) = utils_stress.stress_tensor_eigendecomposition(avg_stress_tensor)
+        output["principal_stresses"] = principal_stresses
+        output["principal_directions"] = principal_directions
     if return_stats:
-        output = output + (
-            avg_C_m_posterior,
-            avg_C_d_posterior,
-        )
+        output["C_d_posterior"] = avg_C_d_posterior
+        output["C_m_posterior"] = avg_C_m_posterior
     return output
 
 
@@ -762,7 +759,7 @@ def inversion_jackknife(
         if variable_shear:
             # invert for both the stress tensor and values
             # of (normalized) resolved shear stress magnitude
-            stress_tensor = iterative_linear_si(
+            output_ = iterative_linear_si(
                 selected_strikes,
                 selected_dips,
                 selected_rakes,
@@ -775,7 +772,7 @@ def inversion_jackknife(
         else:
             # invert only for the stress tensor, assuming
             # constant shear stress on all faults
-            stress_tensor = Michael1984_inversion(
+            output_ = Michael1984_inversion(
                 selected_strikes,
                 selected_dips,
                 selected_rakes,
@@ -783,18 +780,18 @@ def inversion_jackknife(
                 return_eigen=False,
                 return_stats=False,
             )
-        ## add them to the average
-        # jack_avg_stress_tensors[b, ...] += stress_tensor
-        # jack_avg_stress_tensors[b, ...] /= float(n_random_selections)
-        jack_avg_stress_tensors[b, ...] = stress_tensor
+        jack_avg_stress_tensors[b, ...] = output_["stress_tensor"]
         (
             jack_principal_stresses[b, ...],
             jack_principal_directions[b, ...],
         ) = utils_stress.stress_tensor_eigendecomposition(
             jack_avg_stress_tensors[b, ...]
         )
-    return jack_avg_stress_tensors, jack_principal_stresses, jack_principal_directions
-
+    output = {}
+    output["jack_stress_tensor"] = jack_avg_stress_tensors
+    output["jack_principal_stresses"] = jack_principal_stresses
+    output["jack_principal_directions"] = jack_principal_directions
+    return output
 
 def inversion_bootstrap(
     strikes,
@@ -899,7 +896,7 @@ def inversion_bootstrap(
         selected_rakes = rakes[flat_indexes]
         # invert this subset of nodal planes
         if variable_shear:
-            stress_tensor = iterative_linear_si(
+            output_ = iterative_linear_si(
                 selected_strikes,
                 selected_dips,
                 selected_rakes,
@@ -907,25 +904,25 @@ def inversion_bootstrap(
                 Tarantola_kwargs=Tarantola_kwargs,
             )
         else:
-            stress_tensor = Michael1984_inversion(
+            output_ = Michael1984_inversion(
                 selected_strikes,
                 selected_dips,
                 selected_rakes,
                 return_eigen=False,
                 Tarantola_kwargs=Tarantola_kwargs,
             )
-        # uncomment if extra loop (and indent)
-        ## add them to the average
-        # boot_avg_stress_tensors[b, ...] += stress_tensor
-        # boot_avg_stress_tensors[b, ...] /= float(n_random_selections)
-        boot_avg_stress_tensors[b, ...] = stress_tensor
+        boot_avg_stress_tensors[b, ...] = output_["stress_tensor"]
         (
             boot_principal_stresses[b, ...],
             boot_principal_directions[b, ...],
         ) = utils_stress.stress_tensor_eigendecomposition(
             boot_avg_stress_tensors[b, ...]
         )
-    return boot_avg_stress_tensors, boot_principal_stresses, boot_principal_directions
+    output = {}
+    output["boot_stress_tensor"] = boot_avg_stress_tensors
+    output["boot_principal_stresses"] = boot_principal_stresses
+    output["boot_principal_directions"] = boot_principal_directions
+    return output
 
 
 # ---------------------------------------------------
@@ -1091,7 +1088,10 @@ def inversion_one_set_instability(
     strikes = np.hstack((strikes_1.reshape(-1, 1), strikes_2.reshape(-1, 1))).flatten()
     dips = np.hstack((dips_1.reshape(-1, 1), dips_2.reshape(-1, 1))).flatten()
     rakes = np.hstack((rakes_1.reshape(-1, 1), rakes_2.reshape(-1, 1))).flatten()
+    # initialized averaged outputs
     final_stress_tensor = np.zeros((3, 3), dtype=np.float32)
+    C_d_posterior = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
+    C_m_posterior = np.zeros((5, 5), dtype=np.float32)
     if friction_coefficient is None:
         final_friction_coefficient = 0.0
     for i in range(n_averaging):
@@ -1114,7 +1114,7 @@ def inversion_one_set_instability(
             selected_rakes = rakes[flat_indexes]
             # invert this subset of nodal planes
             if variable_shear:
-                stress_tensor = iterative_linear_si(
+                output_ = iterative_linear_si(
                     selected_strikes,
                     selected_dips,
                     selected_rakes,
@@ -1123,7 +1123,7 @@ def inversion_one_set_instability(
                     Tarantola_kwargs=Tarantola_kwargs,
                 )
             else:
-                stress_tensor = Michael1984_inversion(
+                output_ = Michael1984_inversion(
                     selected_strikes,
                     selected_dips,
                     selected_rakes,
@@ -1131,7 +1131,7 @@ def inversion_one_set_instability(
                     Tarantola_kwargs=Tarantola_kwargs,
                 )
             # add them to the average
-            avg_stress_tensor += stress_tensor
+            avg_stress_tensor += output_["stress_tensor"]
         avg_stress_tensor /= float(n_random_selections)
         (
             principal_stresses,
@@ -1141,17 +1141,19 @@ def inversion_one_set_instability(
         if verbose > 0:
             print("Initial shape ratio: {:.2f}".format(R))
         if friction_coefficient is None:
-            # loop over friction coefficients:
-            # repeat the inversion and keep the friction coefficient
-            # that gave the largest average instability across fault planes
-            # (prone to overfitting)
+            # ---------------------------------------
+            #  Repeat the whole inversion for a range of friction coefficients
+            #  and keep the inversion results and friction coefficient
+            #  that produced the highest average fault plane instability
+            # ---------------------------------------
             friction = np.arange(
                 friction_min, friction_max + friction_step, friction_step
             )
             n_fric = len(friction)
             Imax = -1000.0
             for j, mu_j in enumerate(friction):
-                stress_tensor_j, C_m_post_j, C_d_post_j = _stress_inversion_instability(
+                # run inversion for current value of friction coefficient
+                output_j = _stress_inversion_instability(
                     avg_stress_tensor,
                     mu_j,
                     strikes_1,
@@ -1171,6 +1173,15 @@ def inversion_one_set_instability(
                     verbose=verbose,
                     plot=plot,
                 )
+                # compute eigendecomposition of inverted stress tensor
+                (
+                    principal_stresses,
+                    principal_directions,
+                ) = utils_stress.stress_tensor_eigendecomposition(
+                        output_j["stress_tensor"]
+                        )
+                R = utils_stress.R_(principal_stresses)
+                # compute the average fault plane instability
                 I_j = compute_instability_parameter(
                     principal_directions,
                     R,
@@ -1188,15 +1199,11 @@ def inversion_one_set_instability(
                 if I_j > Imax:
                     # new best solution
                     Imax = I_j
-                    stress_tensor, C_m_post, C_d_post = (
-                        stress_tensor_j,
-                        C_m_post_j,
-                        C_d_post_j,
-                    )
+                    output_ = output_j.copy()
                     best_friction_coefficient = mu_j
         else:
             # friction coefficient was given by user
-            stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
+            output_ = _stress_inversion_instability(
                 avg_stress_tensor,
                 friction_coefficient,
                 strikes_1,
@@ -1216,13 +1223,18 @@ def inversion_one_set_instability(
                 verbose=verbose,
                 plot=plot,
             )
-        final_stress_tensor += stress_tensor
+        final_stress_tensor += output_["stress_tensor"]
+        C_d_posterior += output_["C_d_posterior"]
+        C_m_posterior += output_["C_m_posterior"]
         if friction_coefficient is None:
             # friction coefficient is being inverted for
             final_friction_coefficient += best_friction_coefficient
     final_stress_tensor /= float(n_averaging)
+    C_d_posterior /= float(n_averaging)
+    C_m_posterior /= float(n_averaging)
     if friction_coefficient is None:
         friction_coefficient = final_friction_coefficient / float(n_averaging)
+    # eigendecomposition of averaged stress tensor
     (
         principal_stresses,
         principal_directions,
@@ -1232,17 +1244,14 @@ def inversion_one_set_instability(
         print("Final results:")
         print("Stress tensor:\n", final_stress_tensor)
         print("Shape ratio: {:.2f}".format(R))
-    output = (
-        final_stress_tensor,
-        friction_coefficient,
-        principal_stresses,
-        principal_directions,
-    )
+    output = {}
+    output["stress_tensor"] = final_stress_tensor
+    output["friction_coefficient"] = friction_coefficient
+    output["principal_stresses"] = principal_stresses
+    output["principal_directions"] = principal_directions
     if return_stats:
-        output = output + (
-            C_m_post,
-            C_d_post,
-        )
+        output["C_d_posterior"] = C_d_posterior
+        output["C_m_posterior"] = C_m_posterior
     return output
 
 
@@ -1443,7 +1452,11 @@ def inversion_jackknife_instability(
                 jack_principal_stresses[b, ...],
                 jack_principal_directions[b, ...],
             ) = _bootstrap_solution_p(b)
-    return jack_stress_tensors, jack_principal_stresses, jack_principal_directions
+    output = {}
+    output["jack_stress_tensor"] = jack_stress_tensors
+    output["jack_principal_stresses"] = jack_principal_stresses
+    output["jack_principal_directions"] = jack_principal_directions
+    return output
 
 
 def inversion_bootstrap_instability(
@@ -1619,7 +1632,11 @@ def inversion_bootstrap_instability(
                 boot_principal_stresses[b, ...],
                 boot_principal_directions[b, ...],
             ) = _bootstrap_solution_p(b)
-    return boot_stress_tensors, boot_principal_stresses, boot_principal_directions
+    output = {}
+    output["boot_stress_tensor"] = boot_stress_tensors
+    output["boot_principal_stresses"] = boot_principal_stresses
+    output["boot_principal_directions"] = boot_principal_directions
+    return output
 
 
 def _bootstrap_solution(
@@ -1685,7 +1702,7 @@ def _bootstrap_solution(
         dips_2[bootstrap_set],
         rakes_2[bootstrap_set],
     )
-    stress_tensor, C_m_post, C_d_post = _stress_inversion_instability(
+    output_ = _stress_inversion_instability(
         stress_tensor_main,
         friction_coefficient,
         strikes_1_b,
@@ -1705,8 +1722,8 @@ def _bootstrap_solution(
         verbose=0,
         plot=False,
     )
-    return (stress_tensor,) + utils_stress.stress_tensor_eigendecomposition(
-        stress_tensor
+    return (output_["stress_tensor"],) + utils_stress.stress_tensor_eigendecomposition(
+        output_["stress_tensor"]
     )
 
 
@@ -1752,10 +1769,6 @@ def _stress_inversion_instability(
     # initialize variables
     n_earthquakes = len(strikes_1)
     stress_tensor = stress_tensor0
-    (
-        principal_stresses,
-        principal_directions,
-    ) = utils_stress.stress_tensor_eigendecomposition(stress_tensor0)
     stress_diff = 0.0
     total_instability = 0.0
     total_differential_instability = -100.0
@@ -1763,11 +1776,19 @@ def _stress_inversion_instability(
     residuals = np.finfo(np.float32).max
     best_residuals = np.finfo(np.float32).max
     fault_strikes, fault_dips, fault_rakes = [np.zeros(n_earthquakes) for i in range(3)]
-    C_m_post = np.zeros((5, 5), dtype=np.float32)
-    C_d_post = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
+    #C_m_post = np.zeros((5, 5), dtype=np.float32)
+    #C_d_post = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
     weights = np.ones(3 * n_earthquakes, dtype=np.float32)
     # start the nodal plane selection loop
     for n in range(n_stress_iter):
+        # get stress state of previous iteration to determine the
+        # set of fault planes that maximize instability
+        (
+            principal_stresses,
+            principal_directions,
+        ) = utils_stress.stress_tensor_eigendecomposition(
+                stress_tensor0
+                )
         R = utils_stress.R_(principal_stresses)
         # ------------
         # copy variables from previous iteration
@@ -1866,40 +1887,27 @@ def _stress_inversion_instability(
             Tarantola_kwargs["C_d"] = np.diag(1.0 / weights)
         Tarantola_kwargs["C_d_inv"] = np.linalg.inv(Tarantola_kwargs["C_d"])
         if variable_shear:
-            (
-                stress_tensor,
-                _,
-                principal_stresses,
-                principal_directions,
-                C_m_post,
-                C_d_post,
-            ) = iterative_linear_si(
+            output_ = iterative_linear_si(
                 fault_strikes,
                 fault_dips,
                 fault_rakes,
-                return_eigen=True,
+                return_eigen=False,
                 return_stats=True,
                 Tarantola_kwargs=Tarantola_kwargs,
                 max_n_iterations=max_n_iterations,
                 shear_update_atol=shear_update_atol,
             )
         else:
-            (
-                stress_tensor,
-                principal_stresses,
-                principal_directions,
-                C_m_post,
-                C_d_post,
-            ) = Michael1984_inversion(
+            output_ = Michael1984_inversion(
                 fault_strikes,
                 fault_dips,
                 fault_rakes,
-                return_eigen=True,
+                return_eigen=False,
                 return_stats=True,
                 Tarantola_kwargs=Tarantola_kwargs,
             )
-        R = utils_stress.R_(principal_stresses)
-        stress_diff = np.sum((stress_tensor - stress_tensor0) ** 2)
+        stress_tensor = output_["stress_tensor"]
+        stress_diff = np.sum((output_["stress_tensor"] - stress_tensor0) ** 2)
         if criterion_on_noconvergence == "residuals":
             # ------------------------------------
             # Compute residuals in case the instability loop doesn't converge
@@ -1908,13 +1916,11 @@ def _stress_inversion_instability(
             n_, d_ = utils_stress.normal_slip_vectors(
                 fault_strikes, fault_dips, fault_rakes
             )
-            _, _, shear_traction = utils_stress.compute_traction(stress_tensor, n_.T)
-            # compute shear stress magnitudes
-            shear_mag = np.sqrt(np.sum(shear_traction**2, axis=-1))
+            shear_mag = np.sqrt(np.sum(output_["predicted_shear_stress"]**2, axis=-1))
             if variable_shear:
-                res = (shear_traction - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
+                res = (output_["predicted_shear_stress"] - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
             else:
-                res = (shear_traction - np.mean(shear_mag) * d_.T).reshape(-1, 1)
+                res = (output_["predicted_shear_stress"] - np.mean(shear_mag) * d_.T).reshape(-1, 1)
             residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
             if residuals < best_residuals:
                 # One possibility: update prior model at this stage
@@ -1929,16 +1935,18 @@ def _stress_inversion_instability(
                 #).reshape(-1, 1)
                 # store best results
                 best_residuals = float(residuals)
-                best_stress_tensor = stress_tensor.copy()
-                best_C_m_post = C_m_post.copy()
-                best_C_d_post = C_d_post.copy()
+                best_stress_tensor = output_["stress_tensor"].copy()
+                best_C_m_post = output_["C_m_posterior"].copy()
+                best_C_d_post = output_["C_d_posterior"].copy()
         if plot:
             fig = plt.figure("iteration_{:d}".format(n))
             ax1 = fig.add_subplot(2, 2, 1, projection="stereonet")
             ax1.set_title("R={:.2f}".format(R))
             markers = ["o", "s", "v"]
             for k in range(3):
-                az, pl = utils_stress.get_bearing_plunge(principal_directions[:, k])
+                az, pl = utils_stress.get_bearing_plunge(
+                        output_["principal_directions[:, k]"]
+                        )
                 ax1.line(
                     pl,
                     az,
@@ -1968,6 +1976,13 @@ def _stress_inversion_instability(
                 "Stress tensor difference at iteration {:d}: {}.".format(n, stress_diff)
             )
             # print(stress_tensor)
+            (
+                principal_stresses,
+                principal_directions,
+            ) = utils_stress.stress_tensor_eigendecomposition(
+                    output_["stress_tensor"]
+                    )
+            R = utils_stress.R_(principal_stresses)
             print("R={:.2f}, friction={:.2f}".format(R, friction_coefficient))
             print(
                 "Total instability: {:.2f}/Total differential instability: {:.2f}".format(
@@ -1977,7 +1992,7 @@ def _stress_inversion_instability(
             print(
                 "Average angle: {:.2f}".format(
                     utils_stress.mean_angular_residual(
-                        stress_tensor, fault_strikes, fault_dips, fault_rakes
+                        output_["stress_tensor"], fault_strikes, fault_dips, fault_rakes
                     )
                 )
             )
@@ -1985,20 +2000,23 @@ def _stress_inversion_instability(
         if stress_diff < stress_tensor_update_atol:
             # stop stress instability loop
             break
+    output = {}
     if stress_diff >= stress_tensor_update_atol:
-        # did not convergence, get results from
-        # best stress tensor
-        stress_tensor = best_stress_tensor
-        C_m_post = best_C_m_post
-        C_d_post = best_C_d_post
+        # did not convergence, get results from best stress tensor
+        output["stress_tensor"] = best_stress_tensor
+        output["C_m_posterior"] = best_C_m_post
+        output["C_d_posterior"] = best_C_d_post
         if verbose > 0:
             (
                 principal_stresses,
                 principal_directions,
-            ) = utils_stress.stress_tensor_eigendecomposition(stress_tensor)
+            ) = utils_stress.stress_tensor_eigendecomposition(output["stress_tensor"])
             R = utils_stress.R_(principal_stresses)
             print("Did not converge, return best (R={:.2f})".format(R))
-    return stress_tensor, C_m_post, C_d_post
+    else:
+        # output is the result of the last iteration
+        output = output_
+    return output
 
 
 # ---------------------------------------------------
