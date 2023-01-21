@@ -109,10 +109,7 @@ def Tarantola_Valette(
     # t_start = give_time()
     dim_D = G.shape[0]
     dim_M = G.shape[1]
-    # pre-compute transposed G
-    # Gt = G.T
     if C_d is None:
-        #C_d = np.identity(dim_D, dtype=np.float32)
         C_d = np.zeros((dim_D, dim_D), dtype=np.float32)
         C_d_inv = np.identity(dim_D, dtype=np.float32)
     elif C_d_inv is None and inversion_space == "model_space":
@@ -151,15 +148,13 @@ def Tarantola_Valette(
         try:
             inv = np.linalg.inv(Gt_Cdinv.dot(G) + C_m_inv)
         except LinAlgError:
+            print("Could not solve the inverse problem in the model space.")
             print("Forward modelling matrix:", G)
             print("Inverse data cov matrix:", C_d_inv)
             print("Inverse model cov matrix:", C_m_inv)
             print(np.dot(Gt_Cdinv, G))
             sys.exit()
-        if inv[1, 1] < 0.0:
-            print(G.T @ G, C_d_inv, C_m_inv)
         m_inv = m_prior + (inv.dot(Gt_Cdinv)).dot(data - G.dot(m_prior))
-        # m_inv = inv@G.T@data
         C_m_posterior = inv.copy()
     else:
         print('inversion_spce should either be "model_space" ' 'or "data_space"')
@@ -1178,10 +1173,10 @@ def inversion_one_set_instability(
                     verbose=verbose,
                     plot=plot,
                 )
-                (
-                    principal_stresses,
-                    principal_directions,
-                ) = utils_stress.stress_tensor_eigendecomposition(stress_tensor)
+                #(
+                #    principal_stresses,
+                #    principal_directions,
+                #) = utils_stress.stress_tensor_eigendecomposition(stress_tensor)
                 I_j = compute_instability_parameter(
                     principal_directions,
                     R,
@@ -1239,20 +1234,6 @@ def inversion_one_set_instability(
         principal_directions,
     ) = utils_stress.stress_tensor_eigendecomposition(final_stress_tensor)
     R = utils_stress.R_(principal_stresses)
-    ## given the inverted stress tensor, search the friction coefficient
-    ## that maximizes the average instability across all fault planes
-    # instability, fault_strikes, fault_dips, fault_rakes =\
-    #        compute_instability_parameter(principal_directions, R, friction_coefficient,
-    #                                      strikes_1, dips_1, rakes_1,
-    #                                      strikes_2, dips_2, rakes_2,
-    #                                      return_fault_planes=True,
-    #                                      signed_instability=signed_instability)
-    # optimal_friction = find_optimal_friction_one_set(
-    #        fault_strikes, fault_dips, fault_rakes,
-    #        principal_directions, R,
-    #        friction_min=friction_min,
-    #        friction_max=friction_max,
-    #        friction_step=friction_step)
     if verbose > 0:
         print("Final results:")
         print("Stress tensor:\n", final_stress_tensor)
@@ -1824,10 +1805,13 @@ def _stress_inversion_instability(
             return_fault_planes=True,
         )
         total_instability = np.mean(np.max(instability, axis=-1))
-        total_differential_instability = np.mean(
-            np.abs(instability[:, 1] - instability[:, 0])
-        )
         if weighted:
+            # ----------------------------------
+            #    This feature is experimental.
+            # ----------------------------------
+            total_differential_instability = np.mean(
+                np.abs(instability[:, 1] - instability[:, 0])
+            )
             # decide to keep or not previous fault planes probabilisticly based
             # on the instability values
             # sigmoid probability:
@@ -1872,7 +1856,7 @@ def _stress_inversion_instability(
             weights = 10.0 * weights**2
         else:
             weights = np.ones(3 * n_earthquakes, dtype=np.float32)
-        p = (weights / np.sum(weights))[::3]
+        #p = (weights / np.sum(weights))[::3]
         if "C_d" in Tarantola_kwargs:
             # update existing covariance matrix
             Tarantola_kwargs["C_d"] = Tarantola_kwargs["C_d"] + np.diag(1.0 / weights)
@@ -1919,26 +1903,32 @@ def _stress_inversion_instability(
             )
         R = utils_stress.R_(principal_stresses)
         stress_diff = np.sum((stress_tensor - stress_tensor0) ** 2)
-        # compute residuals
+        # ------------------------------------
+        # Compute residuals in case the instability loop doesn't converge
+        # ------------------------------------
+        # normal and slip vectors
         n_, d_ = utils_stress.normal_slip_vectors(
             fault_strikes, fault_dips, fault_rakes
         )
         _, _, shear_traction = utils_stress.compute_traction(stress_tensor, n_.T)
+        # compute shear stress magnitudes
         shear_mag = np.sqrt(np.sum(shear_traction**2, axis=-1))
-        res = (shear_traction - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
-        residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0] / np.sum(
-            np.diag(Tarantola_kwargs["C_d_inv"])
-        )
+        if variable_shear:
+            res = (shear_traction - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
+        else:
+            res = (shear_traction - np.mean(shear_mag) * d_.T).reshape(-1, 1)
+        residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
         if residuals < best_residuals:
-            Tarantola_kwargs["m_prior"] = np.array(
-                [
-                    stress_tensor[0, 0],
-                    stress_tensor[0, 1],
-                    stress_tensor[0, 2],
-                    stress_tensor[1, 1],
-                    stress_tensor[1, 2],
-                ]
-            ).reshape(-1, 1)
+            # One possibility: update prior model at this stage
+            #Tarantola_kwargs["m_prior"] = np.array(
+            #    [
+            #        stress_tensor[0, 0],
+            #        stress_tensor[0, 1],
+            #        stress_tensor[0, 2],
+            #        stress_tensor[1, 1],
+            #        stress_tensor[1, 2],
+            #    ]
+            #).reshape(-1, 1)
             # store best results
             best_residuals = float(residuals)
             best_stress_tensor = stress_tensor.copy()

@@ -3,6 +3,42 @@ import sys
 import numpy as np
 from numpy.linalg import LinAlgError
 
+def A_phi_(principal_stresses, principal_directions):
+    """Compute A_phi as defined by Simpson 1997.
+
+    Parameters
+    -----------
+    principal_stresses: (3,) numpy array
+        The three eigenvalues of the stress tensor, ordered
+        from most compressive (sigma1) to least compressive (sigma3).
+    principal_directions: (3, 3) numpy array
+        The three eigenvectors of the stress tensor, stored in
+        a matrix as column vectors and ordered from
+        most compressive (sigma1) to least compressive (sigma3).
+        The direction of sigma_i is given by: `principal_directions[:, i]`.
+
+    Returns
+    --------
+    A_phi: scalar, float
+    """
+    # first, find the stress axis closest to the vertical
+    max_dip = 0.
+    for i in range(3):
+        stress_dir = principal_directions[:, i]
+        az, dip = get_bearing_plunge(stress_dir)
+        if dip > max_dip:
+            max_dip = dip
+            vertical_stress_idx = i
+    # n is the number of principal stresses larger than the "vertical" stress
+    # n=0 for normal faulting
+    # n=1 for strike-slip faulting
+    # n=2 for reverse faulting
+    n = np.sum(principal_stresses < principal_stresses[vertical_stress_idx])
+    # compute the shape ratio
+    R = R_(principal_stresses)
+    # compute A_phi
+    A_phi = (n + 0.5) + (-1.)**n * (0.5 - R)
+    return A_phi
 
 def hist2d(azimuths, plunges, nbins=200, smoothing_sig=0, plot=False):
     """
