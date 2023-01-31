@@ -390,7 +390,8 @@ def check_right_handedness(basis):
 
 
 def compute_traction(stress_tensor, normal):
-    """
+    """Compute traction and its normal and shear components on a given plane.
+
     Parameters
     -----------
     stress_tensor: (3, 3) numpy array
@@ -984,7 +985,8 @@ def round_cos(x):
 
 
 def stress_tensor_eigendecomposition(stress_tensor):
-    """
+    """Compute the eigendecomposition of stress tensor.
+
     Parameters
     -----------
     stress_tensor: (3, 3) numpy array.
