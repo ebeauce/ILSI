@@ -29,14 +29,24 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
 
     # read strikes, dips and rakes from your data file.
 
-    # get solution from original data set
-    stress_tensor, friction, principal_stresses, principal_directions =\
-                  ILSI.ilsi.inversion_one_set_instability(strikes, dips, rakes)
-    # estimate uncertainties by resampling the data set
+    # get solution from original data set (output is a dictionary)
+    inversion_output = ILSI.ilsi.inversion_one_set_instability(
+            strikes, dips, rakes
+        )
+    # check out the content of the dictionary
+    print(inversion_output.keys())
+    # estimate uncertainties by resampling the data set (output is a dictionary)
     shape_ratio = ILSI.utils_stress.R_(principal_stresses)
-    boot_stress_tensor, boot_principal_stresses, boot_principal_directions =\
-                  ILSI.ilsi.inversion_bootstrap_instability(
-                        principal_directions, shape_ratio, strikes, dips, rakes, friction)
+    bootstrap_output = ILSI.ilsi.inversion_bootstrap_instability(
+            inversion_output["principal_directions"],
+            shape_ratio,
+            strikes,
+            dips,
+            rakes,
+            inversion_output["friction_coefficient"]
+        )
+    # check out the content of the dictionary
+    print(bootstrap_output.keys())
 ```
 
 ### Inverting slickenside data
@@ -48,12 +58,18 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
     # read strikes, dips and rakes from your data file.
 
     # get solution from original data set
-    stress_tensor, principal_stresses, principal_directions =\
-                 ILSI.ilsi.iterative_linear_si(strikes, dips, rakes)
+    inversion_output = ILSI.ilsi.iterative_linear_si(
+            strikes, dips, rakes
+        )
     # if you want to bootstrap the data set, simply resample the data
     # set successively in a loop and call ILSI.ilsi.iterative_linear_si
     # on the resampled strikes, dips and rakes
 ```
+
+## Updates
+
+- v1.1.1: Outputs are now given as dictionaries for more flexibility. Make sure
+  to update your scripts.
 
 ## Tutorials
 Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2022. See the list of required packages at the top of the scripts. The `plotFMC` and `functionsFMC` librairies are from the FMC repository available at [https://github.com/Jose-Alvarez/FMC](https://github.com/Jose-Alvarez/FMC).
