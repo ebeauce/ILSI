@@ -226,33 +226,33 @@ def iterative_linear_si(
 
     Returns
     --------
-    full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor in the (north, west, up) coordinate system.
-    principal_stresses: (3,) numpy array, optional
-        The three eigenvalues of the stress tensor, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-        Only provided if `return_eigen` is True.
-    principal_directions: (3, 3) numpy array, optional
-        The three eigenvectors of the stress tensor, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: `principal_directions[:, i]`.
-        Only provided if `return_eigen` is True.
-    C_m_posterior: (5, 5) array, optional
-        Posterior covariance of the model parameter distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
-    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
-        Posterior covariance of the data distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
+    output: dict {str: numpy.ndarray}
+        - output["stress_tensor"]: (3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["principal_stresses"]: (3,) numpy.ndarray, optional
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+            Returned if `return_eigen` is True.
+        - output["principal_directions"]: (3, 3) numpy.ndarray, optional
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i is
+            given by: `principal_directions[:, i]`.
+            Returned if `return_eigen` is True.
+        - output["C_m_posterior"]: (5, 5) numpy.ndarray, optional
+            Posterior covariance of the model parameter distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
+        - output["C_d_posterior"]: (3 x n_earthquakes, 3 x n_earthquakes) numpy.ndarray, optional
+            Posterior covariance of the data distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
     """
     # t_start = give_time()
     # First, convert the strike/dip/rake into slip and normal vectors.
     n_earthquakes = len(strikes)
-    n_, d_ = utils_stress.normal_slip_vectors(
-            strikes, dips, rakes, direction="inward"
-            )
+    n_, d_ = utils_stress.normal_slip_vectors(strikes, dips, rakes, direction="inward")
     n_, d_ = n_.T, d_.T
     # Next, define the matrix that relates the stress tensor
     # to the observed slip vectors, given the fault geometries
@@ -307,7 +307,7 @@ def iterative_linear_si(
         # compute shear magnitudes
         shear0 = shear.copy()
         predicted_shear = (G @ sigma).reshape(n_earthquakes, 3)
-        shear = np.sqrt(np.sum(predicted_shear ** 2, axis=-1))
+        shear = np.sqrt(np.sum(predicted_shear**2, axis=-1))
         shear_update = np.sqrt(np.mean((shear - shear0) ** 2))
         # print('Shear stress update: {:.3e}'.format(shear_update))
         if shear_update < shear_update_atol:
@@ -397,26 +397,31 @@ def Michael1984_inversion(
 
     Returns
     --------
-    full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor in the (north, west, up) coordinate system.
-    principal_stresses: (3,) numpy array, optional
-        The three eigenvalues of the stress tensor, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-        Only provided if `return_eigen` is True.
-    principal_directions: (3, 3) numpy array, optional
-        The three eigenvectors of the stress tensor, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: `principal_directions[:, i]`.
-        Only provided if `return_eigen` is True.
-    C_m_posterior: (5, 5) array, optional
-        Posterior covariance of the model parameter distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
-    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
-        Posterior covariance of the data distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
+    output: dict {str: numpy.ndarray}
+        - output["stress_tensor"]: (3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["principal_stresses"]: (3,) numpy.ndarray, optional
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+            Returned if `return_eigen` is True.
+        - output["predicted_shear_stress"]: (n_earthquakes, 3) numpy.ndarray
+            The shear tractions resolved on the fault planes described by `strikes`,
+            `dips` and `rakes` computed with the inverted stress tensor.
+        - output["principal_directions"]: (3, 3) numpy.ndarray, optional
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i is
+            given by: `principal_directions[:, i]`.
+            Returned if `return_eigen` is True.
+        - output["C_m_posterior"]: (5, 5) numpy.ndarray, optional
+            Posterior covariance of the model parameter distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
+        - output["C_d_posterior"]: (3 x n_earthquakes, 3 x n_earthquakes) numpy.ndarray, optional
+            Posterior covariance of the data distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
     """
     # First, convert the strike/dip/rake into slip and normal vectors.
     n_earthquakes = len(strikes)
@@ -537,24 +542,28 @@ def inversion_one_set(
 
     Returns
     --------
-    full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor in the (north, west, up) coordinate system.
-    principal_stresses: (3,) numpy array
-        The three eigenvalues of the stress tensor, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-    principal_directions: (3, 3) numpy array
-        The three eigenvectors of the stress tensor, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: principal_directions[:, i]
-    C_m_posterior: (5, 5) array, optional
-        Posterior covariance of the model parameter distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
-    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
-        Posterior covariance of the data distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
+    output: dict {str: numpy.ndarray}
+        - output["stress_tensor"]: (3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["principal_stresses"]: (3,) numpy.ndarray, optional
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+            Returned if `return_eigen` is True.
+        - output["principal_directions"]: (3, 3) numpy.ndarray, optional
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i is
+            given by: `principal_directions[:, i]`.
+            Returned if `return_eigen` is True.
+        - output["C_m_posterior"]: (5, 5) numpy.ndarray, optional
+            Posterior covariance of the model parameter distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
+        - output["C_d_posterior"]: (3 x n_earthquakes, 3 x n_earthquakes) numpy.ndarray, optional
+            Posterior covariance of the data distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
@@ -608,7 +617,7 @@ def inversion_one_set(
             )
         # add them to the average
         avg_stress_tensor += output_["stress_tensor"]
-        avg_C_m_posterior += output_["C_m_posterior"] 
+        avg_C_m_posterior += output_["C_m_posterior"]
         avg_C_d_posterior += output_["C_d_posterior"]
     avg_stress_tensor /= float(n_random_selections)
     avg_C_m_posterior /= float(n_random_selections)
@@ -701,17 +710,19 @@ def inversion_jackknife(
 
     Returns
     --------
-    jack_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors in the (north, west, up) coordinate system.
-    jack_principal_stresses: (n_resamplings, 3) numpy array
-        The three eigenvalues of the stress tensors, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-    jack_principal_directions: (n_resamplings, 3, 3) numpy array
-        The three eigenvectors of the stress tensors, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i for the b-th resampled data set
-        is given by: `principal_directions[b, :, i]`.
+    output: dict {str: numpy.ndarray}
+        - output["jack_stress_tensor"]: (n_resamplings, 3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["jack_principal_stresses"]: (n_resamplings, 3) numpy.ndarray
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+        - output["jack_principal_directions"]: (n_resamplings, 3, 3) numpy.ndarray
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i for
+            the b-th jackknife replica is given by:
+            `jack_principal_directions[b, :, i]`.
     """
     # compute auxiliary planes
     jack_strikes_1, jack_dips_1, jack_rakes_1 = jack_strikes, jack_dips, jack_rakes
@@ -793,6 +804,7 @@ def inversion_jackknife(
     output["jack_principal_directions"] = jack_principal_directions
     return output
 
+
 def inversion_bootstrap(
     strikes,
     dips,
@@ -850,17 +862,19 @@ def inversion_bootstrap(
 
     Returns
     --------
-    boot_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors in the (north, west, up) coordinate system.
-    boot_principal_stresses: (n_resamplings, 3) numpy array
-        The three eigenvalues of the stress tensors, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-    boot_principal_directions: (n_resamplings, 3, 3) numpy array
-        The three eigenvectors of the stress tensors, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i for the b-th resampled data set
-        is given by: `principal_directions[b, :, i]`.
+    output: dict {str: numpy.ndarray}
+        - output["boot_stress_tensor"]: (n_resamplings, 3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["boot_principal_stresses"]: (n_resamplings, 3) numpy.ndarray
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+        - output["boot_principal_directions"]: (n_resamplings, 3, 3) numpy.ndarray
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i for
+            the b-th bootstrap replica is given by:
+            `boot_principal_directions[b, :, i]`.
     """
 
     # compute auxiliary planes
@@ -1049,27 +1063,29 @@ def inversion_one_set_instability(
 
     Returns
     --------
-    full_stress_tensor: (3, 3) numpy array
-        The inverted stress tensor in the (north, west, up) coordinate system.
-    optimal_friction: float
-        The friction value that maximizes the instability parameter
-        found during the grid search.
-    principal_stresses: (3,) numpy array
-        The three eigenvalues of the stress tensor, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-    principal_directions: (3, 3) numpy array
-        The three eigenvectors of the stress tensor, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i is given by: `principal_directions[:, i]`.
-    C_m_posterior: (5, 5) array, optional
-        Posterior covariance of the model parameter distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
-    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array, optional
-        Posterior covariance of the data distribution
-        estimated from the Tarantola and Valette formula.
-        Only provided if `return_stats` is True.
+    output: dict {str: numpy.ndarray}
+        - output["stress_tensor"]: (3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["friction_coefficient"]: scalar float
+            The best friction coefficient determined by the inversion
+            or the input friction coefficient (see `friction_coefficient`).
+        - output["principal_stresses"]: (3,) numpy.ndarray
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+        - output["principal_directions"]: (3, 3) numpy.ndarray
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i is
+            given by: `principal_directions[:, i]`.
+        - output["C_m_posterior"]: (5, 5) numpy.ndarray, optional
+            Posterior covariance of the model parameter distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
+        - output["C_d_posterior"]: (3 x n_earthquakes, 3 x n_earthquakes) numpy.ndarray, optional
+            Posterior covariance of the data distribution
+            estimated from the Tarantola and Valette formula.
+            Returned if `return_stats` is True.
     """
     if plot:
         import mplstereonet
@@ -1178,8 +1194,8 @@ def inversion_one_set_instability(
                     principal_stresses,
                     principal_directions,
                 ) = utils_stress.stress_tensor_eigendecomposition(
-                        output_j["stress_tensor"]
-                        )
+                    output_j["stress_tensor"]
+                )
                 R = utils_stress.R_(principal_stresses)
                 # compute the average fault plane instability
                 I_j = compute_instability_parameter(
@@ -1362,17 +1378,19 @@ def inversion_jackknife_instability(
 
     Returns
     --------
-    jack_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors in the (north, west, up) coordinate system.
-    jack_principal_stresses: (n_resamplings, 3) numpy array
-        The three eigenvalues of the stress tensors, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-    jack_principal_directions: (n_resamplings, 3, 3) numpy array
-        The three eigenvectors of the stress tensors, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i for the b-th resampled data set
-        is given by: `principal_directions[b, :, i]`.
+    output: dict {str: numpy.ndarray}
+        - output["jack_stress_tensor"]: (n_resamplings, 3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["jack_principal_stresses"]: (n_resamplings, 3) numpy.ndarray
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+        - output["jack_principal_directions"]: (n_resamplings, 3, 3) numpy.ndarray
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i for
+            the b-th jackknife replica is given by:
+            `jack_principal_directions[b, :, i]`.
     """
     # compute auxiliary planes
     jack_strikes_1, jack_dips_1, jack_rakes_1 = jack_strikes, jack_dips, jack_rakes
@@ -1555,17 +1573,19 @@ def inversion_bootstrap_instability(
 
     Returns
     --------
-    boot_avg_stress_tensors: (n_resamplings, 3, 3) numpy array
-        The inverted stress tensors in the (north, west, up) coordinate system.
-    boot_principal_stresses: (n_resamplings, 3) numpy array
-        The three eigenvalues of the stress tensors, ordered
-        from most compressive (sigma1) to least compressive (sigma3).
-    boot_principal_directions: (n_resamplings, 3, 3) numpy array
-        The three eigenvectors of the stress tensors, stored in
-        a matrix as column vectors and ordered from
-        most compressive (sigma1) to least compressive (sigma3).
-        The direction of sigma_i for the b-th resampled data set
-        is given by: `principal_directions[b, :, i]`.
+    output: dict {str: numpy.ndarray}
+        - output["boot_stress_tensor"]: (n_resamplings, 3, 3) numpy.ndarray
+            The inverted stress tensor in the (north, west, up)
+            coordinate system.
+        - output["boot_principal_stresses"]: (n_resamplings, 3) numpy.ndarray
+            The three eigenvalues of the stress tensor, ordered from
+            most compressive (sigma1) to least compressive (sigma3).
+        - output["boot_principal_directions"]: (n_resamplings, 3, 3) numpy.ndarray
+            The three eigenvectors of the stress tensor, stored in a matrix
+            as column vectors and ordered from most compressive (sigma1)
+            to least compressive (sigma3). The direction of sigma_i for
+            the b-th bootstrap replica is given by:
+            `boot_principal_directions[b, :, i]`.
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
@@ -1755,9 +1775,7 @@ def _stress_inversion_instability(
     stress_tensor_update_atol = kwargs.get("stress_tensor_update_atol", 1.0e-4)
     verbose = kwargs.get("verbose", 1)
     plot = kwargs.get("plot", False)
-    criterion_on_noconvergence = kwargs.get(
-            "criterion_on_noconvergence", "residuals"
-            )
+    criterion_on_noconvergence = kwargs.get("criterion_on_noconvergence", "residuals")
     if Tarantola_kwargs is None:
         Tarantola_kwargs = {}
     else:
@@ -1776,8 +1794,8 @@ def _stress_inversion_instability(
     residuals = np.finfo(np.float32).max
     best_residuals = np.finfo(np.float32).max
     fault_strikes, fault_dips, fault_rakes = [np.zeros(n_earthquakes) for i in range(3)]
-    #C_m_post = np.zeros((5, 5), dtype=np.float32)
-    #C_d_post = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
+    # C_m_post = np.zeros((5, 5), dtype=np.float32)
+    # C_d_post = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
     weights = np.ones(3 * n_earthquakes, dtype=np.float32)
     # start the nodal plane selection loop
     for n in range(n_stress_iter):
@@ -1786,9 +1804,7 @@ def _stress_inversion_instability(
         (
             principal_stresses,
             principal_directions,
-        ) = utils_stress.stress_tensor_eigendecomposition(
-                stress_tensor0
-                )
+        ) = utils_stress.stress_tensor_eigendecomposition(stress_tensor0)
         R = utils_stress.R_(principal_stresses)
         # ------------
         # copy variables from previous iteration
@@ -1874,7 +1890,7 @@ def _stress_inversion_instability(
             weights = 10.0 * weights**2
         else:
             weights = np.ones(3 * n_earthquakes, dtype=np.float32)
-        #p = (weights / np.sum(weights))[::3]
+        # p = (weights / np.sum(weights))[::3]
         if "C_d" in Tarantola_kwargs:
             # update existing covariance matrix
             Tarantola_kwargs["C_d"] = Tarantola_kwargs["C_d"] + np.diag(1.0 / weights)
@@ -1916,15 +1932,19 @@ def _stress_inversion_instability(
             n_, d_ = utils_stress.normal_slip_vectors(
                 fault_strikes, fault_dips, fault_rakes
             )
-            shear_mag = np.sqrt(np.sum(output_["predicted_shear_stress"]**2, axis=-1))
+            shear_mag = np.sqrt(np.sum(output_["predicted_shear_stress"] ** 2, axis=-1))
             if variable_shear:
-                res = (output_["predicted_shear_stress"] - shear_mag[:, np.newaxis] * d_.T).reshape(-1, 1)
+                res = (
+                    output_["predicted_shear_stress"] - shear_mag[:, np.newaxis] * d_.T
+                ).reshape(-1, 1)
             else:
-                res = (output_["predicted_shear_stress"] - np.mean(shear_mag) * d_.T).reshape(-1, 1)
+                res = (
+                    output_["predicted_shear_stress"] - np.mean(shear_mag) * d_.T
+                ).reshape(-1, 1)
             residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
             if residuals < best_residuals:
                 # One possibility: update prior model at this stage
-                #Tarantola_kwargs["m_prior"] = np.array(
+                # Tarantola_kwargs["m_prior"] = np.array(
                 #    [
                 #        stress_tensor[0, 0],
                 #        stress_tensor[0, 1],
@@ -1932,7 +1952,7 @@ def _stress_inversion_instability(
                 #        stress_tensor[1, 1],
                 #        stress_tensor[1, 2],
                 #    ]
-                #).reshape(-1, 1)
+                # ).reshape(-1, 1)
                 # store best results
                 best_residuals = float(residuals)
                 best_stress_tensor = output_["stress_tensor"].copy()
@@ -1945,8 +1965,8 @@ def _stress_inversion_instability(
             markers = ["o", "s", "v"]
             for k in range(3):
                 az, pl = utils_stress.get_bearing_plunge(
-                        output_["principal_directions[:, k]"]
-                        )
+                    output_["principal_directions[:, k]"]
+                )
                 ax1.line(
                     pl,
                     az,
@@ -1979,9 +1999,7 @@ def _stress_inversion_instability(
             (
                 principal_stresses,
                 principal_directions,
-            ) = utils_stress.stress_tensor_eigendecomposition(
-                    output_["stress_tensor"]
-                    )
+            ) = utils_stress.stress_tensor_eigendecomposition(output_["stress_tensor"])
             R = utils_stress.R_(principal_stresses)
             print("R={:.2f}, friction={:.2f}".format(R, friction_coefficient))
             print(
