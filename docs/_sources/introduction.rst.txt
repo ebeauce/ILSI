@@ -3,12 +3,13 @@ Introduction
 
 Description
 -----------
-Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data. Documentation at [https://ebeauce.github.io/ILSI/](https://ebeauce.github.io/ILSI/)
+Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data. The package is available at `https://github.com/ebeauce/ILSI <https://github.com/ebeauce/ILSI>`_.
 
 Reference
 ---------
-Please refer the following article if you use ILSI for your research:<br>
-Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method with Variable Shear Stress Magnitudes for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples, *Bulletin of the Seismological Society of America*, 2022. DOI: [https://doi.org/10.1785/0120210319](https://doi.org/10.1785/0120210319)
+Please refer the following article if you use ILSI for your research:
+
+Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method with Variable Shear Stress Magnitudes for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples, *Bulletin of the Seismological Society of America*, 2022. DOI: `https://doi.org/10.1785/0120210319 <https://doi.org/10.1785/0120210319>`_.
 
 Installation
 ------------
