@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ILSI.utils_stress &mdash; ILSI 1.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> ILSI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../updates.html">Updates</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ILSI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">ILSI.utils_stress</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ILSI.utils_stress</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">LinAlgError</span>
+
+<div class="viewcode-block" id="A_phi_"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.A_phi_">[docs]</a><span class="k">def</span> <span class="nf">A_phi_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">,</span> <span class="n">principal_directions</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute A_phi as defined by Simpson 1997.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    principal_stresses: (3,) numpy.ndarray</span>
+<span class="sd">        The three eigenvalues of the stress tensor, ordered</span>
+<span class="sd">        from most compressive (sigma1) to least compressive (sigma3).</span>
+<span class="sd">    principal_directions: (3, 3) numpy.ndarray</span>
+<span class="sd">        The three eigenvectors of the stress tensor, stored in</span>
+<span class="sd">        a matrix as column vectors and ordered from</span>
+<span class="sd">        most compressive (sigma1) to least compressive (sigma3).</span>
+<span class="sd">        The direction of sigma_i is given by: `principal_directions[:, i]`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    A_phi: scalar, float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first, find the stress axis closest to the vertical</span>
+    <span class="n">max_dip</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">stress_dir</span> <span class="o">=</span> <span class="n">principal_directions</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">az</span><span class="p">,</span> <span class="n">dip</span> <span class="o">=</span> <span class="n">get_bearing_plunge</span><span class="p">(</span><span class="n">stress_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dip</span> <span class="o">&gt;</span> <span class="n">max_dip</span><span class="p">:</span>
+            <span class="n">max_dip</span> <span class="o">=</span> <span class="n">dip</span>
+            <span class="n">vertical_stress_idx</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="c1"># n is the number of principal stresses larger than the &quot;vertical&quot; stress</span>
+    <span class="c1"># n=0 for normal faulting</span>
+    <span class="c1"># n=1 for strike-slip faulting</span>
+    <span class="c1"># n=2 for reverse faulting</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">principal_stresses</span> <span class="o">&lt;</span> <span class="n">principal_stresses</span><span class="p">[</span><span class="n">vertical_stress_idx</span><span class="p">])</span>
+    <span class="c1"># compute the shape ratio</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">R_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">)</span>
+    <span class="c1"># compute A_phi</span>
+    <span class="n">A_phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">-</span> <span class="n">R</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">A_phi</span></div>
+
+<div class="viewcode-block" id="hist2d"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.hist2d">[docs]</a><span class="k">def</span> <span class="nf">hist2d</span><span class="p">(</span><span class="n">azimuths</span><span class="p">,</span> <span class="n">plunges</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">smoothing_sig</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the 2d histogram in the stereographic space</span>
+<span class="sd">    of a collection lines described by their azimuth and plunge.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    azimuths: (n_lines) list or numpy.ndarray, float</span>
+<span class="sd">        Azimuths of the lines.</span>
+<span class="sd">    plunges: (n_lines) list or numpy.ndarray, float</span>
+<span class="sd">        Plunges (angle from horizontal) of the lines.</span>
+<span class="sd">    nbins: integer, default to 200</span>
+<span class="sd">        Number of bins, in both axes, used to discretized</span>
+<span class="sd">        the 2d space.</span>
+<span class="sd">    smoothing_sih: float, default to 0</span>
+<span class="sd">        If greater than 0, smooth the 2d distribution</span>
+<span class="sd">        with a gaussian kernel. This is useful to derive</span>
+<span class="sd">        smooth confidence intervals.</span>
+<span class="sd">    plot: boolean, default to False</span>
+<span class="sd">        If True, plot the 2d histogram.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">mplstereonet</span>
+    <span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+
+    <span class="c1"># convert azimuths and plunges to longitudes and latitudes</span>
+    <span class="c1"># on a stereographic plot</span>
+    <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">mplstereonet</span><span class="o">.</span><span class="n">stereonet_math</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">plunges</span><span class="p">,</span> <span class="n">azimuths</span><span class="p">)</span>
+    <span class="n">count</span><span class="p">,</span> <span class="n">lon_bins</span><span class="p">,</span> <span class="n">lat_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span>
+        <span class="n">lons</span><span class="p">,</span>
+        <span class="n">lats</span><span class="p">,</span>
+        <span class="nb">range</span><span class="o">=</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">]),</span>
+        <span class="n">bins</span><span class="o">=</span><span class="n">nbins</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">lon_bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">lon_bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">lat_bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">lat_bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">smoothing_sig</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">smoothing_sig</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;2d_histogram_stereo&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;stereonet&quot;</span><span class="p">)</span>
+        <span class="n">pcl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">pcl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span></div>
+
+
+<div class="viewcode-block" id="joint_CDF"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.joint_CDF">[docs]</a><span class="k">def</span> <span class="nf">joint_CDF</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+    <span class="c1"># normalize the histogram</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">count</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1"># integrate along first axis, and then along second axis</span>
+    <span class="c1"># while keeping the original shape</span>
+    <span class="n">joint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">joint</span></div>
+
+
+<div class="viewcode-block" id="get_CI_levels"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_CI_levels">[docs]</a><span class="k">def</span> <span class="nf">get_CI_levels</span><span class="p">(</span>
+    <span class="n">azimuths</span><span class="p">,</span>
+    <span class="n">plunges</span><span class="p">,</span>
+    <span class="n">confidence_intervals</span><span class="o">=</span><span class="p">[</span><span class="mf">95.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+    <span class="n">nbins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">smoothing_sig</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">return_count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the 2d histogram in the stereographic space</span>
+<span class="sd">    of a collection lines described by their azimuth and plunge.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    azimuths: (n_lines) list or numpy.ndarray, float</span>
+<span class="sd">        Azimuths of the lines.</span>
+<span class="sd">    plunges: (n_lines) list or numpy.ndarray, float</span>
+<span class="sd">        Plunges (angle from horizontal) of the lines.</span>
+<span class="sd">    nbins: integer, default to 200</span>
+<span class="sd">        Number of bins, in both axes, used to discretized</span>
+<span class="sd">        the 2d space.</span>
+<span class="sd">    smoothing_sig: float, default to 1</span>
+<span class="sd">        If greater than 0, smooth the 2d distribution</span>
+<span class="sd">        with a gaussian kernel. This is useful to derive</span>
+<span class="sd">        smooth confidence intervals.</span>
+<span class="sd">    plot: boolean, default to False</span>
+<span class="sd">        If True, plot the 2d histogram.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    count: (nbins, nbins) numpy.ndarray, integer, optional</span>
+<span class="sd">        2D histogram of the lines dsecribed by azimuths and plunges.</span>
+<span class="sd">        Only provided if `return_count` is True.</span>
+<span class="sd">    lons_g: (nbins, nbins) numpy.ndarray, float, optional</span>
+<span class="sd">        2D grid of the longitudinal coordinate of each bin.</span>
+<span class="sd">        Only provided if `return_count` is True.</span>
+<span class="sd">    lats_g: (nbins, nbins) numpy.ndarray, float, optional</span>
+<span class="sd">        2D grid f the latitudinal coordinate of each bin.</span>
+<span class="sd">        Only provided if `return_count` is True.</span>
+<span class="sd">    confidence_intervals: (nbins, nbins) numpy.ndarray, float</span>
+<span class="sd">        2D distribution of the mass.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+
+    <span class="c1"># get histogram on a 2d grid</span>
+    <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span> <span class="o">=</span> <span class="n">hist2d</span><span class="p">(</span>
+        <span class="n">azimuths</span><span class="p">,</span> <span class="n">plunges</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">nbins</span><span class="p">,</span> <span class="n">smoothing_sig</span><span class="o">=</span><span class="n">smoothing_sig</span>
+    <span class="p">)</span>
+    <span class="c1"># flatten the count array and sort it from largest to smallest</span>
+    <span class="n">count_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># compute the &quot;CDF&quot; of the counts</span>
+    <span class="n">count_CDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">count_vector</span><span class="p">)</span> <span class="o">/</span> <span class="n">count_vector</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]))</span>
+    <span class="n">count_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([</span><span class="n">count_vector</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">count_vector</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]))</span>
+    <span class="c1"># build an interpolator that gives the count number</span>
+    <span class="c1"># for a given % of the total mass</span>
+    <span class="n">mass_dist</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="n">count_CDF</span><span class="p">,</span> <span class="n">count_vector</span><span class="p">)</span>
+    <span class="n">mass_dist_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">mass_dist</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">confidence_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mass_dist_</span><span class="p">,</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">confidence_intervals</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;2d_histogram_stereo&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;stereonet&quot;</span><span class="p">)</span>
+        <span class="n">pcl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+            <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">confidence_intervals</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">pcl</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_count</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">confidence_intervals</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">confidence_intervals</span></div>
+
+
+<div class="viewcode-block" id="get_CI_levels_joint"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_CI_levels_joint">[docs]</a><span class="k">def</span> <span class="nf">get_CI_levels_joint</span><span class="p">(</span>
+    <span class="n">azimuths</span><span class="p">,</span>
+    <span class="n">plunges</span><span class="p">,</span>
+    <span class="n">confidence_intervals</span><span class="o">=</span><span class="p">[</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">95.0</span><span class="p">],</span>
+    <span class="n">nbins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">smoothing_sig</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">return_count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the 2d histogram in the stereographic space</span>
+<span class="sd">    of a collection lines described by their azimuth and plunge.</span>
+<span class="sd">    This is an EXPERIMENTAL function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    azimuths: (n_lines) list or numpy.ndarray, float</span>
+<span class="sd">        Azimuths of the lines.</span>
+<span class="sd">    plunges: (n_lines) list or numpy.ndarray, float</span>
+<span class="sd">        Plunges (angle from horizontal) of the lines.</span>
+<span class="sd">    nbins: integer, default to 200</span>
+<span class="sd">        Number of bins, in both axes, used to discretized</span>
+<span class="sd">        the 2d space.</span>
+<span class="sd">    smoothing_sig: float, default to 1</span>
+<span class="sd">        If greater than 0, smooth the 2d distribution</span>
+<span class="sd">        with a gaussian kernel. This is useful to derive</span>
+<span class="sd">        smooth confidence intervals.</span>
+<span class="sd">    plot: boolean, default to False</span>
+<span class="sd">        If True, plot the 2d histogram.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    count: (nbins, nbins) numpy.ndarray, integer, optional</span>
+<span class="sd">        2D histogram of the lines dsecribed by azimuths and plunges.</span>
+<span class="sd">        Only provided if `return_count` is True.</span>
+<span class="sd">    lons_g: (nbins, nbins) numpy.ndarray, float, optional</span>
+<span class="sd">        2D grid of the longitudinal coordinate of each bin.</span>
+<span class="sd">        Only provided if `return_count` is True.</span>
+<span class="sd">    lats_g: (nbins, nbins) numpy.ndarray, float, optional</span>
+<span class="sd">        2D grid f the latitudinal coordinate of each bin.</span>
+<span class="sd">        Only provided if `return_count` is True.</span>
+<span class="sd">    confidence_intervals: (nbins, nbins) numpy.ndarray, float</span>
+<span class="sd">        2D distribution of the mass.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+
+    <span class="c1"># get histogram on a 2d grid</span>
+    <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span> <span class="o">=</span> <span class="n">hist2d</span><span class="p">(</span>
+        <span class="n">azimuths</span><span class="p">,</span> <span class="n">plunges</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">nbins</span><span class="p">,</span> <span class="n">smoothing_sig</span><span class="o">=</span><span class="n">smoothing_sig</span>
+    <span class="p">)</span>
+    <span class="c1"># compute the joint cumulative distribution function (CDF)</span>
+    <span class="n">joint</span> <span class="o">=</span> <span class="n">joint_CDF</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1"># because we define the (1-2a) confidence interval from the</span>
+    <span class="c1"># a-th and the (1-a)-th percentiles, we conveniently define the</span>
+    <span class="c1"># following function:</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">joint</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.0</span>
+    <span class="c1"># all points for which g &lt; 1-2a are within the 1-2a confidence interval</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="n">confidence_intervals</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;2d_histogram_stereo&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;stereonet&quot;</span><span class="p">)</span>
+        <span class="n">pcl1</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+            <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">confidence_intervals</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">pcl1</span><span class="p">)</span>
+        <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;stereonet&quot;</span><span class="p">)</span>
+        <span class="n">pcl2</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">joint</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+            <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">confidence_intervals</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">pcl2</span><span class="p">)</span>
+        <span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;stereonet&quot;</span><span class="p">)</span>
+        <span class="n">pcl3</span> <span class="o">=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+            <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">confidence_intervals</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">pcl3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_count</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">confidence_intervals</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">confidence_intervals</span></div>
+
+
+<div class="viewcode-block" id="angular_residual"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.angular_residual">[docs]</a><span class="k">def</span> <span class="nf">angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the angle between the direction of the resolved shear</span>
+<span class="sd">    stress predicted by the stress tensor and the direction of</span>
+<span class="sd">    slip given by the strike/dip/rake data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    stress_tensor: (3, 3) numpy.ndarray</span>
+<span class="sd">        The Cauchy stress tensor.</span>
+<span class="sd">    strikes: (n_earthquakes) list or numpy.ndarray</span>
+<span class="sd">        Fault strikes.</span>
+<span class="sd">    dips: (n_earthquakes) list or numpy.ndarray</span>
+<span class="sd">        Fault dips.</span>
+<span class="sd">    rakes: (n_earthquakes) list or numpy.ndarray</span>
+<span class="sd">        Fault rakes.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    angles: (n_earthquakes) numpy.ndarray</span>
+<span class="sd">        Angles between shear stress and slip.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strikes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strikes</span><span class="p">)):</span>
+        <span class="n">angles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">shear_slip_angle_difference</span><span class="p">(</span>
+            <span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dips</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rakes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">angles</span></div>
+
+
+<div class="viewcode-block" id="aux_plane"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.aux_plane">[docs]</a><span class="k">def</span> <span class="nf">aux_plane</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">r1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get Strike and dip of second plane.</span>
+
+<span class="sd">    Adapted from MATLAB script</span>
+<span class="sd">    `bb.m &lt;http://www.ceri.memphis.edu/people/olboyd/Software/Software.html&gt;`_</span>
+<span class="sd">    written by Andy Michael, Chen Ji and Oliver Boyd.</span>
+
+<span class="sd">    Taken from &lt;https://docs.obspy.org/_modules/obspy/imaging/beachball.html#aux_plane&gt;.</span>
+<span class="sd">    See Obspy project at &lt;https://github.com/obspy/obspy&gt;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r2d</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="k">def</span> <span class="nf">_strike_dip</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds strike and dip of plane given normal vector having components n, e,</span>
+<span class="sd">        and u.</span>
+
+<span class="sd">        Adapted from MATLAB script</span>
+<span class="sd">        `bb.m &lt;http://www.ceri.memphis.edu/people/olboyd/Software/Software.html&gt;`_</span>
+<span class="sd">        written by Andy Michael, Chen Ji and Oliver Boyd.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r2d</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="o">-</span><span class="n">e</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">u</span>
+
+        <span class="n">strike</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">r2d</span>
+        <span class="n">strike</span> <span class="o">=</span> <span class="n">strike</span> <span class="o">-</span> <span class="mi">90</span>
+        <span class="k">while</span> <span class="n">strike</span> <span class="o">&gt;=</span> <span class="mi">360</span><span class="p">:</span>
+            <span class="n">strike</span> <span class="o">=</span> <span class="n">strike</span> <span class="o">-</span> <span class="mi">360</span>
+        <span class="k">while</span> <span class="n">strike</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">strike</span> <span class="o">=</span> <span class="n">strike</span> <span class="o">+</span> <span class="mi">360</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="n">r2d</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">)</span>
+
+    <span class="c1"># modified by me:</span>
+    <span class="k">if</span> <span class="n">r1</span> <span class="o">&gt;</span> <span class="mf">180.0</span><span class="p">:</span>
+        <span class="c1"># convert rake between 0 and 360</span>
+        <span class="c1"># to rake between -180 and +180</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="n">r1</span> <span class="o">-</span> <span class="mf">360.0</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">s1</span> <span class="o">+</span> <span class="mi">90</span><span class="p">)</span> <span class="o">/</span> <span class="n">r2d</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">/</span> <span class="n">r2d</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="n">r1</span> <span class="o">/</span> <span class="n">r2d</span>
+    <span class="c1"># slick vector in plane 1</span>
+    <span class="n">sl1</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+    <span class="n">sl2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+    <span class="n">sl3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z3</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">)</span> <span class="o">=</span> <span class="n">_strike_dip</span><span class="p">(</span><span class="n">sl2</span><span class="p">,</span> <span class="n">sl1</span><span class="p">,</span> <span class="n">sl3</span><span class="p">)</span>
+
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>  <span class="c1"># normal vector to plane 1</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="o">-</span><span class="n">sl2</span>  <span class="c1"># strike vector of plane 2</span>
+    <span class="n">h2</span> <span class="o">=</span> <span class="n">sl1</span>
+    <span class="c1"># note h3=0 always so we leave it out</span>
+    <span class="c1"># n3 = np.cos(z2)</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">h1</span> <span class="o">*</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">h2</span> <span class="o">*</span> <span class="n">n2</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">h1</span> <span class="o">*</span> <span class="n">h1</span> <span class="o">+</span> <span class="n">h2</span> <span class="o">*</span> <span class="n">h2</span><span class="p">)</span>
+    <span class="c1"># we might get above 1.0 only due to floating point</span>
+    <span class="c1"># precision. Clip for those cases.</span>
+    <span class="n">float64epsilon</span> <span class="o">=</span> <span class="mf">2.2204460492503131e-16</span>
+    <span class="k">if</span> <span class="mf">1.0</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">float64epsilon</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copysign</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">round_cos</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+    <span class="n">rake</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">sl3</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">rake</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="n">r2d</span>
+    <span class="k">if</span> <span class="n">sl3</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">rake</span> <span class="o">=</span> <span class="o">-</span><span class="n">z</span> <span class="o">*</span> <span class="n">r2d</span>
+    <span class="k">return</span> <span class="n">strike</span> <span class="o">%</span> <span class="mf">360.0</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span> <span class="o">%</span> <span class="mf">360.0</span></div>
+
+
+<div class="viewcode-block" id="check_right_handedness"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.check_right_handedness">[docs]</a><span class="k">def</span> <span class="nf">check_right_handedness</span><span class="p">(</span><span class="n">basis</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make sure the matrix of column vectors forms</span>
+<span class="sd">    a right-handed basis. This is particularly important</span>
+<span class="sd">    when re-ordering the principal stress directions</span>
+<span class="sd">    based on their eigenvalues.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    basis: (3, 3) numpy.ndarray</span>
+<span class="sd">        Matrix with column vectors that form the basis of interest.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rh_basis: (3, 3) numpy.ndarray</span>
+<span class="sd">        Matrix with column vectors that form the right-handed</span>
+<span class="sd">        version of the input basis. One of the unit vectors</span>
+<span class="sd">        might have been reversed in the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vector1</span> <span class="o">=</span> <span class="n">basis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">vector2</span> <span class="o">=</span> <span class="n">basis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">vector3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">vector1</span><span class="p">,</span> <span class="n">vector2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">vector1</span><span class="p">,</span> <span class="n">vector2</span><span class="p">,</span> <span class="n">vector3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compute_traction"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.compute_traction">[docs]</a><span class="k">def</span> <span class="nf">compute_traction</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute traction and its normal and shear components on a given plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    stress_tensor: (3, 3) numpy.ndarray</span>
+<span class="sd">        Cauchy stress tensor.</span>
+<span class="sd">    normal: (n_earthquakes, 3) numpy.ndarray</span>
+<span class="sd">        Matrix of n_earthquakes row vectors of fault normals.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    traction: (n_earthquakes, 3) numpy.ndarray</span>
+<span class="sd">        Tractions on the surfaces defined by normal.</span>
+<span class="sd">    normal_traction: (n_earthquakes, 3) numpy.ndarray</span>
+<span class="sd">        Normal component of the tractions.</span>
+<span class="sd">    shear_traction: (n_earthquakes, 3) numpy.ndarray</span>
+<span class="sd">        Tangential component of the tractions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">traction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">normal</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">normal_traction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">traction</span> <span class="o">*</span> <span class="n">normal</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal</span>
+    <span class="n">shear_traction</span> <span class="o">=</span> <span class="n">traction</span> <span class="o">-</span> <span class="n">normal_traction</span>
+    <span class="k">return</span> <span class="n">traction</span><span class="p">,</span> <span class="n">normal_traction</span><span class="p">,</span> <span class="n">shear_traction</span></div>
+
+
+<div class="viewcode-block" id="errors_in_data"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.errors_in_data">[docs]</a><span class="k">def</span> <span class="nf">errors_in_data</span><span class="p">(</span>
+    <span class="n">strike</span><span class="p">,</span>
+    <span class="n">dip</span><span class="p">,</span>
+    <span class="n">rake</span><span class="p">,</span>
+    <span class="n">jack_strikes_1</span><span class="p">,</span>
+    <span class="n">jack_dips_1</span><span class="p">,</span>
+    <span class="n">jack_rakes_1</span><span class="p">,</span>
+    <span class="n">jack_strikes_2</span><span class="p">,</span>
+    <span class="n">jack_dips_2</span><span class="p">,</span>
+    <span class="n">jack_rakes_2</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This routines was tailored for my applications.</span>
+<span class="sd">    Use the multiple solutions obtained during the jackknife resampling</span>
+<span class="sd">    of the focal mechanism inversion to compute the deviation of these</span>
+<span class="sd">    multiple solutions from the best solution. A low deviation means a</span>
+<span class="sd">    good quality focal mechanism. Because there are two possible slip vectors</span>
+<span class="sd">    for each focal mechanism solution, we systematically look among the</span>
+<span class="sd">    jackknife solutions 1 and 2 for the closest slip vector to the target</span>
+<span class="sd">    vector, defined by (strike, dip, rake).</span>
+<span class="sd">    We recommend to run this function for (strike, dip, rake)_1 and</span>
+<span class="sd">    (strike, dip, rake)_2 of the best focal mechanism solution, and</span>
+<span class="sd">    average the outputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r2d</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">n_jackknife</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jack_strikes_1</span><span class="p">)</span>
+    <span class="c1"># slip vector from the best nodal plane</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">slip_vector_best</span> <span class="o">=</span> <span class="n">normal_slip_vectors</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">)</span>
+    <span class="c1"># slip vectors from the jackknife nodal planes</span>
+    <span class="n">slip_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_jackknife</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="c1"># angles between the jackknife slip vectors and the best slip vector</span>
+    <span class="c1"># since it is ambiguous which of the planes are the fault planes,</span>
+    <span class="c1"># we simply systematically compute the angle between both planes</span>
+    <span class="c1"># and keep the lowest angle.</span>
+    <span class="n">slip_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_jackknife</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_jackknife</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">slip_vectors</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">normal_slip_vectors</span><span class="p">(</span>
+            <span class="n">jack_strikes_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jack_dips_1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jack_rakes_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">slip_vectors</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">normal_slip_vectors</span><span class="p">(</span>
+            <span class="n">jack_strikes_2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jack_dips_2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jack_rakes_2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="c1"># a little bit of clipping is necessary in case of numerical errors</span>
+    <span class="c1"># putting the scalar products sligthly above or below +1/-1.</span>
+    <span class="n">scalar_prod1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">slip_vectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">slip_vector_best</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span>
+    <span class="p">)</span>
+    <span class="n">scalar_prod2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">slip_vectors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">slip_vector_best</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span>
+    <span class="p">)</span>
+    <span class="n">angles_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">scalar_prod1</span><span class="p">)</span>
+    <span class="n">angles_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">scalar_prod2</span><span class="p">)</span>
+    <span class="n">abs_angles_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">scalar_prod1</span><span class="p">))</span>
+    <span class="n">abs_angles_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">scalar_prod2</span><span class="p">))</span>
+    <span class="n">slip_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">abs_angles_1</span><span class="p">,</span> <span class="n">abs_angles_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">r2d</span>
+    <span class="n">mask1</span> <span class="o">=</span> <span class="n">abs_angles_1</span> <span class="o">&lt;</span> <span class="n">abs_angles_2</span>
+    <span class="n">slip_angles</span><span class="p">[</span><span class="n">mask1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">angles_1</span><span class="p">[</span><span class="n">mask1</span><span class="p">])</span>
+    <span class="n">mask2</span> <span class="o">=</span> <span class="n">abs_angles_2</span> <span class="o">&lt;=</span> <span class="n">abs_angles_1</span>
+    <span class="n">slip_angles</span><span class="p">[</span><span class="n">mask2</span><span class="p">]</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">angles_2</span><span class="p">[</span><span class="n">mask2</span><span class="p">])</span>
+    <span class="n">slip_vectors_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_jackknife</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="c1"># get the closest slip vectors</span>
+    <span class="n">slip_vectors_</span><span class="p">[</span><span class="n">mask1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">slip_vectors</span><span class="p">[</span><span class="n">mask1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">slip_vectors_</span><span class="p">[</span><span class="n">mask2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">slip_vectors</span><span class="p">[</span><span class="n">mask2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="c1"># we can now use the standard deviations on each of the</span>
+    <span class="c1"># 3 components to estimate errors in the data and use</span>
+    <span class="c1"># Tarantola and Valette formula</span>
+    <span class="n">dev_n</span> <span class="o">=</span> <span class="mf">1.42</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">slip_vectors_</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">slip_vector_best</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">dev_w</span> <span class="o">=</span> <span class="mf">1.42</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">slip_vectors_</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">slip_vector_best</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">dev_z</span> <span class="o">=</span> <span class="mf">1.42</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">slip_vectors_</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">slip_vector_best</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="c1"># for i in range(3):</span>
+    <span class="c1">#    plt.hist(slip_vectors_[:, i], bins=20)</span>
+    <span class="c1">#    plt.axvline(slip_vector_best[i], lw=2, color=&#39;C{:d}&#39;.format(i))</span>
+    <span class="c1"># plt.show()</span>
+    <span class="k">return</span> <span class="n">dev_n</span><span class="p">,</span> <span class="n">dev_w</span><span class="p">,</span> <span class="n">dev_z</span></div>
+
+
+<div class="viewcode-block" id="get_bearing_plunge"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_bearing_plunge">[docs]</a><span class="k">def</span> <span class="nf">get_bearing_plunge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hemisphere</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The vectors are in the coordinate system (x1, x2, x3):</span>
+<span class="sd">    x1: north</span>
+<span class="sd">    x2: west</span>
+<span class="sd">    x3: upward</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    u: (3) numpy.ndarray or list</span>
+<span class="sd">        Vector for which we want the bearing (azimuth) and plunge.</span>
+<span class="sd">    degrees: boolean, default to True</span>
+<span class="sd">        If True, returns bearing and plunge in degrees.</span>
+<span class="sd">        In radians otherwise.</span>
+<span class="sd">    hemisphere: string, default to &#39;lower&#39;</span>
+<span class="sd">        Consider the intersection of the line defined by u</span>
+<span class="sd">        with the lower hemisphere if `hemisphere` is &#39;lower&#39;, or</span>
+<span class="sd">        with the upper hemisphere if `hemisphere` is &#39;upper&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    bearing: float</span>
+<span class="sd">        Angle between the north and the line.</span>
+<span class="sd">    plunge: float</span>
+<span class="sd">        Angle between the horizontal plane and the line.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r2d</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="k">if</span> <span class="n">hemisphere</span> <span class="o">==</span> <span class="s2">&quot;lower&quot;</span> <span class="ow">and</span> <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="c1"># we need to consider the end of the line</span>
+        <span class="c1"># that plunges downward and crosses the</span>
+        <span class="c1"># lower hemisphere</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span>
+    <span class="k">elif</span> <span class="n">hemisphere</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span> <span class="ow">and</span> <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span>
+    <span class="c1"># the trigonometric sense is the opposite of the azimuthal sense,</span>
+    <span class="c1"># therefore we need a -1 multiplicative factor</span>
+    <span class="n">bearing</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># the plunge is measured downward from the end of the</span>
+    <span class="c1"># line specified by the bearing</span>
+    <span class="c1"># this formula is valid for p_axis[2] &lt; 0</span>
+    <span class="n">plunge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">round_cos</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="k">if</span> <span class="n">hemisphere</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
+        <span class="n">plunge</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">bearing</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.0</span><span class="p">,</span> <span class="n">plunge</span> <span class="o">*</span> <span class="n">r2d</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bearing</span><span class="p">,</span> <span class="n">plunge</span></div>
+
+
+<div class="viewcode-block" id="kagan_angle"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.kagan_angle">[docs]</a><span class="k">def</span> <span class="nf">kagan_angle</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="n">tensor2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the minimum rotation about *some* axis required</span>
+<span class="sd">    to match the two tensors. This angle is a measure of their</span>
+<span class="sd">    difference.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    tensor1: (3, 3) numpy.ndarray</span>
+<span class="sd">        First tensor, e.g. moment or stress tensor.</span>
+<span class="sd">    tensor2: (3, 3) numpy.ndarray</span>
+<span class="sd">        Second tensor, e.g. moment of stress tensor.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    rotation_angle: scalar float</span>
+<span class="sd">        Smallest angle, in degrees, required to superimpose</span>
+<span class="sd">        the two tensors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">Rx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
+            <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># first, compute the eigendecomposition of each tensor using</span>
+    <span class="c1"># the stress tensor eigendecomposition routine, i.e. that returns</span>
+    <span class="c1"># the eigen values and vectors ordered from the most to least</span>
+    <span class="c1"># compressive axes</span>
+    <span class="c1"># make sure to do the change of basis from</span>
+    <span class="c1"># (north, west, up) to (north, east, down)</span>
+    <span class="c1"># eigval1, eigvec1 = stress_tensor_eigendecomposition(Rx.dot(tensor1.dot(Rx.T)))</span>
+    <span class="c1"># eigval2, eigvec2 = stress_tensor_eigendecomposition(Rx.dot(tensor2.dot(Rx.T)))</span>
+    <span class="n">eigval1</span><span class="p">,</span> <span class="n">eigvec1</span> <span class="o">=</span> <span class="n">stress_tensor_eigendecomposition</span><span class="p">(</span><span class="n">tensor1</span><span class="p">)</span>
+    <span class="n">eigval2</span><span class="p">,</span> <span class="n">eigvec2</span> <span class="o">=</span> <span class="n">stress_tensor_eigendecomposition</span><span class="p">(</span><span class="n">tensor2</span><span class="p">)</span>
+    <span class="n">eigvec1</span> <span class="o">=</span> <span class="n">check_right_handedness</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">eigvec1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">eigvec1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">eigvec1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">eigvec2</span> <span class="o">=</span> <span class="n">check_right_handedness</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">eigvec2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">eigvec2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">eigvec2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># second, compute the rotation matrix that takes one basis to the other</span>
+    <span class="n">R12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">eigvec1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">eigvec2</span><span class="p">)</span>
+    <span class="c1"># compute the quaternion associated with this rotation matrix</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">quaternion</span><span class="p">(</span><span class="n">R12</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">R12</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">R12</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># the minimum angle about some axis to superimpose the two</span>
+    <span class="c1"># input tensors is:</span>
+    <span class="n">min_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">round_cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">q</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">min_angle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mean_angular_residual"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.mean_angular_residual">[docs]</a><span class="k">def</span> <span class="nf">mean_angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mean of the absolute value of the angles returned by</span>
+<span class="sd">    angular_residual. See angular_residual for more info.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="mean_kagan_angle"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.mean_kagan_angle">[docs]</a><span class="k">def</span> <span class="nf">mean_kagan_angle</span><span class="p">(</span><span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">,</span> <span class="n">strike0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dip0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rake0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the mean kagan angle as a measure of dispersion.</span>
+
+<span class="sd">    The mean kagan angle within a population of focal mechanisms</span>
+<span class="sd">    described by strikes/dips/rakes. If strike0, dip0, and rake0</span>
+<span class="sd">    are specified, then the mean kagan angle is computed not from</span>
+<span class="sd">    all pairs of focal mechanisms, but only between all focal mechanisms</span>
+<span class="sd">    and the reference focal mechanism described by strike0/dip0/rake0.</span>
+<span class="sd">    The mean kagan angle can be interpreted as a measure of dispersion</span>
+<span class="sd">    within the population.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    strikes: numpy.ndarray or list, float</span>
+<span class="sd">        Strikes of the moment tensors.</span>
+<span class="sd">    dips: numpy.ndarray or list, float</span>
+<span class="sd">        Dips of the moment tensors.</span>
+<span class="sd">    rakes: numpy.ndarray or list, float</span>
+<span class="sd">        Rakes of the moment tensors.</span>
+<span class="sd">    strike0: scalar, float, default to None</span>
+<span class="sd">        Strike of the reference moment tensor.</span>
+<span class="sd">    dip0: scalar, float, default to None</span>
+<span class="sd">        Dip of the reference moment tensor.</span>
+<span class="sd">    rake0: scalar, float, default to None</span>
+<span class="sd">        Rake of the reference moment tensor.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    mean_angle: scalar, float</span>
+<span class="sd">        Mean kagan angle between the moment tensors given as input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+    <span class="n">mts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">strikes</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strikes</span><span class="p">)):</span>
+        <span class="n">mts</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">strike_dip_rake_to_mt</span><span class="p">(</span><span class="n">strikes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dips</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rakes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">strike0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mt0</span> <span class="o">=</span> <span class="n">strike_dip_rake_to_mt</span><span class="p">(</span><span class="n">strike0</span><span class="p">,</span> <span class="n">dip0</span><span class="p">,</span> <span class="n">rake0</span><span class="p">)</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">kagan_angle</span><span class="p">,</span> <span class="n">mt0</span><span class="p">),</span> <span class="n">mts</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">kagan_angle</span><span class="p">,</span> <span class="n">mts</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]),</span> <span class="n">mts</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">],</span>
+            <span class="p">[],</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angles</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="normal_slip_vectors"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.normal_slip_vectors">[docs]</a><span class="k">def</span> <span class="nf">normal_slip_vectors</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;inward&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the normal and the slip vectors of the</span>
+<span class="sd">    focal mechanism defined by (strike, dip, rake).</span>
+<span class="sd">    From Stein and Wysession 2002.</span>
+
+<span class="sd">    N.B.: This is the normal of the FOOT WALL and the slip</span>
+<span class="sd">    of the HANGING WALL w.r.t the foot wall. It means that the</span>
+<span class="sd">    normal is an inward-pointing normal for the hanging wall,</span>
+<span class="sd">    and an outward pointing-normal for the foot wall.</span>
+
+<span class="sd">    The vectors are in the coordinate system (x1, x2, x3):</span>
+<span class="sd">    x1: north</span>
+<span class="sd">    x2: west</span>
+<span class="sd">    x3: upward</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    strike: float</span>
+<span class="sd">        Strike of the fault.</span>
+<span class="sd">    dip: float</span>
+<span class="sd">        Dip of the fault.</span>
+<span class="sd">    rake: float</span>
+<span class="sd">        Rake of the fault.</span>
+<span class="sd">    direction: string, default to &#39;inward&#39;</span>
+<span class="sd">        If &#39;inward&#39;, returns the inward normal of the HANGING wall,</span>
+<span class="sd">        which is the formula given in Stein and Wysession. Equivalently,</span>
+<span class="sd">        this is the outward normal of the foot wall.</span>
+<span class="sd">        If &#39;outward&#39;, returns the outward normal of the HANGING wall,</span>
+<span class="sd">        or, equivalently, the inward normal of the hanging wall.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    n: (3) numpy.ndarray</span>
+<span class="sd">        The fault normal.</span>
+<span class="sd">    d: (3) numpy.ndarray</span>
+<span class="sd">        The slip vector given as the direction of motion</span>
+<span class="sd">        of the hanging wall w.r.t. the foot wall.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d2r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+    <span class="n">strike</span> <span class="o">=</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">d2r</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">dip</span> <span class="o">*</span> <span class="n">d2r</span>
+    <span class="n">rake</span> <span class="o">=</span> <span class="n">rake</span> <span class="o">*</span> <span class="n">d2r</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">strike</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">strike</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dip</span><span class="p">)]</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;inward&quot;</span><span class="p">:</span>
+        <span class="c1"># this formula already gives the inward-pointing</span>
+        <span class="c1"># normal of the hanging wall</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;outward&quot;</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;direction should be either &quot;inward&quot; or &quot;outward&quot;&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="c1"># slip on the hanging wall</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">strike</span><span class="p">),</span>
+            <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">strike</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="principal_faults"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.principal_faults">[docs]</a><span class="k">def</span> <span class="nf">principal_faults</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">friction_coefficient</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the orientation of the most unstable fault planes given</span>
+<span class="sd">    a stress tensor and a coefficient of friction. These faults are</span>
+<span class="sd">    called the principal faults.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    stress_tensor: (3, 3) numpy.ndarray</span>
+<span class="sd">        Cauchy stress tensor.</span>
+<span class="sd">    friction_coefficient: scalar float</span>
+<span class="sd">        Coefficient of friction used for the Mohr-Coulomb</span>
+<span class="sd">        failure criterion.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    n1: (3, 1) numpy.ndarray</span>
+<span class="sd">        Normal of the first principal faults.</span>
+<span class="sd">    n2: (3, 1) numpy.ndarray</span>
+<span class="sd">        Normal of the second principal faults. The two</span>
+<span class="sd">        faults form a pair of conjugate faults.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first, compute the angle between sigma 1 and the normal</span>
+    <span class="c1"># of the most unstable plane</span>
+    <span class="n">lbd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">4.0</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">friction_coefficient</span><span class="p">)</span>
+    <span class="c1"># the coordinates of the fault normal in the eigenbasis is:</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lbd</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lbd</span><span class="p">)])</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lbd</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">lbd</span><span class="p">)])</span>
+    <span class="c1"># compute the eigenbasis</span>
+    <span class="n">principal_sig</span><span class="p">,</span> <span class="n">principal_dir</span> <span class="o">=</span> <span class="n">stress_tensor_eigendecomposition</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">)</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">principal_dir</span><span class="p">,</span> <span class="n">n1</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">principal_dir</span><span class="p">,</span> <span class="n">n2</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span></div>
+
+
+<div class="viewcode-block" id="p_t_b_axes"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.p_t_b_axes">[docs]</a><span class="k">def</span> <span class="nf">p_t_b_axes</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">slip</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the P (most compressive), T (least compressive)</span>
+<span class="sd">    and B (intermediate, or neutral axis) axes</span>
+<span class="sd">    from the normal and the slip vectors, following</span>
+<span class="sd">    Stein and Wysession 2002, Section 4.5.2.</span>
+<span class="sd">    (P, T, B) forms an orthogonal basis.</span>
+
+<span class="sd">    The vectors are in the coordinate system (x1, x2, x3):</span>
+<span class="sd">    x1: north</span>
+<span class="sd">    x2: west</span>
+<span class="sd">    x3: upward</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">normal</span> <span class="o">-</span> <span class="n">slip</span>
+    <span class="n">p</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">normal</span> <span class="o">+</span> <span class="n">slip</span>
+    <span class="n">t</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">slip</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span></div>
+
+
+<div class="viewcode-block" id="quaternion"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.quaternion">[docs]</a><span class="k">def</span> <span class="nf">quaternion</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Formula of quaternion of rotation matrix with `t` (least compressive),</span>
+<span class="sd">    `p` (most compressive), `b` (neutral) components expressed in the</span>
+<span class="sd">    (north, east, down) frame of reference.</span>
+<span class="sd">    `t`, `p`, `b` can equivalently be the sigma_3, sigma_1, sigma_2 components.</span>
+<span class="sd">    Make sure (`t`, `p`, `b`) form a right-handed basis.</span>
+<span class="sd">    This routine was copied from the _tpb2q routine of the Pyrocko Python</span>
+<span class="sd">    project (see at https://pyrocko.org/docs/current/_modules/pyrocko/moment_tensor.html#kagan_angle).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    t: (3,) numpy.ndarray or list</span>
+<span class="sd">    p: (3,) numpy.ndarray or list</span>
+<span class="sd">    b: (3,) numpy.ndarray or list</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    quaternion: (4,) numpy.ndarray</span>
+<span class="sd">        The quaternion that represents the rotation represented by</span>
+<span class="sd">        the matrix (t, p, b), where t, p, b are column vectors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.0001</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">q0</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">x1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">x1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">x1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">x1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">q0</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q0</span><span class="p">)</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">x3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">q1</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">x3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">q2</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q2</span><span class="p">)</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">q3</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q3</span><span class="p">)</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not find the lowest component!&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># normalize the components of the quaternion</span>
+    <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">q</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">q</span></div>
+
+
+<div class="viewcode-block" id="R_"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.R_">[docs]</a><span class="k">def</span> <span class="nf">R_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the shape ratio R=(sig1-sig2)/(sig1-sig3).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    pinricpal_stresses: numpy.ndarray or list</span>
+<span class="sd">        Contains the three eigenvalues of the stress tensor</span>
+<span class="sd">        ordered such that:</span>
+<span class="sd">        `principal_stresses[0]` &lt; `principal_stresses[1]` &lt; `principal_stresses[2]`</span>
+<span class="sd">        with `principal_stresses[0]` being the most compressional stress.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    shape_ratio: scalar float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">principal_stresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">principal_stresses</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">principal_stresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">principal_stresses</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rotation"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.rotation">[docs]</a><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the rotation matrix about axis with angle `angle`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    axis: (3) numpy.ndarray, float</span>
+<span class="sd">        Axis about which the rotation is computed.</span>
+<span class="sd">    angle: scalar, float</span>
+<span class="sd">        Angle, in degrees, of the rotation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    R: (3, 3) numpy.ndarray, float</span>
+<span class="sd">        Rotation matrix of angle `angle` degrees about `axis`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">axis</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">angle</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+    <span class="c1"># build the rotation matrix</span>
+    <span class="n">ca</span><span class="p">,</span> <span class="n">sa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="n">ca</span> <span class="o">+</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">),</span>
+                <span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">)</span> <span class="o">-</span> <span class="n">x3</span> <span class="o">*</span> <span class="n">sa</span><span class="p">,</span>
+                <span class="n">x1</span> <span class="o">*</span> <span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">)</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">sa</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">)</span> <span class="o">+</span> <span class="n">x3</span> <span class="o">*</span> <span class="n">sa</span><span class="p">,</span>
+                <span class="n">ca</span> <span class="o">+</span> <span class="n">x2</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">),</span>
+                <span class="n">x2</span> <span class="o">*</span> <span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">)</span> <span class="o">-</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">sa</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="n">x1</span> <span class="o">*</span> <span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">)</span> <span class="o">-</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">sa</span><span class="p">,</span>
+                <span class="n">x2</span> <span class="o">*</span> <span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">)</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">sa</span><span class="p">,</span>
+                <span class="n">ca</span> <span class="o">+</span> <span class="n">x3</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">ca</span><span class="p">),</span>
+            <span class="p">],</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">R</span></div>
+
+
+<div class="viewcode-block" id="random_rotation"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.random_rotation">[docs]</a><span class="k">def</span> <span class="nf">random_rotation</span><span class="p">(</span><span class="n">max_angle</span><span class="o">=</span><span class="mf">360.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a random rotation matrix.</span>
+
+<span class="sd">    Generate a random rotation matrix by:</span>
+<span class="sd">      1) Generate a random unit vector in 3D.</span>
+<span class="sd">      2) Generate a random rotation angle between 0 and max_angle (degrees)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    max_angle: scalar float, default to 360</span>
+<span class="sd">        Upper bound of the uniform distribution from which the rotation</span>
+<span class="sd">        angle is randomly drawn.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    R: (3, 3) numpy.ndarray</span>
+<span class="sd">        Rotation matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">dir_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">])</span>
+    <span class="c1"># normalize</span>
+    <span class="n">dir_</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dir_</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># draw the angle</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">max_angle</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">(</span><span class="n">dir_</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">R</span></div>
+
+
+<div class="viewcode-block" id="reduced_stress_tensor"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.reduced_stress_tensor">[docs]</a><span class="k">def</span> <span class="nf">reduced_stress_tensor</span><span class="p">(</span><span class="n">principal_directions</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes a normalized stress tensor where the most</span>
+<span class="sd">    and least compressive principal stresses are set to</span>
+<span class="sd">    -1 and +1, respectively, and the intermediate stress</span>
+<span class="sd">    is determined by the shape ratio.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    principal_directions: (3, 3) numpy.ndarray.</span>
+<span class="sd">        The three eigenvectors of the stress tensor, stored in</span>
+<span class="sd">        a matrix as column vectors and ordered from</span>
+<span class="sd">        most compressive (sigma1) to least compressive (sigma3).</span>
+<span class="sd">        The direction of sigma_i is given by: `principal_directions[:, i]`.</span>
+<span class="sd">    R: float</span>
+<span class="sd">        The shape ratio (sig1 - sig2)/(sig1 - sig3).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stress_tensor: (3, 3) numpy.ndarray</span>
+<span class="sd">        The stress tensor built from the principal directions</span>
+<span class="sd">        and the shape ratio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sig1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="n">sig2</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">R</span> <span class="o">-</span> <span class="mf">1.0</span>
+    <span class="n">sig3</span> <span class="o">=</span> <span class="o">+</span><span class="mi">1</span>
+    <span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sig1</span><span class="p">,</span> <span class="n">sig2</span><span class="p">,</span> <span class="n">sig3</span><span class="p">]))</span>
+    <span class="n">Sigma</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="c1"># make sure the principal directions form a right-handed basis</span>
+    <span class="n">principal_directions</span> <span class="o">=</span> <span class="n">check_right_handedness</span><span class="p">(</span><span class="n">principal_directions</span><span class="p">)</span>
+    <span class="n">stress_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">principal_directions</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Sigma</span><span class="p">,</span> <span class="n">principal_directions</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">stress_tensor</span></div>
+
+
+<div class="viewcode-block" id="round_cos"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.round_cos">[docs]</a><span class="k">def</span> <span class="nf">round_cos</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Clip x so that it fits with the [-1,1] interval.</span>
+
+<span class="sd">    If x is slightly outside the [-1,1] because of numerical</span>
+<span class="sd">    imprecision, x is rounded, and can then be safely passed</span>
+<span class="sd">    to arccos or arcsin. If x is truly outside of [-1,1], x</span>
+<span class="sd">    is returned unchanged.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    x: scalar, float</span>
+<span class="sd">        Float variable that represents a cos or sin that</span>
+<span class="sd">        is supposed to be within the [-1,1] interval.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    x_r: scalar, float</span>
+<span class="sd">       A rounded version of x, if necessary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.005</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="stress_tensor_eigendecomposition"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.stress_tensor_eigendecomposition">[docs]</a><span class="k">def</span> <span class="nf">stress_tensor_eigendecomposition</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the eigendecomposition of stress tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    stress_tensor: (3, 3) numpy.ndarray.</span>
+<span class="sd">        The stress tensor for which to solve the</span>
+<span class="sd">        eigenvalue problem.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    principal_stresses: (3,) numpy.ndarray.</span>
+<span class="sd">        The three eigenvalues of the stress tensor, ordered</span>
+<span class="sd">        from most compressive (sigma1) to least compressive (sigma3).</span>
+<span class="sd">    principal_directions: (3, 3) numpy.ndarray.</span>
+<span class="sd">        The three eigenvectors of the stress tensor, stored in</span>
+<span class="sd">        a matrix as column vectors and ordered from</span>
+<span class="sd">        most compressive (sigma1) to least compressive (sigma3).</span>
+<span class="sd">        The direction of sigma_i is given by: `principal_directions[:, i]`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">principal_stresses</span><span class="p">,</span> <span class="n">principal_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="c1"># order = np.argsort(principal_stresses)[::-1]</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">)</span>
+    <span class="c1"># reorder from most compressive to most extensional</span>
+    <span class="c1"># with tension positive convention</span>
+    <span class="c1"># (note: principal_directions is the matrix a column-eigenvectors)</span>
+    <span class="n">principal_stresses</span> <span class="o">=</span> <span class="n">principal_stresses</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">principal_directions</span> <span class="o">=</span> <span class="n">check_right_handedness</span><span class="p">(</span><span class="n">principal_directions</span><span class="p">[:,</span> <span class="n">order</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">principal_stresses</span><span class="p">,</span> <span class="n">principal_directions</span></div>
+
+
+<div class="viewcode-block" id="strike_dip_rake"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.strike_dip_rake">[docs]</a><span class="k">def</span> <span class="nf">strike_dip_rake</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Invert the relationships between strike/dip/rake</span>
+<span class="sd">    and normal (n) and slip (d) vectors found in Stein.</span>
+<span class="sd">    n and d are required to be given as the default format</span>
+<span class="sd">    returned by normal_slip_vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    n: (3) numpy.ndarray</span>
+<span class="sd">        The outward pointing normal of the FOOT wall.</span>
+<span class="sd">    d: (3) numpy.ndarray</span>
+<span class="sd">        The slip direction of the hanging wall w.r.t.</span>
+<span class="sd">        the foot wall.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    strike: float</span>
+<span class="sd">        Strike of the fault, in degress.</span>
+<span class="sd">    dip: float</span>
+<span class="sd">        Dip of the fault, in degrees.</span>
+<span class="sd">    rake: float</span>
+<span class="sd">        Rake of the fault, in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r2d</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="c1"># ----------------</span>
+    <span class="c1"># dip is straightforward:</span>
+    <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">round_cos</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">sin_dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sin_dip</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="c1"># ----------------</span>
+        <span class="c1"># strike is more complicated because it spans 0-360 degrees</span>
+        <span class="n">sin_strike</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">sin_dip</span>
+        <span class="n">cos_strike</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">sin_dip</span>
+        <span class="n">strike</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sin_strike</span><span class="p">,</span> <span class="n">cos_strike</span><span class="p">)</span>
+        <span class="c1"># ---------------</span>
+        <span class="c1"># rake is even more complicated</span>
+        <span class="n">sin_rake</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">sin_dip</span>
+        <span class="n">cos_rake</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">sin_rake</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin_strike</span><span class="p">)</span> <span class="o">/</span> <span class="n">cos_strike</span>
+        <span class="n">rake</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sin_rake</span><span class="p">,</span> <span class="n">cos_rake</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dip is zero! The strike and rake cannot be determined&quot;</span><span class="p">)</span>
+        <span class="c1"># the solution is ill-defined, we can only</span>
+        <span class="c1"># determine rake - strike</span>
+        <span class="n">cos_rake_m_strike</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sin_rake_m_strike</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">rake_m_strike</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sin_rake_m_strike</span><span class="p">,</span> <span class="n">cos_rake_m_strike</span><span class="p">)</span>
+        <span class="c1"># fix arbitrarily the rake to zero</span>
+        <span class="n">rake</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">strike</span> <span class="o">=</span> <span class="o">-</span><span class="n">rake_m_strike</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">strike</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.0</span><span class="p">,</span> <span class="n">dip</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">,</span> <span class="p">(</span><span class="n">rake</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.0</span></div>
+
+
+<div class="viewcode-block" id="strike_dip_rake_to_mt"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.strike_dip_rake_to_mt">[docs]</a><span class="k">def</span> <span class="nf">strike_dip_rake_to_mt</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the *normalized* moment tensor described by strike/dip/rake.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    strike: scalar, float</span>
+<span class="sd">        Strike of the input focal mechanism.</span>
+<span class="sd">    dip: scalar, float</span>
+<span class="sd">        Dip of the input focal mechanism.</span>
+<span class="sd">    rake: scalar, float</span>
+<span class="sd">        Rake of the input focal mechanism.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    mt: (3, 3) numpy.ndarray, float</span>
+<span class="sd">        Normalized moment tensor. Its columns are the</span>
+<span class="sd">        (p, b, t) axes. Note: we return (p, b, t) to be</span>
+<span class="sd">        consistent with our stress tensor convention (sig1, sig2, sig3).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first, compute the normal and slip vectors</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">normal_slip_vectors</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">)</span>
+    <span class="c1"># second, compute the t, p, b axes</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">p_t_b_axes</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="c1"># build a matrix with columns (p b t) and make sure these form</span>
+    <span class="c1"># a right-handed basis, this is the eigenbasis of the moment tensor</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">check_right_handedness</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># build the matrix of eigenvalues (a double-couple is a deviatoric</span>
+    <span class="c1"># moment tensor with determinant = 0, see Tape and Tape 2012)</span>
+    <span class="n">Lambda</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+    <span class="p">)</span>
+    <span class="n">mt</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Lambda</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">mt</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mt</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mt</span></div>
+
+
+<div class="viewcode-block" id="shear_slip_angle_difference"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.shear_slip_angle_difference">[docs]</a><span class="k">def</span> <span class="nf">shear_slip_angle_difference</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the angle difference between the slip vector</span>
+<span class="sd">    from the focal mechanism solution and the shear traction</span>
+<span class="sd">    on the fault determined from the inverted stress tensor.</span>
+<span class="sd">    Given that the stress inversion is made under the Wallace-Bott</span>
+<span class="sd">    assumption, shear stress on the fault is parallel to slip, then</span>
+<span class="sd">    this angle difference is a measure of misfit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    stress_tensor: (3, 3) numpy.ndarray</span>
+<span class="sd">        The Cauchy stress tensor.</span>
+<span class="sd">    strike: float</span>
+<span class="sd">        Strike of the fault.</span>
+<span class="sd">    dip: float</span>
+<span class="sd">        Dip of the fault.</span>
+<span class="sd">    rake: float</span>
+<span class="sd">        Rake of the fault.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    angle: float</span>
+<span class="sd">        The angle between shear stress and slip, in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first, get the normal and slip vectors corresponding</span>
+    <span class="c1"># to (strike, dip, rake)</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">normal_slip_vectors</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;inward&quot;</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># make sure it&#39;s a row vector</span>
+    <span class="c1"># second, compute the shear stress on the fault</span>
+    <span class="n">traction</span><span class="p">,</span> <span class="n">normal_traction</span><span class="p">,</span> <span class="n">shear_traction</span> <span class="o">=</span> <span class="n">compute_traction</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">shear_dir</span> <span class="o">=</span> <span class="n">shear_traction</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">shear_traction</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="c1"># the angle difference is the Arccos(dot product)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">round_cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">*</span> <span class="n">shear_dir</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())))</span>
+    <span class="c1"># return the result in degrees</span>
+    <span class="k">return</span> <span class="n">angle</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Eric Beaucé.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

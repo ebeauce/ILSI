@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; ILSI 1.1.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Welcome to ILSI’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> ILSI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#method-1">Method 1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-2">Method 2)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-example">Quick example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inverting-focal-mechanisms">Inverting focal mechanisms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverting-slickenside-data">Inverting slickenside data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#questions">Questions?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="updates.html">Updates</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ILSI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>Package for iterative linear stress inversion (ILSI) of focal mechanism data and slickenside data. Documentation at [<a class="reference external" href="https://ebeauce.github.io/ILSI/](https://ebeauce.github.io/ILSI/">https://ebeauce.github.io/ILSI/](https://ebeauce.github.io/ILSI/</a>)</p>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading"></a></h2>
+<p>Please refer the following article if you use ILSI for your research:&lt;br&gt;
+Eric Beaucé, Robert D. van der Hilst, Michel Campillo. An Iterative Linear Method with Variable Shear Stress Magnitudes for Estimating the Stress Tensor from Earthquake Focal Mechanism Data: Method and Examples, <em>Bulletin of the Seismological Society of America</em>, 2022. DOI: [<a class="reference external" href="https://doi.org/10.1785/0120210319](https://doi.org/10.1785/0120210319">https://doi.org/10.1785/0120210319](https://doi.org/10.1785/0120210319</a>)</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<section id="method-1">
+<h3>Method 1)<a class="headerlink" href="#method-1" title="Permalink to this heading"></a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install git+https://github.com/ebeauce/ILSI
+</pre></div>
+</div>
+</section>
+<section id="method-2">
+<h3>Method 2)<a class="headerlink" href="#method-2" title="Permalink to this heading"></a></h3>
+<p>Download the source code from Github and, from root folder (where this README.md file is located), run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install .
+</pre></div>
+</div>
+<p>The two methods will install ILSI equally well. Method 1 only requires one command line. Method 2 requires you to first download the source code, but at least you can easily retrieve the Jupyter notebooks provided in the <em>tests</em> folder.</p>
+</section>
+</section>
+<section id="quick-example">
+<h2>Quick example<a class="headerlink" href="#quick-example" title="Permalink to this heading"></a></h2>
+<section id="inverting-focal-mechanisms">
+<h3>Inverting focal mechanisms<a class="headerlink" href="#inverting-focal-mechanisms" title="Permalink to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ILSI</span>
+
+<span class="c1"># read strikes, dips and rakes from your data file.</span>
+
+<span class="c1"># get solution from original data set (output is a dictionary)</span>
+<span class="n">inversion_output</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">ilsi</span><span class="o">.</span><span class="n">inversion_one_set_instability</span><span class="p">(</span>
+        <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span>
+    <span class="p">)</span>
+<span class="c1"># check out the content of the dictionary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inversion_output</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># estimate uncertainties by resampling the data set (output is a dictionary)</span>
+<span class="n">shape_ratio</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">R_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">)</span>
+<span class="n">bootstrap_output</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">ilsi</span><span class="o">.</span><span class="n">inversion_bootstrap_instability</span><span class="p">(</span>
+        <span class="n">inversion_output</span><span class="p">[</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">],</span>
+        <span class="n">shape_ratio</span><span class="p">,</span>
+        <span class="n">strikes</span><span class="p">,</span>
+        <span class="n">dips</span><span class="p">,</span>
+        <span class="n">rakes</span><span class="p">,</span>
+        <span class="n">inversion_output</span><span class="p">[</span><span class="s2">&quot;friction_coefficient&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="c1"># check out the content of the dictionary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bootstrap_output</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="inverting-slickenside-data">
+<h3>Inverting slickenside data<a class="headerlink" href="#inverting-slickenside-data" title="Permalink to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ILSI</span>
+
+<span class="c1"># read strikes, dips and rakes from your data file.</span>
+
+<span class="c1"># get solution from original data set</span>
+<span class="n">inversion_output</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">ilsi</span><span class="o">.</span><span class="n">iterative_linear_si</span><span class="p">(</span>
+        <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span>
+    <span class="p">)</span>
+<span class="c1"># if you want to bootstrap the data set, simply resample the data</span>
+<span class="c1"># set successively in a loop and call ILSI.ilsi.iterative_linear_si</span>
+<span class="c1"># on the resampled strikes, dips and rakes</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="questions">
+<h2>Questions?<a class="headerlink" href="#questions" title="Permalink to this heading"></a></h2>
+<p>If you encounter issues or difficulties with ILSI, don’t hesitate to open a new issue or pull request on Github, or contact me at: <a class="reference external" href="mailto:ebeauce&#37;&#52;&#48;ldeo&#46;columbia&#46;edu">ebeauce<span>&#64;</span>ldeo<span>&#46;</span>columbia<span>&#46;</span>edu</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ILSI’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Eric Beaucé.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

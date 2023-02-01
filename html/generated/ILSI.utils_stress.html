@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ILSI.utils_stress &mdash; ILSI 1.1.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../examples.html" />
+    <link rel="prev" title="ILSI.ilsi" href="ILSI.ilsi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> ILSI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ILSI.ilsi.html">ILSI.ilsi</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ILSI.utils_stress</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../updates.html">Updates</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ILSI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active">ILSI.utils_stress</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/ILSI.utils_stress.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-ILSI.utils_stress">
+<span id="ilsi-utils-stress"></span><h1>ILSI.utils_stress<a class="headerlink" href="#module-ILSI.utils_stress" title="Permalink to this heading"></a></h1>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.A_phi_" title="ILSI.utils_stress.A_phi_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">A_phi_</span></code></a>(principal_stresses, principal_directions)</p></td>
+<td><p>Compute A_phi as defined by Simpson 1997.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.R_" title="ILSI.utils_stress.R_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">R_</span></code></a>(principal_stresses)</p></td>
+<td><p>Computes the shape ratio R=(sig1-sig2)/(sig1-sig3).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.angular_residual" title="ILSI.utils_stress.angular_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angular_residual</span></code></a>(stress_tensor, strikes, ...)</p></td>
+<td><p>Compute the angle between the direction of the resolved shear stress predicted by the stress tensor and the direction of slip given by the strike/dip/rake data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.aux_plane" title="ILSI.utils_stress.aux_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aux_plane</span></code></a>(s1, d1, r1)</p></td>
+<td><p>Get Strike and dip of second plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.check_right_handedness" title="ILSI.utils_stress.check_right_handedness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_right_handedness</span></code></a>(basis)</p></td>
+<td><p>Make sure the matrix of column vectors forms a right-handed basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.compute_traction" title="ILSI.utils_stress.compute_traction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_traction</span></code></a>(stress_tensor, normal)</p></td>
+<td><p>Compute traction and its normal and shear components on a given plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.errors_in_data" title="ILSI.utils_stress.errors_in_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errors_in_data</span></code></a>(strike, dip, rake, ...)</p></td>
+<td><p>This routines was tailored for my applications.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.get_CI_levels" title="ILSI.utils_stress.get_CI_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_CI_levels</span></code></a>(azimuths, plunges[, ...])</p></td>
+<td><p>Computes the 2d histogram in the stereographic space of a collection lines described by their azimuth and plunge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.get_CI_levels_joint" title="ILSI.utils_stress.get_CI_levels_joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_CI_levels_joint</span></code></a>(azimuths, plunges[, ...])</p></td>
+<td><p>Computes the 2d histogram in the stereographic space of a collection lines described by their azimuth and plunge.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.get_bearing_plunge" title="ILSI.utils_stress.get_bearing_plunge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bearing_plunge</span></code></a>(u[, degrees, hemisphere])</p></td>
+<td><p>The vectors are in the coordinate system (x1, x2, x3): x1: north x2: west x3: upward</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.hist2d" title="ILSI.utils_stress.hist2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hist2d</span></code></a>(azimuths, plunges[, nbins, ...])</p></td>
+<td><p>Computes the 2d histogram in the stereographic space of a collection lines described by their azimuth and plunge.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.joint_CDF" title="ILSI.utils_stress.joint_CDF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_CDF</span></code></a>(count)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.kagan_angle" title="ILSI.utils_stress.kagan_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kagan_angle</span></code></a>(tensor1, tensor2)</p></td>
+<td><p>Compute the minimum rotation about <em>some</em> axis required to match the two tensors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.mean_angular_residual" title="ILSI.utils_stress.mean_angular_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean_angular_residual</span></code></a>(stress_tensor, ...)</p></td>
+<td><p>Mean of the absolute value of the angles returned by angular_residual.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.mean_kagan_angle" title="ILSI.utils_stress.mean_kagan_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean_kagan_angle</span></code></a>(strikes, dips, rakes[, ...])</p></td>
+<td><p>Computes the mean kagan angle as a measure of dispersion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.normal_slip_vectors" title="ILSI.utils_stress.normal_slip_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_slip_vectors</span></code></a>(strike, dip, rake[, ...])</p></td>
+<td><p>Determine the normal and the slip vectors of the focal mechanism defined by (strike, dip, rake).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.p_t_b_axes" title="ILSI.utils_stress.p_t_b_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_t_b_axes</span></code></a>(normal, slip)</p></td>
+<td><p>Determine the P (most compressive), T (least compressive) and B (intermediate, or neutral axis) axes from the normal and the slip vectors, following Stein and Wysession 2002, Section 4.5.2.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.principal_faults" title="ILSI.utils_stress.principal_faults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">principal_faults</span></code></a>(stress_tensor, ...)</p></td>
+<td><p>Compute the orientation of the most unstable fault planes given a stress tensor and a coefficient of friction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.quaternion" title="ILSI.utils_stress.quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quaternion</span></code></a>(t, p, b)</p></td>
+<td><p>Formula of quaternion of rotation matrix with <cite>t</cite> (least compressive), <cite>p</cite> (most compressive), <cite>b</cite> (neutral) components expressed in the (north, east, down) frame of reference.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.random_rotation" title="ILSI.utils_stress.random_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_rotation</span></code></a>([max_angle])</p></td>
+<td><p>Generate a random rotation matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.reduced_stress_tensor" title="ILSI.utils_stress.reduced_stress_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced_stress_tensor</span></code></a>(principal_directions, R)</p></td>
+<td><p>Computes a normalized stress tensor where the most and least compressive principal stresses are set to -1 and +1, respectively, and the intermediate stress is determined by the shape ratio.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.rotation" title="ILSI.utils_stress.rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation</span></code></a>(axis, angle)</p></td>
+<td><p>Compute the rotation matrix about axis with angle <cite>angle</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.round_cos" title="ILSI.utils_stress.round_cos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round_cos</span></code></a>(x)</p></td>
+<td><p>Clip x so that it fits with the [-1,1] interval.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.shear_slip_angle_difference" title="ILSI.utils_stress.shear_slip_angle_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shear_slip_angle_difference</span></code></a>(stress_tensor, ...)</p></td>
+<td><p>Return the angle difference between the slip vector from the focal mechanism solution and the shear traction on the fault determined from the inverted stress tensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.stress_tensor_eigendecomposition" title="ILSI.utils_stress.stress_tensor_eigendecomposition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stress_tensor_eigendecomposition</span></code></a>(stress_tensor)</p></td>
+<td><p>Compute the eigendecomposition of stress tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.strike_dip_rake" title="ILSI.utils_stress.strike_dip_rake"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strike_dip_rake</span></code></a>(n, d)</p></td>
+<td><p>Invert the relationships between strike/dip/rake and normal (n) and slip (d) vectors found in Stein.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api_automodule.html#ILSI.utils_stress.strike_dip_rake_to_mt" title="ILSI.utils_stress.strike_dip_rake_to_mt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strike_dip_rake_to_mt</span></code></a>(strike, dip, rake)</p></td>
+<td><p>Compute the <em>normalized</em> moment tensor described by strike/dip/rake.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ILSI.ilsi.html" class="btn btn-neutral float-left" title="ILSI.ilsi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Eric Beaucé.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
