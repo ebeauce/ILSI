@@ -17,14 +17,14 @@ def forward_model(n_):
 
     Parameters
     ------------
-    n_: (n_earthquakes, 3) array
+    n_: (n_earthquakes, 3) numpy.ndarray
         The i-th row n_ are the components of the i-th
         fault normal in the (north, west, south) coordinate
         system.
 
     Returns
     ---------
-    G: (3 x n_earthquakes, 5) array
+    G: (3 x n_earthquakes, 5) numpy.ndarray
         The forward modeling matrix giving the slip (shear stress)
         directions on the faults characterized by `n_`, given the 5
         elements of the deviatoric stress tensor.
@@ -72,38 +72,38 @@ def Tarantola_Valette(
 
     Parameters
     -----------
-    G: (n, m) numpy array
+    G: (n, m) numpy.ndarray
         The linear operator projecting elements of the model
         space m onto the data space: d = G.m
         n is the dimension of the data space,
         m is the dimension of the model space.
-    data: (3k,) or (3k, 1) or (k, 3) numpy array
+    data: (3k,) or (3k, 1) or (k, 3) numpy.ndarray
         Vector of observations. k is the number of focal mechanisms. `data`
         is reshaped to (n=3k, 1) before the inversion.
-    C_d: (n, n) numpy array, default to None
+    C_d: (n, n) numpy.ndarray, default to None
         Covariance matrix of the observations. It quantifies
         the errors in the observations and propagates them
         in the inversion to give more weight to the observations
         with low errors. If None, then `C_d` is filled with zeros
         (assume no error in data).
-    C_m: (m, m) numpy array, default to None
+    C_m: (m, m) numpy.ndarray, default to None
         Covariance matrix of the model parameters. It quantifies
         the errors in the model parameters and propagates them
         in the inversion to determine the range of acceptable
         model parameters for a given set of observations.
         If None, then `C_m` is identity.
-    m_prior: (m,) or (m, 1) numpy array, default to None
+    m_prior: (m,) or (m, 1) numpy.ndarray, default to None
         If one already has a rough estimate of what the model
         parameters are, then m_prior should be filled with this estimate.
         If None, `m_prior` is set to zero.
 
     Returns
     ---------
-    m_inv: (m, 1) numpy array
+    m_inv: (m, 1) numpy.ndarray
         The inverted model parameters.
-    C_m_posterior: (5, 5) array
+    C_m_posterior: (5, 5) numpy.ndarray
         Posterior covariance of the model parameter distribution.
-    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) array
+    C_d_posterior: (3 x n_earthquakes, 3 x n_earthquakes) numpy.ndarray
         Posterior covariance of the data distribution.
     """
     # t_start = give_time()
@@ -194,13 +194,13 @@ def iterative_linear_si(
 
     Parameters
     -----------
-    strikes: list or array, float
+    strikes: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips: list or array, float
+    dips: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes: list or array, float
+    rakes: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -372,13 +372,13 @@ def Michael1984_inversion(
 
     Parameters
     -----------
-    strikes: list or array, float
+    strikes: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips: list or array, float
+    dips: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes: list or array, float
+    rakes: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -505,13 +505,13 @@ def inversion_one_set(
 
     Parameters
     -----------
-    strikes: list or array, float
+    strikes: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips: list or array, float
+    dips: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes: list or array, float
+    rakes: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -668,13 +668,13 @@ def inversion_jackknife(
 
     Parameters
     -----------
-    jack_strikes: (n_earthquakes, n_jackknifes) array, float
+    jack_strikes: (n_earthquakes, n_jackknifes) numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    jack_dips: (n_earthquakes, n_jackknifes) array, float
+    jack_dips: (n_earthquakes, n_jackknifes) numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    jack_rakes: (n_earthquakes, n_jackknifes) array, float
+    jack_rakes: (n_earthquakes, n_jackknifes) numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -823,13 +823,13 @@ def inversion_bootstrap(
 
     Parameters
     -----------
-    strikes: list or array, float
+    strikes: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips: list or array, float
+    dips: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes: list or array, float
+    rakes: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -976,13 +976,13 @@ def inversion_one_set_instability(
 
     Parameters
     -----------
-    strikes: list or array, float
+    strikes: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips: list or array, float
+    dips: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes: list or array, float
+    rakes: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -1289,6 +1289,7 @@ def inversion_jackknife_instability(
     shear_update_atol=1.0e-5,
     signed_instability=False,
     weighted=False,
+    n_threads=1,
     parallel=False,
 ):
     """
@@ -1313,7 +1314,7 @@ def inversion_jackknife_instability(
 
     Parameters
     -----------
-    principal_directions: (3, 3) array, float
+    principal_directions: (3, 3) numpy.ndarray, float
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -1323,13 +1324,13 @@ def inversion_jackknife_instability(
     friction_coefficient: scalar float
         Friction value used in the instability parameter. This can be
         the value output by `inversion_one_set_instability`.
-    jack_strikes: (n_earthquakes, n_jackknifes) array, float
+    jack_strikes: (n_earthquakes, n_jackknifes) numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    jack_dips: (n_earthquakes, n_jackknifes) array, float
+    jack_dips: (n_earthquakes, n_jackknifes) numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    jack_rakes: (n_earthquakes, n_jackknifes) array, float
+    jack_rakes: (n_earthquakes, n_jackknifes) numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -1373,8 +1374,10 @@ def inversion_jackknife_instability(
                belonging to the set that produced the larger instability.
         This option can be interesting for reaching convergence on
         data sets of bad quality.
-    parallel: boolean, default to False
-        If True, resampling is run in parallel.
+    n_threads: scalar int, optional
+        Default to `n_threads=1`. If different from 1, the task is parallelized
+        across `n_threads` threads. If `n_threads` is `0`, `None` or `"all"`,
+        use all available CPUs.
 
     Returns
     --------
@@ -1450,9 +1453,15 @@ def inversion_jackknife_instability(
         signed_instability=signed_instability,
     )
     if parallel:
+        print("parallel is deprecated. Use n_threads instead.")
+        n_threads = "all"
+    if n_threads != 1:
         import concurrent.futures
+        if n_threads in [0, None, "all"]:
+            # n_threads = None means use all CPUs
+            n_threads = None
 
-        with concurrent.futures.ProcessPoolExecutor() as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=n_threads) as executor:
             results = list(executor.map(_bootstrap_solution_p, range(n_resamplings)))
         jack_stress_tensors = np.asarray([results[b][0] for b in range(n_resamplings)])
         jack_principal_stresses = np.asarray(
@@ -1493,6 +1502,7 @@ def inversion_bootstrap_instability(
     shear_update_atol=1.0e-5,
     signed_instability=False,
     weighted=False,
+    n_threads=1,
     parallel=False,
 ):
     """
@@ -1511,7 +1521,7 @@ def inversion_bootstrap_instability(
 
     Parameters
     -----------
-    principal_directions: (3, 3) array, float
+    principal_directions: (3, 3) numpy.ndarray, float
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -1521,13 +1531,13 @@ def inversion_bootstrap_instability(
     friction_coefficient: float
         Value of the friction coefficient used in the instability parameter.
         This can be the value output by `inversion_one_set_instability`.
-    strikes: list or array, float
+    strikes: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips: list or array, float
+    dips: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes: list or array, float
+    rakes: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -1559,7 +1569,7 @@ def inversion_bootstrap_instability(
         uses the default values in `Tarantola_Valette`. If None, uses
         the Moore-Penrose inverse.
     weighted: boolean, default to False
-        This option is exploratory. If True:
+        This option is exploratory. If True,
             1) More weight is given to the fault planes that are clearly
                more unstable than their auxiliary counterpart in the
                stress field estimated at iteration t-1
@@ -1568,8 +1578,10 @@ def inversion_bootstrap_instability(
                belonging to the set that produced the larger instability.
         This option can be interesting for reaching convergence on
         data sets of bad quality.
-    parallel: boolean, default to False
-        If True, resampling is run in parallel.
+    n_threads: scalar int, optional
+        Default to `n_threads=1`. If different from 1, the task is parallelized
+        across `n_threads` threads. If `n_threads` is `0`, `None` or `"all"`,
+        use all available CPUs.
 
     Returns
     --------
@@ -1632,9 +1644,15 @@ def inversion_bootstrap_instability(
         signed_instability=signed_instability,
     )
     if parallel:
+        print("parallel is deprecated. Use n_threads instead.")
+        n_threads = "all"
+    if n_threads != 1:
         import concurrent.futures
+        if n_threads in [0, None, "all"]:
+            # n_threads = None means use all CPUs
+            n_threads = None
 
-        with concurrent.futures.ProcessPoolExecutor() as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=n_threads) as executor:
             results = list(executor.map(_bootstrap_solution_p, range(n_resamplings)))
         boot_stress_tensors = np.asarray([results[b][0] for b in range(n_resamplings)])
         boot_principal_stresses = np.asarray(
@@ -2064,27 +2082,27 @@ def find_optimal_friction(
 
     Parameters
     -----------
-    strikes_1: list or array, float
+    strikes_1: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips_1: list or array, float
+    dips_1: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes_1: list or array, float
+    rakes_1: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    strikes_2: list or array, float
+    strikes_2: list or numpy.ndarray, float
         The strike of nodal planes 2, angle between north and
         the fault's horizontal (0-360).
-    dips_2: list or array, float
+    dips_2: list or numpy.ndarray, float
         The dip of nodal planes 2, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes_2: list or array, float
+    rakes_2: list or numpy.ndarray, float
         The rake of nodal planes 2, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    principal_directions: (3, 3) array, float
+    principal_directions: (3, 3) numpy.ndarray, float
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -2147,17 +2165,17 @@ def find_optimal_friction_one_set(
 
     Parameters
     -----------
-    strikes_1: list or array, float
+    strikes_1: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips_1: list or array, float
+    dips_1: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes_1: list or array, float
+    rakes_1: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    principal_directions: (3, 3) array, float
+    principal_directions: (3, 3) numpy.ndarray, float
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -2235,30 +2253,30 @@ def compute_instability_parameter(
 
     Parameters
     -----------
-    principal_directions: (3, 3) array, float
+    principal_directions: (3, 3) numpy.ndarray, float
         The three eigenvectors of the reference stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
         The direction of sigma_i is given by: principal_directions[:, i]
     R: float
         Shape ratio of the reference stress tensor.
-    strikes_1: list or array, float
+    strikes_1: list or numpy.ndarray, float
         The strike of nodal planes 1, angle between north and
         the fault's horizontal (0-360).
-    dips_1: list or array, float
+    dips_1: list or numpy.ndarray, float
         The dip of nodal planes 1, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes_1: list or array, float
+    rakes_1: list or numpy.ndarray, float
         The rake of nodal planes 1, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
-    strikes_2: list or array, float
+    strikes_2: list or numpy.ndarray, float
         The strike of nodal planes 2, angle between north and
         the fault's horizontal (0-360).
-    dips_2: list or array, float
+    dips_2: list or numpy.ndarray, float
         The dip of nodal planes 2, angle between the horizontal
         plane and the fault plane (0-90).
-    rakes_2: list or array, float
+    rakes_2: list or numpy.ndarray, float
         The rake of nodal planes 2, angle between the fault's horizontal
         and the slip direction of the hanging wall w.r.t. the
         foot wall (0-360 or -180-180).
@@ -2273,16 +2291,16 @@ def compute_instability_parameter(
 
     Returns
     --------
-    instability_parameter: (n_earthquakes, 2) array
+    instability_parameter: (n_earthquakes, 2) numpy.ndarray
         The instability parameter as defined in Beauce 2022 for the two
         nodal planes of each focal mechanism datum.
-    strikes: list or array, float, optional
+    strikes: list or numpy.ndarray, float, optional
         Strikes of the fault planes with largest instability.
         Only provided if `return_fault_planes=True`.
-    dips: list or array, float, optional
+    dips: list or numpy.ndarray, float, optional
         Dips of the fault planes with largest instability.
         Only provided if `return_fault_planes=True`.
-    rakes: list or array, float, optional
+    rakes: list or numpy.ndarray, float, optional
         Rakes of the fault planes with largest instability.
         Only provided if `return_fault_planes=True`.
     """

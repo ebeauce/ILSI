@@ -8,10 +8,10 @@ def A_phi_(principal_stresses, principal_directions):
 
     Parameters
     -----------
-    principal_stresses: (3,) numpy array
+    principal_stresses: (3,) numpy.ndarray
         The three eigenvalues of the stress tensor, ordered
         from most compressive (sigma1) to least compressive (sigma3).
-    principal_directions: (3, 3) numpy array
+    principal_directions: (3, 3) numpy.ndarray
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -47,9 +47,9 @@ def hist2d(azimuths, plunges, nbins=200, smoothing_sig=0, plot=False):
 
     Parameters
     -----------
-    azimuths: (n_lines) list or array, float
+    azimuths: (n_lines) list or numpy.ndarray, float
         Azimuths of the lines.
-    plunges: (n_lines) list or array, float
+    plunges: (n_lines) list or numpy.ndarray, float
         Plunges (angle from horizontal) of the lines.
     nbins: integer, default to 200
         Number of bins, in both axes, used to discretized
@@ -112,9 +112,9 @@ def get_CI_levels(
 
     Parameters
     -----------
-    azimuths: (n_lines) list or array, float
+    azimuths: (n_lines) list or numpy.ndarray, float
         Azimuths of the lines.
-    plunges: (n_lines) list or array, float
+    plunges: (n_lines) list or numpy.ndarray, float
         Plunges (angle from horizontal) of the lines.
     nbins: integer, default to 200
         Number of bins, in both axes, used to discretized
@@ -128,16 +128,16 @@ def get_CI_levels(
 
     Returns
     ---------
-    count: (nbins, nbins) array, integer, optional
+    count: (nbins, nbins) numpy.ndarray, integer, optional
         2D histogram of the lines dsecribed by azimuths and plunges.
         Only provided if `return_count` is True.
-    lons_g: (nbins, nbins) array, float, optional
+    lons_g: (nbins, nbins) numpy.ndarray, float, optional
         2D grid of the longitudinal coordinate of each bin.
         Only provided if `return_count` is True.
-    lats_g: (nbins, nbins) array, float, optional
+    lats_g: (nbins, nbins) numpy.ndarray, float, optional
         2D grid f the latitudinal coordinate of each bin.
         Only provided if `return_count` is True.
-    confidence_intervals: (nbins, nbins) array, float
+    confidence_intervals: (nbins, nbins) numpy.ndarray, float
         2D distribution of the mass.
     """
     from scipy.interpolate import interp1d
@@ -188,9 +188,9 @@ def get_CI_levels_joint(
 
     Parameters
     -----------
-    azimuths: (n_lines) list or array, float
+    azimuths: (n_lines) list or numpy.ndarray, float
         Azimuths of the lines.
-    plunges: (n_lines) list or array, float
+    plunges: (n_lines) list or numpy.ndarray, float
         Plunges (angle from horizontal) of the lines.
     nbins: integer, default to 200
         Number of bins, in both axes, used to discretized
@@ -204,16 +204,16 @@ def get_CI_levels_joint(
 
     Returns
     ---------
-    count: (nbins, nbins) array, integer, optional
+    count: (nbins, nbins) numpy.ndarray, integer, optional
         2D histogram of the lines dsecribed by azimuths and plunges.
         Only provided if `return_count` is True.
-    lons_g: (nbins, nbins) array, float, optional
+    lons_g: (nbins, nbins) numpy.ndarray, float, optional
         2D grid of the longitudinal coordinate of each bin.
         Only provided if `return_count` is True.
-    lats_g: (nbins, nbins) array, float, optional
+    lats_g: (nbins, nbins) numpy.ndarray, float, optional
         2D grid f the latitudinal coordinate of each bin.
         Only provided if `return_count` is True.
-    confidence_intervals: (nbins, nbins) array, float
+    confidence_intervals: (nbins, nbins) numpy.ndarray, float
         2D distribution of the mass.
     """
     from scipy.interpolate import interp1d
@@ -266,18 +266,18 @@ def angular_residual(stress_tensor, strikes, dips, rakes):
 
     Parameters
     ------------
-    stress_tensor: (3, 3) array
+    stress_tensor: (3, 3) numpy.ndarray
         The Cauchy stress tensor.
-    strikes: (n_earthquakes) list or array
+    strikes: (n_earthquakes) list or numpy.ndarray
         Fault strikes.
-    dips: (n_earthquakes) list or array
+    dips: (n_earthquakes) list or numpy.ndarray
         Fault dips.
-    rakes: (n_earthquakes) list or array
+    rakes: (n_earthquakes) list or numpy.ndarray
         Fault rakes.
 
     Returns
     ----------
-    angles: (n_earthquakes) array
+    angles: (n_earthquakes) numpy.ndarray
         Angles between shear stress and slip.
     """
     angles = np.zeros(len(strikes), dtype=np.float32)
@@ -373,12 +373,12 @@ def check_right_handedness(basis):
 
     Parameters
     -----------
-    basis: (3, 3) numpy array
+    basis: (3, 3) numpy.ndarray
         Matrix with column vectors that form the basis of interest.
 
     Returns
     ----------
-    rh_basis: (3, 3) numpy array
+    rh_basis: (3, 3) numpy.ndarray
         Matrix with column vectors that form the right-handed
         version of the input basis. One of the unit vectors
         might have been reversed in the process.
@@ -394,18 +394,18 @@ def compute_traction(stress_tensor, normal):
 
     Parameters
     -----------
-    stress_tensor: (3, 3) numpy array
+    stress_tensor: (3, 3) numpy.ndarray
         Cauchy stress tensor.
-    normal: (n_earthquakes, 3) numpy array
+    normal: (n_earthquakes, 3) numpy.ndarray
         Matrix of n_earthquakes row vectors of fault normals.
 
     Returns
     --------
-    traction: (n_earthquakes, 3) numpy array
+    traction: (n_earthquakes, 3) numpy.ndarray
         Tractions on the surfaces defined by normal.
-    normal_traction: (n_earthquakes, 3) numpy array
+    normal_traction: (n_earthquakes, 3) numpy.ndarray
         Normal component of the tractions.
-    shear_traction: (n_earthquakes, 3) numpy array
+    shear_traction: (n_earthquakes, 3) numpy.ndarray
         Tangential component of the tractions.
     """
     traction = np.dot(stress_tensor, normal.T).T
@@ -499,7 +499,7 @@ def get_bearing_plunge(u, degrees=True, hemisphere="lower"):
 
     Parameters
     -----------
-    u: (3) array or list
+    u: (3) numpy.ndarray or list
         Vector for which we want the bearing (azimuth) and plunge.
     degrees: boolean, default to True
         If True, returns bearing and plunge in degrees.
@@ -547,9 +547,9 @@ def kagan_angle(tensor1, tensor2):
 
     Parameters
     -----------
-    tensor1: (3, 3) numpy array
+    tensor1: (3, 3) numpy.ndarray
         First tensor, e.g. moment or stress tensor.
-    tensor2: (3, 3) numpy array
+    tensor2: (3, 3) numpy.ndarray
         Second tensor, e.g. moment of stress tensor.
 
     Returns
@@ -613,11 +613,11 @@ def mean_kagan_angle(strikes, dips, rakes, strike0=None, dip0=None, rake0=None):
 
     Parameters
     -----------
-    strikes: numpy array or list, float
+    strikes: numpy.ndarray or list, float
         Strikes of the moment tensors.
-    dips: numpy array or list, float
+    dips: numpy.ndarray or list, float
         Dips of the moment tensors.
-    rakes: numpy array or list, float
+    rakes: numpy.ndarray or list, float
         Rakes of the moment tensors.
     strike0: scalar, float, default to None
         Strike of the reference moment tensor.
@@ -683,9 +683,9 @@ def normal_slip_vectors(strike, dip, rake, direction="inward"):
 
     Returns
     -----------
-    n: (3) array
+    n: (3) numpy.ndarray
         The fault normal.
-    d: (3) array
+    d: (3) numpy.ndarray
         The slip vector given as the direction of motion
         of the hanging wall w.r.t. the foot wall.
     """
@@ -725,7 +725,7 @@ def principal_faults(stress_tensor, friction_coefficient):
 
     Parameters
     -----------
-    stress_tensor: (3, 3) numpy array
+    stress_tensor: (3, 3) numpy.ndarray
         Cauchy stress tensor.
     friction_coefficient: scalar float
         Coefficient of friction used for the Mohr-Coulomb
@@ -733,9 +733,9 @@ def principal_faults(stress_tensor, friction_coefficient):
 
     Returns
     ---------
-    n1: (3, 1) numpy array
+    n1: (3, 1) numpy.ndarray
         Normal of the first principal faults.
-    n2: (3, 1) numpy array
+    n2: (3, 1) numpy.ndarray
         Normal of the second principal faults. The two
         faults form a pair of conjugate faults.
     """
@@ -786,13 +786,13 @@ def quaternion(t, p, b):
 
     Parameters
     -----------
-    t: (3,) numpy array or list
-    p: (3,) numpy array or list
-    b: (3,) numpy array or list
+    t: (3,) numpy.ndarray or list
+    p: (3,) numpy.ndarray or list
+    b: (3,) numpy.ndarray or list
 
     Returns
     --------
-    quaternion: (4,) numpy array
+    quaternion: (4,) numpy.ndarray
         The quaternion that represents the rotation represented by
         the matrix (t, p, b), where t, p, b are column vectors.
     """
@@ -841,7 +841,7 @@ def R_(principal_stresses):
 
     Parameters
     -----------
-    pinricpal_stresses: numpy array or list
+    pinricpal_stresses: numpy.ndarray or list
         Contains the three eigenvalues of the stress tensor
         ordered such that:
         `principal_stresses[0]` < `principal_stresses[1]` < `principal_stresses[2]`
@@ -861,14 +861,14 @@ def rotation(axis, angle):
 
     Parameters
     ------------
-    axis: (3) numpy array, float
+    axis: (3) numpy.ndarray, float
         Axis about which the rotation is computed.
     angle: scalar, float
         Angle, in degrees, of the rotation.
 
     Returns
     --------
-    R: (3, 3) numpy array, float
+    R: (3, 3) numpy.ndarray, float
         Rotation matrix of angle `angle` degrees about `axis`.
     """
     x1, x2, x3 = axis
@@ -912,7 +912,7 @@ def random_rotation(max_angle=360.0):
 
     Returns
     --------
-    R: (3, 3) numpy array
+    R: (3, 3) numpy.ndarray
         Rotation matrix.
     """
     x1, x2, x3 = np.random.uniform(low=-1.0, high=1.0, size=3)
@@ -934,7 +934,7 @@ def reduced_stress_tensor(principal_directions, R):
 
     Parameters
     -----------
-    principal_directions: (3, 3) numpy array.
+    principal_directions: (3, 3) numpy.ndarray.
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -944,7 +944,7 @@ def reduced_stress_tensor(principal_directions, R):
 
     Returns
     ----------
-    stress_tensor: (3, 3) array
+    stress_tensor: (3, 3) numpy.ndarray
         The stress tensor built from the principal directions
         and the shape ratio.
     """
@@ -989,16 +989,16 @@ def stress_tensor_eigendecomposition(stress_tensor):
 
     Parameters
     -----------
-    stress_tensor: (3, 3) numpy array.
+    stress_tensor: (3, 3) numpy.ndarray.
         The stress tensor for which to solve the
         eigenvalue problem.
 
     Returns
     -----------
-    principal_stresses: (3,) numpy array.
+    principal_stresses: (3,) numpy.ndarray.
         The three eigenvalues of the stress tensor, ordered
         from most compressive (sigma1) to least compressive (sigma3).
-    principal_directions: (3, 3) numpy array.
+    principal_directions: (3, 3) numpy.ndarray.
         The three eigenvectors of the stress tensor, stored in
         a matrix as column vectors and ordered from
         most compressive (sigma1) to least compressive (sigma3).
@@ -1028,9 +1028,9 @@ def strike_dip_rake(n, d):
 
     Parameters
     -----------
-    n: (3) array
+    n: (3) numpy.ndarray
         The outward pointing normal of the FOOT wall.
-    d: (3) array
+    d: (3) numpy.ndarray
         The slip direction of the hanging wall w.r.t.
         the foot wall.
 
@@ -1086,7 +1086,7 @@ def strike_dip_rake_to_mt(strike, dip, rake):
 
     Returns
     ---------
-    mt: (3, 3) numpy array, float
+    mt: (3, 3) numpy.ndarray, float
         Normalized moment tensor. Its columns are the
         (p, b, t) axes. Note: we return (p, b, t) to be
         consistent with our stress tensor convention (sig1, sig2, sig3).
@@ -1119,7 +1119,7 @@ def shear_slip_angle_difference(stress_tensor, strike, dip, rake):
 
     Parameters
     -----------
-    stress_tensor: (3, 3) array
+    stress_tensor: (3, 3) numpy.ndarray
         The Cauchy stress tensor.
     strike: float
         Strike of the fault.
