@@ -68,6 +68,8 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
 
 ## Updates
 
+- v1.1.3: Moore-Penrose inverse is supported for variable shear stress.
+
 - v1.1.2: Parallelization is now made with the `n_threads` key-word argument (parallel is still supported but is deprecated).
 
 - v1.1.1: Outputs are now given as dictionaries for more flexibility. Make sure

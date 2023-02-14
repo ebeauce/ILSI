@@ -264,10 +264,11 @@ def iterative_linear_si(
         # -----------------------------------------
         # copy Tarantola_kwargs because all modifications are made in-place
         Tarantola_kwargs = Tarantola_kwargs.copy()
+        method = "tarantola"
     else:
-        Tarantola_kwargs = {}
+        method = "moore_penrose"
     # initialize shear magnitudes
-    if "m_prior" in Tarantola_kwargs:
+    if method == "tarantola" and "m_prior" in Tarantola_kwargs:
         shear = np.sqrt(
             np.sum(
                 (G @ Tarantola_kwargs["m_prior"].astype("float32")).reshape(
@@ -280,10 +281,21 @@ def iterative_linear_si(
     else:
         shear = np.ones(n_earthquakes, dtype=np.float32)
     for j in range(max_n_iterations):
-        sigma, C_m_posterior, C_d_posterior = Tarantola_Valette(
-            G, d_ * shear[:, np.newaxis], **Tarantola_kwargs
-        )
-        sigma = sigma.squeeze()
+        if method == "tarantola":
+            sigma, C_m_posterior, C_d_posterior = Tarantola_Valette(
+                G, d_ * shear[:, np.newaxis], **Tarantola_kwargs
+            )
+            sigma = sigma.squeeze()
+        elif method == "moore_penrose":
+            # We choose any inversion method to invert G:
+            G_pinv = np.linalg.pinv(G)
+            # Given how we defined G, the stress tensor components
+            # we get are in this order:
+            # sigma_11, sigma_12, sigma_13, sigma_22, sigma_23
+            sigma = np.dot(G_pinv, d_.reshape(-1, 1)).squeeze()
+            # fake C_m and C_d
+            C_m_posterior = np.ones((5, 5), dtype=np.float32)
+            C_d_posterior = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
         # normalize the stress tensor to make sure the units of
         # shear does not explode or vanish (it can behave like a
         # geometrical series), this normalization gives the reduced
@@ -298,7 +310,8 @@ def iterative_linear_si(
         norm = np.sqrt(np.sum(full_stress_tensor**2))
         norm = 1 if norm == 0.0 else norm
         sigma /= norm
-        Tarantola_kwargs["m_prior"] = sigma.reshape(5, 1).copy()
+        if method == "tarantola":
+            Tarantola_kwargs["m_prior"] = sigma.reshape(5, 1).copy()
         # Note: From Tarantola's book: in an iterative non-linear
         # inversion, he does not input the posterior distribution from
         # previous iteration to the next iteration. Doing so leads to
