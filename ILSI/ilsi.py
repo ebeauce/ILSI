@@ -511,6 +511,7 @@ def inversion_one_set(
     Tarantola_kwargs={},
     return_eigen=True,
     return_stats=False,
+    input_fault_planes=False,
 ):
     """
     Invert one set of focal mechanisms without seeking which nodal planes
@@ -552,6 +553,9 @@ def inversion_one_set(
         If True, the posterior data and model parameter distributions
         estimated from the Tarantola and Valette formula
         (cf. Tarantola_Valette routine).
+    input_fault_planes : boolean, optional
+        If True, `strikes, `dips` and `rakes` are considered to be
+        the fault planes and no auxiliary plane will be computed.
 
     Returns
     --------
@@ -580,9 +584,12 @@ def inversion_one_set(
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
-    strikes_2, dips_2, rakes_2 = np.asarray(
-        list(map(utils_stress.aux_plane, strikes, dips, rakes))
-    ).T
+    if input_fault_planes:
+        strikes_2, dips_2, rakes_2 = strikes_1, dips_1, rakes_1
+    else:
+        strikes_2, dips_2, rakes_2 = np.asarray(
+            list(map(utils_stress.aux_plane, strikes, dips, rakes))
+        ).T
     # define shape variable
     n_earthquakes = len(strikes)
     # define flat arrays
@@ -666,6 +673,7 @@ def inversion_jackknife(
     variable_shear=True,
     Tarantola_kwargs={},
     bootstrap_events=False,
+    input_fault_planes=False,
 ):
     """
     This routine was tailored for one of my application, but it can
@@ -719,6 +727,9 @@ def inversion_jackknife(
         for the Tarantola and Valette inversion. An empty dictionary
         uses the default values in `Tarantola_Valette`. If None, uses
         the Moore-Penrose inverse.
+    input_fault_planes : boolean, optional
+        If True, `strikes, `dips` and `rakes` are considered to be
+        the fault planes and no auxiliary plane will be computed.
 
 
     Returns
@@ -739,9 +750,12 @@ def inversion_jackknife(
     """
     # compute auxiliary planes
     jack_strikes_1, jack_dips_1, jack_rakes_1 = jack_strikes, jack_dips, jack_rakes
-    jack_strikes_2, jack_dips_2, jack_rakes_2 = np.vectorize(utils_stress.aux_plane)(
-        jack_strikes_1, jack_dips_1, jack_rakes_1
-    )
+    if input_fault_planes:
+        jack_strikes_2, jack_dips_2, jack_rakes_2 = jack_strikes_1, jack_dips_1, jack_rakes_1
+    else:
+        jack_strikes_2, jack_dips_2, jack_rakes_2 = np.asarray(
+            list(map(utils_stress.aux_plane, jack_strikes, jack_dips, jack_rakes))
+        ).T
     # define shape variables
     n_earthquakes, n_jackknife = jack_strikes_1.shape
     n_planes_per_tp = int(n_jackknife * 2)
@@ -828,6 +842,7 @@ def inversion_bootstrap(
     max_n_iterations=300,
     shear_update_atol=1.0e-5,
     Tarantola_kwargs={},
+    input_fault_planes=False,
 ):
     """
     Inverts one set of focal mechanisms without seeking which nodal planes
@@ -871,6 +886,9 @@ def inversion_bootstrap(
         for the Tarantola and Valette inversion. An empty dictionary
         uses the default values in `Tarantola_Valette`. If None, uses
         the Moore-Penrose inverse.
+    input_fault_planes : boolean, optional
+        If True, `strikes, `dips` and `rakes` are considered to be
+        the fault planes and no auxiliary plane will be computed.
 
 
     Returns
@@ -892,9 +910,12 @@ def inversion_bootstrap(
 
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
-    strikes_2, dips_2, rakes_2 = np.asarray(
-        list(map(utils_stress.aux_plane, strikes, dips, rakes))
-    ).T
+    if input_fault_planes:
+        strikes_2, dips_2, rakes_2 = strikes_1, dips_1, rakes_1
+    else:
+        strikes_2, dips_2, rakes_2 = np.asarray(
+            list(map(utils_stress.aux_plane, strikes, dips, rakes))
+        ).T
     # define shape variables
     n_earthquakes = len(strikes_1)
     n_planes_per_ev = 2
