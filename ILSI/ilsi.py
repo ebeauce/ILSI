@@ -307,7 +307,8 @@ def iterative_linear_si(
                 [sigma[2], sigma[4], -sigma[0] - sigma[3]],
             ]
         )
-        norm = np.sqrt(np.sum(full_stress_tensor**2))
+        # normalize by trace of squared matrix
+        norm = np.sqrt(np.sum(np.diag(full_stress_tensor)**2))
         norm = 1 if norm == 0.0 else norm
         sigma /= norm
         if method == "tarantola":
@@ -328,6 +329,7 @@ def iterative_linear_si(
             # user-prescribed criterion
             # print('Stop at iteration {:d}! (shear update: {:.3e})'.format(j, shear_update))
             break
+    # `sigma` is already normalized 
     sigma = sigma.squeeze()
     # build full stress tensor
     full_stress_tensor = np.array(
@@ -337,9 +339,8 @@ def iterative_linear_si(
             [sigma[2], sigma[4], -sigma[0] - sigma[3]],
         ]
     )
-    norm = np.sqrt(np.sum(full_stress_tensor**2))
-    norm = 1 if norm == 0.0 else norm
-    full_stress_tensor /= norm
+    # use `norm` from last iteration and normalize cov matrix
+    C_m_posterior /= norm**2
     # return output in dictionary
     output = {}
     output["stress_tensor"] = full_stress_tensor
