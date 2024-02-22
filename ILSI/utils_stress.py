@@ -958,6 +958,38 @@ def reduced_stress_tensor(principal_directions, R):
     stress_tensor = np.dot(principal_directions, np.dot(Sigma, principal_directions.T))
     return stress_tensor
 
+def resolution_operator(G, C_D_inv, C_M_inv, return_L=False):
+    """Calculate the resolution operator in the Tarantola-Valette framework.
+
+    Reference
+    ---------
+    Tarantola, Albert. Inverse problem theory and methods for model parameter
+    estimation. Society for industrial and applied mathematics, 2005.
+
+    Parameters
+    ----------
+    G : numpy.ndarray
+        Forward modelling, linear operator.
+    C_D_inv : numpy.ndarray
+        Inverse of the data+theory covarance matrix.
+    C_M_inv : numpy.ndarray
+        Inverse of the model covariance matrix.
+    return_L : boolean, optional
+        If not False, return the inverse operator L. Defaults to False.
+
+    Returns
+    -------
+    R : numpy.ndarray
+        Resolution operator.
+    L : numpy.ndarray, optional
+        Inverse operator. Is returned only if `return_L=True`.
+    """
+    L = np.linalg.inv((G.T) @ C_D_inv @ G + C_M_inv) @ ((G.T) @ C_D_inv)
+    R = L@G
+    if return_L:
+        return R, L
+    else:
+        return R
 
 def round_cos(x):
     """Clip x so that it fits with the [-1,1] interval.
