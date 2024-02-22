@@ -1,11 +1,11 @@
 import sys
 
 import numpy as np
-from numpy.linalg import LinAlgError
-
-from . import utils_stress
+import warnings
 
 from functools import partial
+from numpy.linalg import LinAlgError
+from . import utils_stress
 
 # from time import time as give_time
 
@@ -51,6 +51,30 @@ def forward_model(n_):
         G[ii + 2, 4] = n2 - 2.0 * n2 * n3**2
     return G
 
+def _check_apriori_covariances(dim_D, dim_M, C_d=None, C_d_inv=None, C_m=None, C_m_inv=None):
+    """Replaces None with default values if needed.
+    """
+    if C_d is None:
+        C_d = np.zeros((dim_D, dim_D), dtype=np.float32)
+        C_d_inv = np.identity(dim_D, dtype=np.float32)
+    elif C_d_inv is None and inversion_space == "model_space":
+        try:
+            C_d_inv = np.linalg.inv(C_d)
+        except LinAlgError:
+            print("Cannot invert data covariance matrix:")
+            print(C_d)
+            sys.exit()
+    if C_m is None:
+        C_m = np.identity(dim_M, dtype=np.float32)
+        C_m_inv = np.zeros_like(C_m)
+    elif C_m_inv is None and inversion_space == "model_space":
+        try:
+            C_m_inv = np.linalg.inv(C_m)
+        except LinAlgError:
+            print("Cannot invert model covariance matrix:")
+            print(C_m)
+            sys.exit()
+    return C_d, C_d_inv, C_m, C_m_inv
 
 def Tarantola_Valette(
     G,
@@ -109,26 +133,9 @@ def Tarantola_Valette(
     # t_start = give_time()
     dim_D = G.shape[0]
     dim_M = G.shape[1]
-    if C_d is None:
-        C_d = np.zeros((dim_D, dim_D), dtype=np.float32)
-        C_d_inv = np.identity(dim_D, dtype=np.float32)
-    elif C_d_inv is None and inversion_space == "model_space":
-        try:
-            C_d_inv = np.linalg.inv(C_d)
-        except LinAlgError:
-            print("Cannot invert data covariance matrix:")
-            print(C_d)
-            sys.exit()
-    if C_m is None:
-        C_m = np.identity(dim_M, dtype=np.float32)
-        C_m_inv = np.zeros_like(C_m)
-    elif C_m_inv is None and inversion_space == "model_space":
-        try:
-            C_m_inv = np.linalg.inv(C_m)
-        except LinAlgError:
-            print("Cannot invert model covariance matrix:")
-            print(C_m)
-            sys.exit()
+    C_d, C_d_inv, C_m, C_m_inv = _check_apriori_covariances(
+            dim_D, dim_M, C_d=C_d, C_d_inv=C_d_inv, C_m=C_m, C_m_inv=C_m_inv
+            )
     if m_prior is None:
         m_prior = np.zeros((dim_M, 1), dtype=np.float32)
     # make sure data is a column vector
@@ -248,6 +255,9 @@ def iterative_linear_si(
             Posterior covariance of the data distribution
             estimated from the Tarantola and Valette formula.
             Returned if `return_stats` is True.
+        - output["resolution_operator"]: (3, 3) numpy.ndarray
+            The resolution operator assuming that the shear tractions are all
+            perfectly constant or that they are all perfectly estimated.
     """
     # t_start = give_time()
     # First, convert the strike/dip/rake into slip and normal vectors.
@@ -293,9 +303,6 @@ def iterative_linear_si(
             # we get are in this order:
             # sigma_11, sigma_12, sigma_13, sigma_22, sigma_23
             sigma = np.dot(G_pinv, d_.reshape(-1, 1)).squeeze()
-            # fake C_m and C_d
-            C_m_posterior = np.ones((5, 5), dtype=np.float32)
-            C_d_posterior = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
         # normalize the stress tensor to make sure the units of
         # shear does not explode or vanish (it can behave like a
         # geometrical series), this normalization gives the reduced
@@ -354,8 +361,27 @@ def iterative_linear_si(
         output["principal_stresses"] = principal_stresses
         output["principal_directions"] = principal_directions
     if return_stats:
-        output["C_d_posterior"] = C_d_posterior
-        output["C_m_posterior"] = C_m_posterior
+        if method == "tarantola":
+            output["C_d_posterior"] = C_d_posterior
+            output["C_m_posterior"] = C_m_posterior
+            _, C_d_inv, _, C_m_inv = _check_apriori_covariances(
+                    *G.shape,
+                    C_d=Tarantola_kwargs.get("C_d", None),
+                    C_d_inv=Tarantola_kwargs.get("C_d_inv", None),
+                    C_m=Tarantola_kwargs.get("C_m", None),
+                    C_m_inv=Tarantola_kwargs.get("C_m_inv", None),
+                    )
+            output["resolution_operator"] = utils_stress.resolution_operator(
+                    G, C_d_inv, C_m_inv
+                    )
+        else:
+            warnings.warn(
+                    "return_stats=True only works with the Tarantola-Valette "
+                    "method (see Tarantola_kwargs), returning dummy outputs"
+                    )
+            output["C_d_posterior"] = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
+            output["C_m_posterior"] = np.ones((5, 5), dtype=np.float32)
+            output["resolution_operator"] = np.ones((3, 3), dtype=np.float32)
     # t_end = give_time()
     # print('iterative_linear_si finished in {:.2f}sec'.format(t_end-t_start))
     return output
@@ -435,6 +461,9 @@ def Michael1984_inversion(
             Posterior covariance of the data distribution
             estimated from the Tarantola and Valette formula.
             Returned if `return_stats` is True.
+        - output["resolution_operator"]: (3, 3) numpy.ndarray
+            The resolution operator assuming that the shear tractions are all
+            perfectly constant or that they are all perfectly estimated.
     """
     # First, convert the strike/dip/rake into slip and normal vectors.
     n_earthquakes = len(strikes)
@@ -455,6 +484,7 @@ def Michael1984_inversion(
             G, d_, **Tarantola_kwargs
         )
         sigma = sigma.squeeze()
+        method = "tarantola"
     else:
         # We choose any inversion method to invert G:
         G_pinv = np.linalg.pinv(G)
@@ -462,9 +492,7 @@ def Michael1984_inversion(
         # we get are in this order:
         # sigma_11, sigma_12, sigma_13, sigma_22, sigma_23
         sigma = np.dot(G_pinv, d_.reshape(-1, 1)).squeeze()
-        # fake C_m and C_d
-        C_m_posterior = np.ones((5, 5), dtype=np.float32)
-        C_d_posterior = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
+        method = "moore_penrose"
     full_stress_tensor = np.array(
         [
             [sigma[0], sigma[1], sigma[2]],
@@ -488,8 +516,27 @@ def Michael1984_inversion(
         output["principal_stresses"] = principal_stresses
         output["principal_directions"] = principal_directions
     if return_stats:
-        output["C_d_posterior"] = C_d_posterior
-        output["C_m_posterior"] = C_m_posterior
+        if method == "tarantola":
+            output["C_d_posterior"] = C_d_posterior
+            output["C_m_posterior"] = C_m_posterior
+            _, C_d_inv, _, C_m_inv = _check_apriori_covariances(
+                    *G.shape,
+                    C_d=Tarantola_kwargs.get("C_d", None),
+                    C_d_inv=Tarantola_kwargs.get("C_d_inv", None),
+                    C_m=Tarantola_kwargs.get("C_m", None),
+                    C_m_inv=Tarantola_kwargs.get("C_m_inv", None),
+                    )
+            output["resolution_operator"] = utils_stress.resolution_operator(
+                    G, C_d_inv, C_m_inv
+                    )
+        else:
+            warnings.warn(
+                    "return_stats=True only works with the Tarantola-Valette "
+                    "method (see Tarantola_kwargs), returning dummy outputs"
+                    )
+            output["C_d_posterior"] = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
+            output["C_m_posterior"] = np.ones((5, 5), dtype=np.float32)
+            output["resolution_operator"] = np.ones((3, 3), dtype=np.float32)
     return output
 
 
@@ -577,6 +624,9 @@ def inversion_one_set(
             Posterior covariance of the data distribution
             estimated from the Tarantola and Valette formula.
             Returned if `return_stats` is True.
+        - output["resolution_operator"]: (3, 3) numpy.ndarray
+            The resolution operator assuming that the shear tractions are all
+            perfectly constant or that they are all perfectly estimated.
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
@@ -596,6 +646,8 @@ def inversion_one_set(
     avg_C_d_posterior = np.zeros(
         (3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32
     )
+    # initialize resolution operator
+    avg_resolution_operator = np.zeros((5, 5), dtype=np.float32)
     # randomly select subsets of nodal planes and invert for the stress tensor
     for n in range(n_random_selections):
         nodal_planes = np.random.randint(0, 2, size=n_earthquakes)
@@ -632,9 +684,11 @@ def inversion_one_set(
         avg_stress_tensor += output_["stress_tensor"]
         avg_C_m_posterior += output_["C_m_posterior"]
         avg_C_d_posterior += output_["C_d_posterior"]
+        avg_resolution_operator += output_["resolution_operator"]
     avg_stress_tensor /= float(n_random_selections)
     avg_C_m_posterior /= float(n_random_selections)
     avg_C_d_posterior /= float(n_random_selections)
+    avg_resolution_operator /= float(n_random_selections)
     norm = np.sqrt(np.sum(avg_stress_tensor**2))
     norm = 1 if norm == 0.0 else norm
     avg_stress_tensor /= norm
@@ -650,8 +704,18 @@ def inversion_one_set(
         output["principal_stresses"] = principal_stresses
         output["principal_directions"] = principal_directions
     if return_stats:
-        output["C_d_posterior"] = avg_C_d_posterior
-        output["C_m_posterior"] = avg_C_m_posterior
+        if Tarantola_kwargs is not None:
+            output["C_d_posterior"] = avg_C_d_posterior
+            output["C_m_posterior"] = avg_C_m_posterior
+            output["resolution_operator"] = avg_resolution_operator
+        else:
+            warnings.warn(
+                    "return_stats=True only works with the Tarantola-Valette "
+                    "method (see Tarantola_kwargs), returning dummy outputs"
+                    )
+            output["C_d_posterior"] = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
+            output["C_m_posterior"] = np.ones((5, 5), dtype=np.float32)
+            output["resolution_operator"] = np.ones((3, 3), dtype=np.float32)
     return output
 
 
@@ -1099,6 +1163,9 @@ def inversion_one_set_instability(
             Posterior covariance of the data distribution
             estimated from the Tarantola and Valette formula.
             Returned if `return_stats` is True.
+        - output["resolution_operator"]: (3, 3) numpy.ndarray
+            The resolution operator assuming that the shear tractions are all
+            perfectly constant or that they are all perfectly estimated.
     """
     if plot:
         import mplstereonet
@@ -1121,6 +1188,7 @@ def inversion_one_set_instability(
     final_stress_tensor = np.zeros((3, 3), dtype=np.float32)
     C_d_posterior = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
     C_m_posterior = np.zeros((5, 5), dtype=np.float32)
+    resolution_operator = np.zeros((5, 5), dtype=np.float32)
     if friction_coefficient is None:
         final_friction_coefficient = 0.0
     for i in range(n_averaging):
@@ -1255,12 +1323,14 @@ def inversion_one_set_instability(
         final_stress_tensor += output_["stress_tensor"]
         C_d_posterior += output_["C_d_posterior"]
         C_m_posterior += output_["C_m_posterior"]
+        resolution_operator += output_["resolution_operator"]
         if friction_coefficient is None:
             # friction coefficient is being inverted for
             final_friction_coefficient += best_friction_coefficient
     final_stress_tensor /= float(n_averaging)
     C_d_posterior /= float(n_averaging)
     C_m_posterior /= float(n_averaging)
+    resolution_operator /= float(n_averaging)
     if friction_coefficient is None:
         friction_coefficient = final_friction_coefficient / float(n_averaging)
     # eigendecomposition of averaged stress tensor
@@ -1279,8 +1349,18 @@ def inversion_one_set_instability(
     output["principal_stresses"] = principal_stresses
     output["principal_directions"] = principal_directions
     if return_stats:
-        output["C_d_posterior"] = C_d_posterior
-        output["C_m_posterior"] = C_m_posterior
+        if Tarantola_kwargs is not None:
+            output["C_d_posterior"] = C_d_posterior
+            output["C_m_posterior"] = C_m_posterior
+            output["resolution_operator"] = resolution_operator
+        else:
+            warnings.warn(
+                    "return_stats=True only works with the Tarantola-Valette "
+                    "method (see Tarantola_kwargs), returning dummy outputs"
+                    )
+            output["C_d_posterior"] = np.diag(np.ones(3 * n_earthquakes, dtype=np.float32))
+            output["C_m_posterior"] = np.ones((5, 5), dtype=np.float32)
+            output["resolution_operator"] = np.ones((3, 3), dtype=np.float32)
     return output
 
 
@@ -1989,6 +2069,7 @@ def _stress_inversion_instability(
                 best_stress_tensor = output_["stress_tensor"].copy()
                 best_C_m_post = output_["C_m_posterior"].copy()
                 best_C_d_post = output_["C_d_posterior"].copy()
+                best_resolution_operator = output_["resolution_operator"].copy()
         if plot:
             fig = plt.figure("iteration_{:d}".format(n))
             ax1 = fig.add_subplot(2, 2, 1, projection="stereonet")
@@ -2055,6 +2136,7 @@ def _stress_inversion_instability(
         output["stress_tensor"] = best_stress_tensor
         output["C_m_posterior"] = best_C_m_post
         output["C_d_posterior"] = best_C_d_post
+        output["resolution_operator"] = best_resolution_operator
         if verbose > 0:
             (
                 principal_stresses,
