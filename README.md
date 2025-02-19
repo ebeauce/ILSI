@@ -78,7 +78,7 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
   to update your scripts.
 
 ## Tutorials
-Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2022. See the list of required packages at the top of the scripts. The `plotFMC` and `functionsFMC` librairies are from the FMC repository available at [https://github.com/Jose-Alvarez/FMC](https://github.com/Jose-Alvarez/FMC).
+Check out the *tests* folder for example scripts. Jupyter notebooks can be run to reproduce the results shown in Beaucé et al. 2022. See the list of required packages at the top of the scripts. The `plotFMC` and `functionsFMC` libraries are from the FMC repository ([https://github.com/Jose-Alvarez/FMC](https://github.com/Jose-Alvarez/FMC)). I added a few minor modifications to these libraries, so, please, download FMC from my Github: [https://github.com/ebeauce/FMC](https://github.com/ebeauce/FMC).
 
 ## Questions?
 
