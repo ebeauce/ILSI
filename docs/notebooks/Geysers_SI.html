@@ -1,25 +1,25 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stress inversion of the Geysers focal mechanisms from NCEDC &mdash; ILSI 1.1.1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=58fbf978"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -32,11 +32,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> ILSI
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ILSI
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -50,6 +54,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Stress inversion of the Geysers focal mechanisms from NCEDC</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Plot-data-set">Plot data set</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Stress-tensor-inversion">Stress tensor inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Bonus:-Uncertainty-analysis-beside-bootstrapping:-The-resolution-and-posterior-covariance-operators">Bonus: Uncertainty analysis beside bootstrapping: The resolution and posterior covariance operators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Some-extra-figures">Some extra figures</a></li>
 </ul>
 </li>
@@ -72,7 +77,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../examples.html">Examples</a></li>
       <li class="breadcrumb-item active">Stress inversion of the Geysers focal mechanisms from NCEDC</li>
       <li class="wy-breadcrumbs-aside">
@@ -84,291 +89,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt .copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-.jp-RenderedHTMLCommon table,
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-.jp-RenderedHTMLCommon thead,
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-.jp-RenderedHTMLCommon tr,
-.jp-RenderedHTMLCommon th,
-.jp-RenderedHTMLCommon td,
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-.jp-RenderedHTMLCommon th,
-div.rendered_html th {
-  font-weight: bold;
-}
-.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-.jp-RenderedHTMLCommon tbody tr:hover,
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Stress-inversion-of-the-Geysers-focal-mechanisms-from-NCEDC">
-<h1>Stress inversion of the Geysers focal mechanisms from NCEDC<a class="headerlink" href="#Stress-inversion-of-the-Geysers-focal-mechanisms-from-NCEDC" title="Permalink to this heading"></a></h1>
+  <section id="Stress-inversion-of-the-Geysers-focal-mechanisms-from-NCEDC">
+<h1>Stress inversion of the Geysers focal mechanisms from NCEDC<a class="headerlink" href="#Stress-inversion-of-the-Geysers-focal-mechanisms-from-NCEDC" title="Link to this heading"></a></h1>
 <p>Cite the NCEDC: “NCEDC (2014), Northern California Earthquake Data Center. UC Berkeley Seismological Laboratory. Dataset. doi:10.7932/NCEDC.”</p>
 <p>Acknowledge the NCEDC: “Waveform data, metadata, or data products for this study were accessed through the Northern California Earthquake Data Center (NCEDC), doi:10.7932/NCEDC.”</p>
 <p>You may have to install <code class="docutils literal notranslate"><span class="pre">mplstereonet</span></code> <a class="reference external" href="https://github.com/joferkington/mplstereonet">https://github.com/joferkington/mplstereonet</a>, and <code class="docutils literal notranslate"><span class="pre">colorcet</span></code> <a class="reference external" href="https://colorcet.holoviz.org/">https://colorcet.holoviz.org/</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -399,7 +126,7 @@ div.rendered_html tbody tr:hover {
 <span class="c1"># plot data in Kaverina diagram</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="s2">&quot;/home/eric/Dropbox (MIT)/DANA/temporary_working_dir/focal_mechanisms/FMC/&quot;</span>
+        <span class="s2">&quot;/home/eric/WORK/software/FMC/&quot;</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="kn">import</span> <span class="nn">plotFMC</span>
@@ -409,7 +136,7 @@ div.rendered_html tbody tr:hover {
 <span class="c1"># set plotting parameters</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.3</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.3</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="s2">&quot;colorblind&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;savefig.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
@@ -421,20 +148,22 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_formats = [&quot;svg&quot;]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %config InlineBackend.figure_formats = [&quot;svg&quot;]</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path variables</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;../data&quot;</span>
 <span class="n">dataset_fn</span> <span class="o">=</span> <span class="s2">&quot;Geysers_dataset.csv&quot;</span>
+<span class="c1"># program parameter(s)</span>
+<span class="n">save_figures</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># load dataset</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">dataset_fn</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -443,7 +172,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -675,13 +404,13 @@ div.rendered_html tbody tr:hover {
 </div></div>
 </div>
 <section id="Plot-data-set">
-<h2>Plot data set<a class="headerlink" href="#Plot-data-set" title="Permalink to this heading"></a></h2>
+<h2>Plot data set<a class="headerlink" href="#Plot-data-set" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_scale_bar</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x_start</span><span class="p">,</span> <span class="n">y_start</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">source_crs</span><span class="p">,</span> <span class="n">azimuth</span><span class="o">=</span><span class="mf">90.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
 <span class="sd">    ax: GeoAxes instance</span>
@@ -779,7 +508,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define region extent</span>
@@ -808,7 +537,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the focal mechanisms</span>
@@ -969,7 +698,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/eric/miniconda3/envs/py310/lib/python3.10/site-packages/cartopy/mpl/geoaxes.py:406: UserWarning: The `map_projection` keyword argument is deprecated, use `projection` to instantiate a GeoAxes instead.
+/home/eric/miniconda3/envs/py310/lib/python3.10/site-packages/cartopy/mpl/geoaxes.py:403: UserWarning: The `map_projection` keyword argument is deprecated, use `projection` to instantiate a GeoAxes instead.
   warnings.warn(&#34;The `map_projection` keyword argument is &#34;
 </pre></div></div>
 </div>
@@ -977,21 +706,23 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Geysers_SI_7_1.svg" src="../_images/notebooks_Geysers_SI_7_1.svg" /></div>
+<img alt="../_images/notebooks_Geysers_SI_7_1.png" src="../_images/notebooks_Geysers_SI_7_1.png" />
+</div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_fm</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fig_fm</span><span class="o">.</span><span class="n">_label</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">save_figures</span><span class="p">:</span>
+    <span class="n">fig_fm</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fig_fm</span><span class="o">.</span><span class="n">_label</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </section>
 <section id="Stress-tensor-inversion">
-<h2>Stress tensor inversion<a class="headerlink" href="#Stress-tensor-inversion" title="Permalink to this heading"></a></h2>
+<h2>Stress tensor inversion<a class="headerlink" href="#Stress-tensor-inversion" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------</span>
@@ -1008,7 +739,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------</span>
@@ -1036,7 +767,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------</span>
@@ -1050,7 +781,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------</span>
@@ -1066,6 +797,7 @@ div.rendered_html tbody tr:hover {
     <span class="o">**</span><span class="n">ILSI_kwargs</span><span class="p">,</span>
     <span class="n">Tarantola_kwargs</span><span class="o">=</span><span class="n">Tarantola_kwargs</span><span class="p">,</span>
     <span class="n">variable_shear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iterative constant shear inversion...&quot;</span><span class="p">)</span>
 <span class="n">inversion_output</span><span class="p">[</span><span class="s2">&quot;iterative_constant_shear&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">ilsi</span><span class="o">.</span><span class="n">inversion_one_set_instability</span><span class="p">(</span>
@@ -1083,6 +815,7 @@ div.rendered_html tbody tr:hover {
     <span class="n">n_averaging</span><span class="o">=</span><span class="n">n_averaging</span><span class="p">,</span>
     <span class="n">variable_shear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">signed_instability</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">if</span> <span class="n">friction_coefficient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span>
@@ -1104,6 +837,7 @@ div.rendered_html tbody tr:hover {
     <span class="n">n_averaging</span><span class="o">=</span><span class="n">n_averaging</span><span class="p">,</span>
     <span class="n">variable_shear</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">signed_instability</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">if</span> <span class="n">friction_coefficient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1142,32 +876,32 @@ Iterative constant shear inversion...
 -------- 1/3 ----------
 Initial shape ratio: 0.43
 -------- 2/3 ----------
-Initial shape ratio: 0.44
+Initial shape ratio: 0.43
 -------- 3/3 ----------
 Initial shape ratio: 0.43
 Final results:
 Stress tensor:
- [[ 0.18210721  0.26362798 -0.19520067]
- [ 0.26362798  0.47622395  0.21382438]
- [-0.19520067  0.21382438 -0.65833116]]
+ [[ 0.1799634   0.26173306 -0.19272774]
+ [ 0.26173306  0.47864988  0.21612422]
+ [-0.19272774  0.21612422 -0.65861326]]
 Shape ratio: 0.63
 Iterative variable shear inversion...
 -------- 1/3 ----------
-Initial shape ratio: 0.46
+Initial shape ratio: 0.47
 -------- 2/3 ----------
 Initial shape ratio: 0.47
 -------- 3/3 ----------
-Initial shape ratio: 0.46
+Initial shape ratio: 0.48
 Final results:
 Stress tensor:
- [[ 0.24370153  0.19287305 -0.21143867]
- [ 0.19287305  0.43422613  0.25363243]
- [-0.21143867  0.25363243 -0.6779277 ]]
+ [[ 0.28717783  0.22700854 -0.24951024]
+ [ 0.22700854  0.5183292   0.30055955]
+ [-0.24951024  0.30055955 -0.805507  ]]
 Shape ratio: 0.75
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --------------------------------</span>
@@ -1264,15 +998,15 @@ Linear inversion (bootstrapping)...
 ---------- Bootstrapping 1701/2000 ----------
 ---------- Bootstrapping 1801/2000 ----------
 ---------- Bootstrapping 1901/2000 ----------
-Done in 50.56sec!
+Done in 9.43sec!
 Iterative constant shear inversion (bootstrapping)...
-Done in 91.70sec!
+Done in 9.08sec!
 Iterative variable shear inversion (bootstrapping)...
-Done in 107.29sec!
+Done in 9.83sec!
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inversion_output</span><span class="p">[</span><span class="s2">&quot;strikes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">strikes_1</span><span class="p">,</span> <span class="n">strikes_2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1282,27 +1016,82 @@ Done in 107.29sec!
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_inverted_stress_tensors</span><span class="p">(</span><span class="n">inversion_output</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figtitle</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_inverted_stress_tensors</span><span class="p">(</span>
+    <span class="n">inversion</span><span class="p">,</span>
+    <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">figtitle</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">figname</span><span class="o">=</span><span class="s2">&quot;inverted_stress_tensor&quot;</span><span class="p">,</span>
+    <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;iterative_constant_shear&quot;</span><span class="p">,</span> <span class="s2">&quot;iterative_variable_shear&quot;</span><span class="p">],</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="n">plot_PT</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">error</span><span class="o">=</span><span class="s2">&quot;bootstrap&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the inverted stress tensors from a given stress inversion analysis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inversion : dict</span>
+<span class="sd">        Dictionary containing the results of the stress tensor inversion.</span>
+<span class="sd">        It should include principal stresses, stress tensors, and bootstrapped</span>
+<span class="sd">        principal directions for different inversion methods.</span>
+<span class="sd">    axes : list, optional</span>
+<span class="sd">        List of axes to plot on. If None, new axes will be created.</span>
+<span class="sd">    figtitle : str, optional</span>
+<span class="sd">        Title of the figure. Default is an empty string.</span>
+<span class="sd">    figname : str, optional</span>
+<span class="sd">        Name of the figure window. Default is &quot;inverted_stress_tensor&quot;.</span>
+<span class="sd">    methods : list of str, optional</span>
+<span class="sd">        List of stress inversion methods to plot.</span>
+<span class="sd">        Default is [&quot;linear&quot;, &quot;iterative_constant_shear&quot;, &quot;iterative_variable_shear&quot;].</span>
+<span class="sd">    figsize : tuple of (float, float), optional</span>
+<span class="sd">        Figure size in inches. Default is (15, 11).</span>
+<span class="sd">    plot_PT : bool, optional</span>
+<span class="sd">        If True, plots P- and T-axes from fault slip data. Default is False.</span>
+<span class="sd">    error : {&#39;bootstrap&#39;, &#39;covariance&#39;}, optional</span>
+<span class="sd">        Specifies the error estimation method to use:</span>
+<span class="sd">        - &#39;bootstrap&#39;: Uses bootstrapped principal directions.</span>
+<span class="sd">        - &#39;covariance&#39;: Uses covariance matrix to sample stress tensors.</span>
+<span class="sd">        Default is &#39;bootstrap&#39;.</span>
+<span class="sd">    **kwargs : dict, optional</span>
+<span class="sd">        Additional parameters for histogram plotting, including:</span>
+<span class="sd">        - smoothing_sig : float, optional</span>
+<span class="sd">            Smoothing parameter for density estimation. Default is 1.</span>
+<span class="sd">        - nbins : int, optional</span>
+<span class="sd">            Number of bins for histograms. Default is 200.</span>
+<span class="sd">        - return_count : bool, optional</span>
+<span class="sd">            If True, returns count data for histograms. Default is True.</span>
+<span class="sd">        - confidence_intervals : list of float, optional</span>
+<span class="sd">            List of confidence intervals (in percentages). Default is [95.0].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        The generated matplotlib figure containing the stress tensor plots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hist_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">hist_kwargs</span><span class="p">[</span><span class="s2">&quot;smoothing_sig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;smoothing_sig&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">hist_kwargs</span><span class="p">[</span><span class="s2">&quot;nbins&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nbins&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
     <span class="n">hist_kwargs</span><span class="p">[</span><span class="s2">&quot;return_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;return_count&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="n">hist_kwargs</span><span class="p">[</span><span class="s2">&quot;confidence_intervals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;confidence_intervals&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">95.0</span><span class="p">])</span>
     <span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">]</span>
-    <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;iterative_constant_shear&quot;</span><span class="p">,</span> <span class="s2">&quot;iterative_variable_shear&quot;</span><span class="p">]</span>
-    <span class="n">n_resamplings</span> <span class="o">=</span> <span class="n">inversion_output</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">][</span><span class="s2">&quot;boot_principal_directions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;inverted_stress_tensors_Geysers&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">n_resamplings</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="n">methods</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s2">&quot;boot_principal_directions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">strikes</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="s2">&quot;strikes&quot;</span><span class="p">]</span>
+    <span class="n">dips</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="s2">&quot;dips&quot;</span><span class="p">]</span>
+    <span class="n">rakes</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="s2">&quot;rakes&quot;</span><span class="p">]</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figname</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">figtitle</span><span class="p">)</span>
     <span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span>
         <span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
         <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
         <span class="n">top</span><span class="o">=</span><span class="mf">0.88</span><span class="p">,</span>
-        <span class="n">bottom</span><span class="o">=</span><span class="mf">0.11</span><span class="p">,</span>
+        <span class="n">bottom</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
         <span class="n">left</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
-        <span class="n">right</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+        <span class="n">right</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
         <span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
         <span class="n">wspace</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="p">)</span>
@@ -1310,16 +1099,50 @@ Done in 107.29sec!
     <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;stereonet&quot;</span><span class="p">)</span>
     <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
     <span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-    <span class="c1"># for j, method in enumerate(methods):</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
-        <span class="n">method</span> <span class="o">=</span> <span class="n">methods</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-        <span class="n">R</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">R_</span><span class="p">(</span><span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_stresses&quot;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">methods</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">error</span> <span class="o">==</span> <span class="s2">&quot;bootstrap&quot;</span><span class="p">:</span>
+            <span class="n">replica_principal_directions</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;boot_principal_directions&quot;</span><span class="p">]</span>
+            <span class="n">replica_principal_stresses</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;boot_principal_stresses&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">error</span> <span class="o">==</span> <span class="s2">&quot;covariance&quot;</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;stress_tensor&quot;</span><span class="p">]</span>
+            <span class="n">sigma_mean</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="mi">3</span><span class="p">)][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">sigma_cov</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;C_m_posterior&quot;</span><span class="p">]</span>
+            <span class="c1"># correct symmetry for numerical errors</span>
+            <span class="n">sigma_cov</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma_cov</span> <span class="o">+</span> <span class="n">sigma_cov</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+            <span class="n">random_stress_tensors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+                <span class="n">sigma_mean</span><span class="p">,</span> <span class="n">sigma_cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_resamplings</span>
+            <span class="p">)</span>
+            <span class="n">random_stress_tensors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span>
+                    <span class="o">-</span><span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">random_stress_tensors</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="p">],</span>
+                <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_resamplings</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">replica_principal_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">random_stress_tensors</span><span class="p">)</span>
+            <span class="n">replica_principal_stresses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_resamplings</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resamplings</span><span class="p">):</span>
+                <span class="n">replica_principal_stresses</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="p">:],</span> <span class="n">replica_principal_directions</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">stress_tensor_eigendecomposition</span><span class="p">(</span>
+                    <span class="n">random_stress_tensors</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+                <span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">R_</span><span class="p">(</span><span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_stresses&quot;</span><span class="p">])</span>
+        <span class="n">A_phi</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">A_phi_</span><span class="p">(</span>
+            <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_stresses&quot;</span><span class="p">],</span>
+            <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
                 <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                     <span class="n">az</span><span class="p">,</span> <span class="n">pl</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">get_bearing_plunge</span><span class="p">(</span>
-                        <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">][:,</span> <span class="n">k2</span><span class="p">]</span>
+                        <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">][:,</span> <span class="n">k2</span><span class="p">]</span>
                     <span class="p">)</span>
                     <span class="n">label</span> <span class="o">+=</span> <span class="p">(</span>
                         <span class="sa">r</span><span class="s2">&quot;$\sigma_{{</span><span class="si">{:d}</span><span class="s2">}}$: </span><span class="si">{:.1f}</span><span class="s2">&quot;</span>
@@ -1328,13 +1151,16 @@ Done in 107.29sec!
                         <span class="s2">&quot;</span><span class="se">\u00b0</span><span class="s2">&quot;</span>
                         <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">pl</span><span class="p">)</span>
                     <span class="p">)</span>
-                <span class="n">label</span> <span class="o">+=</span> <span class="s2">&quot; R=</span><span class="si">{:.2f}</span><span class="s2">, $</span><span class="se">\\</span><span class="s2">beta$=</span><span class="si">{:.1f}</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="se">\u00b0</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">R</span><span class="p">,</span> <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;misfit&quot;</span><span class="p">]</span>
+                <span class="n">label</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot; R=</span><span class="si">{</span><span class="n">R</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">r</span><span class="s2">&quot;, $A_{\phi}=$&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">A_phi</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, $</span><span class="se">\\</span><span class="s2">beta $=</span><span class="si">{</span><span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s1">&#39;misfit&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;</span><span class="se">\u00b0</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="n">az</span><span class="p">,</span> <span class="n">pl</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">get_bearing_plunge</span><span class="p">(</span>
-                <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">][:,</span> <span class="n">k</span><span class="p">]</span>
+                <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">][:,</span> <span class="n">k</span><span class="p">]</span>
             <span class="p">)</span>
             <span class="n">ax1</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
                 <span class="n">pl</span><span class="p">,</span>
@@ -1350,7 +1176,7 @@ Done in 107.29sec!
             <span class="n">boot_pd_stereo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_resamplings</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resamplings</span><span class="p">):</span>
                 <span class="n">boot_pd_stereo</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">get_bearing_plunge</span><span class="p">(</span>
-                    <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;boot_principal_directions&quot;</span><span class="p">][</span><span class="n">b</span><span class="p">,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span>
+                    <span class="n">replica_principal_directions</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span>
                 <span class="p">)</span>
             <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span><span class="p">,</span> <span class="n">levels</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">get_CI_levels</span><span class="p">(</span>
                 <span class="n">boot_pd_stereo</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">boot_pd_stereo</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">hist_kwargs</span>
@@ -1366,11 +1192,26 @@ Done in 107.29sec!
                 <span class="n">colors</span><span class="o">=</span><span class="n">_colors_</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
                 <span class="n">zorder</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span>
             <span class="p">)</span>
+        <span class="k">if</span> <span class="n">plot_PT</span><span class="p">:</span>
+            <span class="c1"># get fault noral and slip vector from strikes/dips/rakes</span>
+            <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">normal_slip_vectors</span><span class="p">(</span><span class="n">strikes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dips</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rakes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># compute the bearing and plunge of each P/T vector</span>
+            <span class="n">p_or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">strikes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">t_or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">strikes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">strikes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">p_t_b_axes</span><span class="p">(</span><span class="n">n</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+                <span class="n">p_or</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">get_bearing_plunge</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">t_or</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">get_bearing_plunge</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">t_or</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">t_or</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+            <span class="n">ax1</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">p_or</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">p_or</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">ax1</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">t_or</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">t_or</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T-axis&quot;</span><span class="p">)</span>
+                <span class="n">ax1</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">p_or</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">p_or</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;P-axis&quot;</span><span class="p">)</span>
         <span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
         <span class="n">Rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_resamplings</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resamplings</span><span class="p">):</span>
             <span class="n">Rs</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">R_</span><span class="p">(</span>
-                <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;boot_principal_stresses&quot;</span><span class="p">][</span><span class="n">b</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">replica_principal_stresses</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="p">:]</span>
             <span class="p">)</span>
         <span class="n">ax2</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span>
             <span class="n">Rs</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">_colors_</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span>
@@ -1378,28 +1219,26 @@ Done in 107.29sec!
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Shape Ratio&quot;</span><span class="p">)</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
     <span class="c1"># plot stress magnitudes</span>
-    <span class="c1"># for i, method in enumerate(methods):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
-        <span class="n">method</span> <span class="o">=</span> <span class="n">methods</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">pd</span> <span class="o">=</span> <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">]</span>
-        <span class="n">R</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">R_</span><span class="p">(</span><span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_stresses&quot;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">methods</span><span class="p">):</span>
+        <span class="n">pd</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_directions&quot;</span><span class="p">]</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">R_</span><span class="p">(</span><span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;principal_stresses&quot;</span><span class="p">])</span>
         <span class="n">I</span><span class="p">,</span> <span class="n">fp_strikes</span><span class="p">,</span> <span class="n">fp_dips</span><span class="p">,</span> <span class="n">fp_rakes</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">ilsi</span><span class="o">.</span><span class="n">compute_instability_parameter</span><span class="p">(</span>
             <span class="n">pd</span><span class="p">,</span>
             <span class="n">R</span><span class="p">,</span>
             <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;friction_coefficient&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;friction_coefficient&quot;</span> <span class="ow">in</span> <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">]</span> <span class="k">else</span> <span class="mf">0.6</span><span class="p">,</span>
-            <span class="n">strikes_1</span><span class="p">,</span>
-            <span class="n">dips_1</span><span class="p">,</span>
-            <span class="n">rakes_1</span><span class="p">,</span>
-            <span class="n">strikes_2</span><span class="p">,</span>
-            <span class="n">dips_2</span><span class="p">,</span>
-            <span class="n">rakes_2</span><span class="p">,</span>
+            <span class="n">strikes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">dips</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">rakes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">strikes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">dips</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">rakes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
             <span class="n">return_fault_planes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">normals</span><span class="p">,</span> <span class="n">slips</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">normal_slip_vectors</span><span class="p">(</span>
             <span class="n">fp_strikes</span><span class="p">,</span> <span class="n">fp_dips</span><span class="p">,</span> <span class="n">fp_rakes</span>
         <span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">shear</span> <span class="o">=</span> <span class="n">ILSI</span><span class="o">.</span><span class="n">utils_stress</span><span class="o">.</span><span class="n">compute_traction</span><span class="p">(</span>
-            <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;stress_tensor&quot;</span><span class="p">],</span> <span class="n">normals</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">inversion</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;stress_tensor&quot;</span><span class="p">],</span> <span class="n">normals</span><span class="o">.</span><span class="n">T</span>
         <span class="p">)</span>
         <span class="n">Ts_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">shear</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">sig_Ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">Ts_mag</span><span class="p">)</span>
@@ -1434,38 +1273,52 @@ Done in 107.29sec!
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot results</span>
 <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># -----------------------------------------------------------------</span>
+<span class="c1">#  check out the confidence intervals given by bootstrapping</span>
+<span class="c1"># -----------------------------------------------------------------</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;smoothing_sig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># control the smoothness of the confidence intervals</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;confidence_intervals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">95.0</span><span class="p">]</span>
 <span class="n">fig_SI</span> <span class="o">=</span> <span class="n">plot_inverted_stress_tensors</span><span class="p">(</span>
-    <span class="n">inversion_output</span><span class="p">,</span> <span class="n">figtitle</span><span class="o">=</span><span class="s2">&quot;Geysers data set&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="n">inversion_output</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;bootstrap&quot;</span><span class="p">,</span> <span class="n">figtitle</span><span class="o">=</span><span class="s2">&quot;Geysers data set&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
-<br/></pre></div>
+
+<span class="c1"># -----------------------------------------------------------------</span>
+<span class="c1">#  check out the confidence intervals given by the Tarantola-Valette solution</span>
+<span class="c1"># -----------------------------------------------------------------</span>
+<span class="c1"># kwargs[&quot;smoothing_sig&quot;] = 5  # control the smoothness of the confidence intervals</span>
+<span class="c1"># kwargs[&quot;confidence_intervals&quot;] = [66.0]</span>
+<span class="c1"># fig_SI = plot_inverted_stress_tensors(</span>
+<span class="c1">#     inversion_output, error=&quot;covariance&quot;, figtitle=&quot;Geysers data set&quot;, **kwargs</span>
+<span class="c1"># )</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Geysers_SI_17_0.svg" src="../_images/notebooks_Geysers_SI_17_0.svg" /></div>
+<img alt="../_images/notebooks_Geysers_SI_17_0.png" src="../_images/notebooks_Geysers_SI_17_0.png" />
+</div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save the figures</span>
-<span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="p">[</span><span class="n">fig_SI</span><span class="p">]:</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fig</span><span class="o">.</span><span class="n">_label</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fig</span><span class="o">.</span><span class="n">_label</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">save_figures</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="p">[</span><span class="n">fig_SI</span><span class="p">]:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fig</span><span class="o">.</span><span class="n">_label</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">fig</span><span class="o">.</span><span class="n">_label</span><span class="si">}</span><span class="s1">.svg&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_CI</span><span class="p">(</span><span class="n">inversion_output</span><span class="p">,</span> <span class="n">CI_level</span><span class="o">=</span><span class="mf">95.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1549,7 +1402,7 @@ Done in 107.29sec!
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1565,52 +1418,196 @@ Done in 107.29sec!
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 ---------- linear ---------
-        Shape ratio R = 0.44, CI 95 = (0.30, 0.57)
+        Shape ratio R = 0.43, CI 95 = (0.30, 0.57)
         Principal stress sigma 1:
-                Plunge = 67.56°, CI 95 = (50.90°, 83.61°)
-                Bearing = 215.32°, CI 95 = (181.50°, 257.14°)
-                (215.3°, 67.6°)  (181.5°-257.1°, 50.9°-83.6°)
+                Plunge = 66.99°, CI 95 = (51.14°, 83.61°)
+                Bearing = 216.63°, CI 95 = (181.50°, 257.14°)
+                (216.6°, 67.0°)  (181.5°-257.1°, 51.1°-83.6°)
         Principal stress sigma 2:
-                Plunge = 21.97°, CI 95 = (8.73°, 38.87°)
-                Bearing = 22.87°, CI 95 = (11.05°, 38.37°)
-                (22.9°, 22.0°)  (11.0°-38.4°, 8.7°-38.9°)
+                Plunge = 22.39°, CI 95 = (8.73°, 38.84°)
+                Bearing = 22.54°, CI 95 = (10.77°, 38.71°)
+                (22.5°, 22.4°)  (10.8°-38.7°, 8.7°-38.8°)
         Principal stress sigma 3:
-                Plunge = 4.38°, CI 95 = (0.35°, 16.43°)
-                Bearing = 114.64°, CI 95 = (101.25°, 129.25°)
-                (114.6°, 4.4°)  (101.3°-129.3°, 0.3°-16.4°)
+                Plunge = 5.05°, CI 95 = (0.34°, 16.53°)
+                Bearing = 114.63°, CI 95 = (101.25°, 130.06°)
+                (114.6°, 5.1°)  (101.3°-130.1°, 0.3°-16.5°)
 ---------- iterative_constant_shear ---------
-        Shape ratio R = 0.63, CI 95 = (0.43, 0.76)
+        Shape ratio R = 0.63, CI 95 = (0.44, 0.76)
         Principal stress sigma 1:
-                Plunge = 70.39°, CI 95 = (52.94°, 85.55°)
-                Bearing = 220.35°, CI 95 = (177.74°, 268.01°)
-                (220.4°, 70.4°)  (177.7°-268.0°, 52.9°-85.5°)
+                Plunge = 70.46°, CI 95 = (53.75°, 85.55°)
+                Bearing = 220.66°, CI 95 = (177.54°, 267.26°)
+                (220.7°, 70.5°)  (177.5°-267.3°, 53.8°-85.5°)
         Principal stress sigma 2:
-                Plunge = 19.13°, CI 95 = (5.93°, 36.53°)
-                Bearing = 27.07°, CI 95 = (10.39°, 47.11°)
-                (27.1°, 19.1°)  (10.4°-47.1°, 5.9°-36.5°)
+                Plunge = 19.00°, CI 95 = (5.99°, 35.80°)
+                Bearing = 26.64°, CI 95 = (9.74°, 44.96°)
+                (26.6°, 19.0°)  (9.7°-45.0°, 6.0°-35.8°)
         Principal stress sigma 3:
-                Plunge = 4.18°, CI 95 = (0.32°, 17.47°)
-                Bearing = 118.52°, CI 95 = (100.39°, 135.47°)
-                (118.5°, 4.2°)  (100.4°-135.5°, 0.3°-17.5°)
+                Plunge = 4.39°, CI 95 = (0.32°, 17.56°)
+                Bearing = 118.16°, CI 95 = (101.26°, 134.59°)
+                (118.2°, 4.4°)  (101.3°-134.6°, 0.3°-17.6°)
 ---------- iterative_variable_shear ---------
-        Shape ratio R = 0.75, CI 95 = (0.48, 0.84)
+        Shape ratio R = 0.75, CI 95 = (0.49, 0.82)
         Principal stress sigma 1:
-                Plunge = 70.69°, CI 95 = (57.88°, 89.36°)
-                Bearing = 224.56°, CI 95 = (135.00°, 341.57°)
-                (224.6°, 70.7°)  (135.0°-341.6°, 57.9°-89.4°)
+                Plunge = 70.78°, CI 95 = (58.96°, 89.36°)
+                Bearing = 224.56°, CI 95 = (135.00°, 315.04°)
+                (224.6°, 70.8°)  (135.0°-315.0°, 59.0°-89.4°)
         Principal stress sigma 2:
-                Plunge = 18.35°, CI 95 = (2.13°, 30.91°)
-                Bearing = 25.78°, CI 95 = (3.80°, 40.25°)
-                (25.8°, 18.4°)  (3.8°-40.2°, 2.1°-30.9°)
+                Plunge = 18.22°, CI 95 = (0.09°, 31.60°)
+                Bearing = 25.36°, CI 95 = (3.31°, 42.89°)
+                (25.4°, 18.2°)  (3.3°-42.9°, 0.1°-31.6°)
         Principal stress sigma 3:
-                Plunge = 5.80°, CI 95 = (0.35°, 20.79°)
-                Bearing = 117.72°, CI 95 = (93.17°, 129.30°)
-                (117.7°, 5.8°)  (93.2°-129.3°, 0.3°-20.8°)
+                Plunge = 5.90°, CI 95 = (0.34°, 21.60°)
+                Bearing = 117.31°, CI 95 = (92.28°, 131.02°)
+                (117.3°, 5.9°)  (92.3°-131.0°, 0.3°-21.6°)
 </pre></div></div>
 </div>
 </section>
+<section id="Bonus:-Uncertainty-analysis-beside-bootstrapping:-The-resolution-and-posterior-covariance-operators">
+<h2>Bonus: Uncertainty analysis beside bootstrapping: The resolution and posterior covariance operators<a class="headerlink" href="#Bonus:-Uncertainty-analysis-beside-bootstrapping:-The-resolution-and-posterior-covariance-operators" title="Link to this heading"></a></h2>
+<p>The previous figure shows bootstrapping uncertainties. Since the Tarantola-Valette inverse method uses the Bayesian framework, among the byproducts of the inversion are the posterior covariance operators <span class="math notranslate nohighlight">\(\hat{C}_D\)</span> and <span class="math notranslate nohighlight">\(\hat{C}_M\)</span>. Furthermore, a generic concept to gauge the quality of an inverse method is the resolution operator <span class="math notranslate nohighlight">\(R\)</span>. Here, we simply demonstrate the tools implemented in <code class="docutils literal notranslate"><span class="pre">ILSI</span></code> to manipulate these operators. These concepts are discussed in detail in:</p>
+<ul class="simple">
+<li><p>Lundstern, Jens-Erik, Eric Beaucé, and Orlando J. Teran. “The importance of nodal plane orientation diversity for earthquake focal mechanism stress inversions.” Geological Society, London (2024),</p></li>
+</ul>
+<p>and also illustrated in:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ebeauce/StressInversionResolution/">https://github.com/ebeauce/StressInversionResolution/</a></p></li>
+</ul>
+<p>In general, bootstrapping will provide more realistic uncertainties but, in some cases where the input data set is small or relatively large but with little focal mechanism diversity, the posterior covariance and resolution operators may provide better uncertainties.</p>
+<p>Note: The 5-element <span class="math notranslate nohighlight">\(m\)</span> vector is <span class="math notranslate nohighlight">\((\sigma_{11}, \sigma_{12}, \sigma_{13}, \sigma_{22}, \sigma_{23})\)</span>. We work in the (N=north, W=west, U=up) coordinate system, therefore <span class="math notranslate nohighlight">\(m\)</span> is: <span class="math notranslate nohighlight">\((\sigma_{NN}, \sigma_{NW}, \sigma_{NU}, \sigma_{WW}, \sigma_{WU})\)</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_resolution_covariance_corrcoef</span><span class="p">(</span>
+    <span class="n">R</span><span class="p">,</span>
+    <span class="n">C_m_post</span><span class="p">,</span>
+    <span class="n">C_m_post_normalized</span><span class="p">,</span>
+    <span class="n">figname</span><span class="o">=</span><span class="s2">&quot;resolution_covariance&quot;</span><span class="p">,</span>
+    <span class="n">figtitle</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Resolution operator $R = LG$, posterior covariance $\hat</span><span class="si">{C}</span><span class="s2">_M$&quot;</span>
+             <span class="sa">r</span><span class="s2">&quot; and normalized posterior covariance $\rho_M$&quot;</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;magma&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot resolution operator, posterior covariance, and normalized posterior covariance.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    R : array_like</span>
+<span class="sd">        Resolution operator.</span>
+<span class="sd">    C_m_post : array_like</span>
+<span class="sd">        Posterior covariance.</span>
+<span class="sd">    C_m_post_normalized : array_like</span>
+<span class="sd">        Normalized posterior covariance.</span>
+<span class="sd">    figname : str, optional</span>
+<span class="sd">        Figure name (default is &#39;resolution_covariance&#39;).</span>
+<span class="sd">    figtitle : str, optional</span>
+<span class="sd">        Figure title (default is &#39;Resolution operator R = LG, posterior</span>
+<span class="sd">        covariance C_M, and normalized posterior covariance ρ_M&#39;).</span>
+<span class="sd">    figsize : tuple, optional</span>
+<span class="sd">        Figure size (default is (13, 10)).</span>
+<span class="sd">    cmap : str or Colormap, optional</span>
+<span class="sd">        Colormap for plotting (default is &#39;viridis&#39;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="n">figname</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">figtitle</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.90</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.30</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Resolution operator, $R = LG$&quot;</span><span class="p">)</span>
+    <span class="n">pc0</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pc0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Resolution operator&quot;</span><span class="p">)</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">-</span> <span class="n">R</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\vert I - R \vert$&quot;</span><span class="p">)</span>
+    <span class="n">pc1</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pc1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Deviation from identity&quot;</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Posterior covariance operator, $\hat</span><span class="si">{C}</span><span class="s2">_M$&quot;</span><span class="p">)</span>
+    <span class="n">pc2</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">C_m_post</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pc2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Covariance&quot;</span><span class="p">)</span>
+
+    <span class="n">vmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">C_m_post_normalized</span><span class="p">[</span><span class="n">C_m_post_normalized</span> <span class="o">&lt;</span> <span class="mf">0.999</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="o">-</span><span class="n">C_m_post_normalized</span><span class="p">[</span><span class="n">C_m_post_normalized</span> <span class="o">&lt;</span> <span class="mf">0.999</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="o">+</span><span class="mf">0.01</span>
+    <span class="n">vmax</span> <span class="o">=</span> <span class="o">-</span><span class="n">vmin</span>
+    <span class="c1"># vmin, vmax = -1., +1.</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">)</span>
+    <span class="n">cm</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Normalized post. covariance op., $\rho_M$&quot;</span><span class="p">)</span>
+    <span class="n">pc3</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+            <span class="n">C_m_post_normalized</span><span class="p">,</span> <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span>
+            <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pc3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Normalized covariance&quot;</span><span class="p">)</span>
+
+    <span class="n">tickpos</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">]</span>
+    <span class="n">ticklabels</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">r</span><span class="s2">&quot;$\sigma_</span><span class="si">{11}</span><span class="s2">$&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;$\sigma_</span><span class="si">{12}</span><span class="s2">$&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;$\sigma_</span><span class="si">{13}</span><span class="s2">$&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;$\sigma_</span><span class="si">{22}</span><span class="s2">$&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">&quot;$\sigma_</span><span class="si">{23}</span><span class="s2">$&quot;</span>
+            <span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;True model parameter&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Inverted model parameter&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">tickpos</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ticklabels</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">tickpos</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">ticklabels</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="mf">1.05</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_resolutions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;iterative_constant_shear&quot;</span><span class="p">,</span> <span class="s2">&quot;iterative_variable_shear&quot;</span><span class="p">]:</span>
+    <span class="n">C_m_post</span> <span class="o">=</span> <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;C_m_posterior&quot;</span><span class="p">]</span>
+    <span class="n">C_m_post_normalized</span> <span class="o">=</span> <span class="p">(</span> <span class="n">C_m_post</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">C_m_post</span><span class="p">))[:,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">C_m_post</span><span class="p">))[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">fig_resolutions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_resolution_covariance_corrcoef</span><span class="p">(</span>
+        <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;resolution_operator&quot;</span><span class="p">],</span>
+        <span class="n">inversion_output</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="s2">&quot;C_m_posterior&quot;</span><span class="p">],</span>
+        <span class="n">C_m_post_normalized</span><span class="p">,</span>
+        <span class="n">figname</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;resolution_covariance_</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">))</span>
+    <span class="n">fig_resolutions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+        <span class="n">fig_resolutions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">method</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Geysers_SI_23_0.png" src="../_images/notebooks_Geysers_SI_23_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Geysers_SI_23_1.png" src="../_images/notebooks_Geysers_SI_23_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Geysers_SI_23_2.png" src="../_images/notebooks_Geysers_SI_23_2.png" />
+</div>
+</div>
+</section>
 <section id="Some-extra-figures">
-<h2>Some extra figures<a class="headerlink" href="#Some-extra-figures" title="Permalink to this heading"></a></h2>
+<h2>Some extra figures<a class="headerlink" href="#Some-extra-figures" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -1660,7 +1657,7 @@ Done in 107.29sec!
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_Mohr</span> <span class="o">=</span> <span class="n">plot_Mohr</span><span class="p">(</span><span class="n">inversion_output</span><span class="p">,</span> <span class="n">plot_density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1671,10 +1668,11 @@ Done in 107.29sec!
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Geysers_SI_23_0.svg" src="../_images/notebooks_Geysers_SI_23_0.svg" /></div>
+<img alt="../_images/notebooks_Geysers_SI_26_0.png" src="../_images/notebooks_Geysers_SI_26_0.png" />
+</div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_instabilities</span><span class="p">(</span><span class="n">inversion</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.60</span><span class="p">,</span> <span class="n">Imin</span><span class="o">=</span><span class="mf">0.80</span><span class="p">):</span>
@@ -1717,7 +1715,7 @@ Done in 107.29sec!
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_inst</span> <span class="o">=</span> <span class="n">plot_instabilities</span><span class="p">(</span><span class="n">inversion_output</span><span class="p">,</span> <span class="n">Imin</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">)</span>
@@ -1731,7 +1729,8 @@ Done in 107.29sec!
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_Geysers_SI_25_0.svg" src="../_images/notebooks_Geysers_SI_25_0.svg" /></div>
+<img alt="../_images/notebooks_Geysers_SI_28_0.png" src="../_images/notebooks_Geysers_SI_28_0.png" />
+</div>
 </div>
 </section>
 </section>

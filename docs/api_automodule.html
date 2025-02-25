@@ -1,23 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API &mdash; ILSI 1.1.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=58fbf978"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -28,11 +27,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> ILSI
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ILSI
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -59,7 +62,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">API</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/api_automodule.rst.txt" rel="nofollow"> View page source</a>
@@ -70,35 +73,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-ILSI.ilsi">
-<span id="api"></span><h1>API<a class="headerlink" href="#module-ILSI.ilsi" title="Permalink to this heading"></a></h1>
+  <section id="module-ILSI.ilsi">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-ILSI.ilsi" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.Michael1984_inversion">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">Michael1984_inversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_eigen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#Michael1984_inversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.Michael1984_inversion" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">Michael1984_inversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_eigen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#Michael1984_inversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.Michael1984_inversion" title="Link to this definition"></a></dt>
 <dd><p>Linear inversion described in Michael 1984.</p>
 <dl class="simple">
 <dt>This method assumes:</dt><dd><ul class="simple">
@@ -120,7 +99,7 @@ N.B.: This routine is written assuming outward footwall normals and slip
 vectors of the hanging wall w.r.t. the footwall. Therefore, the stress
 tensor sign convention is compression negative.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -140,7 +119,7 @@ estimated from the Tarantola and Valette formula
 (cf. Tarantola_Valette routine).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -185,10 +164,16 @@ Returned if <cite>return_stats</cite> is True.</p>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>output[“resolution_operator”]: (3, 3) numpy.ndarray</dt><dd><p>The resolution operator assuming that the shear tractions are all
+perfectly constant or that they are all perfectly estimated.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -196,7 +181,7 @@ Returned if <cite>return_stats</cite> is True.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.Tarantola_Valette">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">Tarantola_Valette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_d_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_m_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_prior</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inversion_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model_space'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#Tarantola_Valette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.Tarantola_Valette" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">Tarantola_Valette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_d_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_m_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_prior</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inversion_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model_space'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#Tarantola_Valette"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.Tarantola_Valette" title="Link to this definition"></a></dt>
 <dd><p>Returns Tarantola’s and Valette’s least square solution for
 a given linear operator <cite>G</cite> and observation vector <cite>data</cite>. If the
 covariance matrices of the observations and of the model
@@ -204,7 +189,7 @@ parameters are not known, we assume them to be identity. The
 inversion can be performed either in the data space or in
 the model space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>G</strong> (<em>(</em><em>n</em><em>, </em><em>m</em><em>) </em><em>numpy.ndarray</em>) – The linear operator projecting elements of the model
 space m onto the data space: d = G.m
@@ -227,7 +212,7 @@ parameters are, then m_prior should be filled with this estimate.
 If None, <cite>m_prior</cite> is set to zero.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>m_inv</strong> (<em>(m, 1) numpy.ndarray</em>) – The inverted model parameters.</p></li>
 <li><p><strong>C_m_posterior</strong> (<em>(5, 5) numpy.ndarray</em>) – Posterior covariance of the model parameter distribution.</p></li>
@@ -240,7 +225,7 @@ If None, <cite>m_prior</cite> is set to zero.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.compute_instability_parameter">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">compute_instability_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fault_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#compute_instability_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.compute_instability_parameter" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">compute_instability_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_fault_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#compute_instability_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.compute_instability_parameter" title="Link to this definition"></a></dt>
 <dd><p>Compute the instability parameter as introduced by Lund and Slunga 1999,
 re-used by Vavrycuk 2013-2014 and modified by Beauce 2022.
 For a given stress field characterized by the principal stress
@@ -253,7 +238,7 @@ Beauce 2022 includes the sign of the dot product between
 the shear stress and the slip vector on the fault. This instability
 ranges from -1 to +1, instead of from 0 to +1.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>principal_directions</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The three eigenvectors of the reference stress tensor, stored in
 a matrix as column vectors and ordered from
@@ -282,7 +267,7 @@ directions. If False, the instability parameter is the one
 defined in Vavrycuk 2013, 2014.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>instability_parameter</strong> (<em>(n_earthquakes, 2) numpy.ndarray</em>) – The instability parameter as defined in Beauce 2022 for the two
 nodal planes of each focal mechanism datum.</p></li>
@@ -300,11 +285,11 @@ Only provided if <cite>return_fault_planes=True</cite>.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.find_optimal_friction">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">find_optimal_friction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#find_optimal_friction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.find_optimal_friction" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">find_optimal_friction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#find_optimal_friction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.find_optimal_friction" title="Link to this definition"></a></dt>
 <dd><p>Find the friction that maximizes the instability parameter I
 based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes_1</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -335,10 +320,10 @@ directions. If False, the instability parameter is the one
 defined in Vavrycuk 2013, 2014.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>optimal_friction</strong> – The friction value that maximizes the mean instability parameter.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -346,11 +331,11 @@ defined in Vavrycuk 2013, 2014.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.find_optimal_friction_one_set">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">find_optimal_friction_one_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#find_optimal_friction_one_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.find_optimal_friction_one_set" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">find_optimal_friction_one_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#find_optimal_friction_one_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.find_optimal_friction_one_set" title="Link to this definition"></a></dt>
 <dd><p>Find the friction that maximizes the instability parameter I
 based on V. Vavrycuk 2013,2014 and B. Lund and R. Slunga 1999.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes_1</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -374,10 +359,10 @@ directions. If False, the instability parameter is the one
 defined in Vavrycuk 2013, 2014.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>optimal_friction</strong> – The friction value that maximizes the mean instability parameter.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -385,21 +370,21 @@ defined in Vavrycuk 2013, 2014.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.forward_model">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">forward_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#forward_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.forward_model" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">forward_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#forward_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.forward_model" title="Link to this definition"></a></dt>
 <dd><p>Build the forward modeling matrix <code class="docutils literal notranslate"><span class="pre">G</span></code> given a collection
 of fault normals.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> (<em>(</em><em>n_earthquakes</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – The i-th row <a href="#id1"><span class="problematic" id="id2">n_</span></a> are the components of the i-th
 fault normal in the (north, west, south) coordinate
 system.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>G</strong> – The forward modeling matrix giving the slip (shear stress)
 directions on the faults characterized by <cite>n_</cite>, given the 5
 elements of the deviatoric stress tensor.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3 x n_earthquakes, 5) numpy.ndarray</p>
 </dd>
 </dl>
@@ -407,12 +392,12 @@ elements of the deviatoric stress tensor.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.inversion_bootstrap">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_bootstrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_bootstrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_bootstrap" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_bootstrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_fault_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_bootstrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_bootstrap" title="Link to this definition"></a></dt>
 <dd><p>Inverts one set of focal mechanisms without seeking which nodal planes
 are more likely to be the fault planes. Performs bootstrap resampling
 of the data set to return an ensemble of solutions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -440,9 +425,11 @@ due to Michael 1984.</p></li>
 for the Tarantola and Valette inversion. An empty dictionary
 uses the default values in <cite>Tarantola_Valette</cite>. If None, uses
 the Moore-Penrose inverse.</p></li>
+<li><p><strong>input_fault_planes</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If True, <cite>strikes, `dips</cite> and <cite>rakes</cite> are considered to be
+the fault planes and no auxiliary plane will be computed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -469,7 +456,7 @@ the b-th bootstrap replica is given by:
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -477,7 +464,7 @@ the b-th bootstrap replica is given by:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.inversion_bootstrap_instability">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_bootstrap_instability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stress_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_tensor_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_bootstrap_instability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_bootstrap_instability" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_bootstrap_instability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stress_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_tensor_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_bootstrap_instability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_bootstrap_instability" title="Link to this definition"></a></dt>
 <dd><p>Invert one set of focal mechanisms with the instability parameter
 to seek which nodal planes are more likely to be the fault planes
 (cf. B. Lund and R. Slunga 1999, V. Vavrycuk 2013,2014).
@@ -490,7 +477,7 @@ and Valette formula. In general, you can keep the default parameter
 values, except for n_resamplings which depends on the time you can
 afford spending.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>principal_directions</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The three eigenvectors of the reference stress tensor, stored in
 a matrix as column vectors and ordered from
@@ -545,7 +532,7 @@ across <cite>n_threads</cite> threads. If <cite>n_threads</cite> is <cite>0</cit
 use all available CPUs.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -572,7 +559,7 @@ the b-th bootstrap replica is given by:
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -580,7 +567,7 @@ the b-th bootstrap replica is given by:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.inversion_jackknife">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_jackknife</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jack_strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bootstrap_events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_jackknife"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_jackknife" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_jackknife</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jack_strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bootstrap_events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_fault_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_jackknife"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_jackknife" title="Link to this definition"></a></dt>
 <dd><p>This routine was tailored for one of my application, but it can
 be of interest to others. Each earthquake comes with an ensemble
 of focal mechanism solutions that were obtained by resampling the
@@ -592,7 +579,7 @@ of propagating the focal mechanism uncertainties into the stress
 inversion. In this routine we do not seek which nodal planes are
 more likely to be the fault planes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>jack_strikes</strong> (<em>(</em><em>n_earthquakes</em><em>, </em><em>n_jackknifes</em><em>) </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -622,9 +609,11 @@ due to Michael 1984.</p></li>
 for the Tarantola and Valette inversion. An empty dictionary
 uses the default values in <cite>Tarantola_Valette</cite>. If None, uses
 the Moore-Penrose inverse.</p></li>
+<li><p><strong>input_fault_planes</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If True, <cite>strikes, `dips</cite> and <cite>rakes</cite> are considered to be
+the fault planes and no auxiliary plane will be computed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -651,7 +640,7 @@ the b-th jackknife replica is given by:
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -659,7 +648,7 @@ the b-th jackknife replica is given by:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.inversion_jackknife_instability">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_jackknife_instability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stress_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_tensor_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bootstrap_events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_earthquakes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_jackknife_instability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_jackknife_instability" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_jackknife_instability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_resamplings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stress_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_tensor_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bootstrap_events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_earthquakes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_jackknife_instability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_jackknife_instability" title="Link to this definition"></a></dt>
 <dd><p>This routine was tailored for one of my application, but it can
 be of interest to others. Each earthquake comes with an ensemble
 of focal mechanism solutions that were obtained by resampling the
@@ -678,7 +667,7 @@ and Valette formula. In general, you can keep the default parameter
 values, except for n_resamplings which depends on the time you can
 afford spending.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>principal_directions</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The three eigenvectors of the reference stress tensor, stored in
 a matrix as column vectors and ordered from
@@ -735,7 +724,7 @@ across <cite>n_threads</cite> threads. If <cite>n_threads</cite> is <cite>0</cit
 use all available CPUs.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -762,7 +751,7 @@ the b-th jackknife replica is given by:
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -770,11 +759,11 @@ the b-th jackknife replica is given by:
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.inversion_one_set">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_one_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_eigen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_one_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_one_set" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_one_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_eigen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_fault_planes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_one_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_one_set" title="Link to this definition"></a></dt>
 <dd><p>Invert one set of focal mechanisms without seeking which nodal planes
 are more likely to be the fault planes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -801,9 +790,11 @@ the Moore-Penrose inverse.</p></li>
 <li><p><strong>return_stats</strong> (<em>boolean</em><em>, </em><em>default to True</em>) – If True, the posterior data and model parameter distributions
 estimated from the Tarantola and Valette formula
 (cf. Tarantola_Valette routine).</p></li>
+<li><p><strong>input_fault_planes</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If True, <cite>strikes, `dips</cite> and <cite>rakes</cite> are considered to be
+the fault planes and no auxiliary plane will be computed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -842,10 +833,16 @@ Returned if <cite>return_stats</cite> is True.</p>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>output[“resolution_operator”]: (3, 3) numpy.ndarray</dt><dd><p>The resolution operator assuming that the shear tractions are all
+perfectly constant or that they are all perfectly estimated.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -853,13 +850,13 @@ Returned if <cite>return_stats</cite> is True.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.inversion_one_set_instability">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_one_set_instability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stress_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_tensor_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_averaging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_one_set_instability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_one_set_instability" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">inversion_one_set_instability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stress_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_random_selections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_tensor_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_averaging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed_instability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_shear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#inversion_one_set_instability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.inversion_one_set_instability" title="Link to this definition"></a></dt>
 <dd><p>Invert one set of focal mechanisms with the instability parameter
 to seek which nodal planes are more likely to be the fault planes
 (cf. B. Lund and R. Slunga 1999, V. Vavrycuk 2013,2014).
 In general, you can keep the default parameter values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -934,7 +931,7 @@ well defined set of planes.</p></li>
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -977,10 +974,16 @@ Returned if <cite>return_stats</cite> is True.</p>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>output[“resolution_operator”]: (3, 3) numpy.ndarray</dt><dd><p>The resolution operator assuming that the shear tractions are all
+perfectly constant or that they are all perfectly estimated.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
@@ -988,7 +991,7 @@ Returned if <cite>return_stats</cite> is True.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.ilsi.iterative_linear_si">
-<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">iterative_linear_si</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_eigen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#iterative_linear_si"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.iterative_linear_si" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.ilsi.</span></span><span class="sig-name descname"><span class="pre">iterative_linear_si</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_n_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_update_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tarantola_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_eigen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/ilsi.html#iterative_linear_si"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.ilsi.iterative_linear_si" title="Link to this definition"></a></dt>
 <dd><p>Iterative stress inversion described in Beauce et al. 2022.</p>
 <dl class="simple">
 <dt>This method assumes:</dt><dd><ul class="simple">
@@ -1008,7 +1011,7 @@ N.B.: This routine is written assuming outward footwall normals and slip
 vectors of the hanging wall w.r.t. the footwall. Therefore, the stress
 tensor sign convention is compression negative.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – The strike of nodal planes 1, angle between north and
 the fault’s horizontal (0-360).</p></li>
@@ -1033,7 +1036,7 @@ estimated from the Tarantola and Valette formula
 (cf. Tarantola_Valette routine).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>output</strong> –</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -1072,21 +1075,27 @@ Returned if <cite>return_stats</cite> is True.</p>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>output[“resolution_operator”]: (3, 3) numpy.ndarray</dt><dd><p>The resolution operator assuming that the shear tractions are all
+perfectly constant or that they are all perfectly estimated.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict {str: numpy.ndarray}</p>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-ILSI.utils_stress"></span><dl class="py function">
+<dl class="py function" id="module-ILSI.utils_stress">
 <dt class="sig sig-object py" id="ILSI.utils_stress.A_phi_">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">A_phi_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#A_phi_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.A_phi_" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">A_phi_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_stresses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#A_phi_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.A_phi_" title="Link to this definition"></a></dt>
 <dd><p>Compute A_phi as defined by Simpson 1997.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>principal_stresses</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em>) – The three eigenvalues of the stress tensor, ordered
 from most compressive (sigma1) to least compressive (sigma3).</p></li>
@@ -1096,10 +1105,10 @@ most compressive (sigma1) to least compressive (sigma3).
 The direction of sigma_i is given by: <cite>principal_directions[:, i]</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>A_phi</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>scalar, float</p>
 </dd>
 </dl>
@@ -1107,19 +1116,19 @@ The direction of sigma_i is given by: <cite>principal_directions[:, i]</cite>.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.R_">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">R_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_stresses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#R_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.R_" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">R_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_stresses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#R_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.R_" title="Link to this definition"></a></dt>
 <dd><p>Computes the shape ratio R=(sig1-sig2)/(sig1-sig3).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>pinricpal_stresses</strong> (<em>numpy.ndarray</em><em> or </em><em>list</em>) – Contains the three eigenvalues of the stress tensor
 ordered such that:
 <cite>principal_stresses[0]</cite> &lt; <cite>principal_stresses[1]</cite> &lt; <cite>principal_stresses[2]</cite>
 with <cite>principal_stresses[0]</cite> being the most compressional stress.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>shape_ratio</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>scalar float</p>
 </dd>
 </dl>
@@ -1127,12 +1136,12 @@ with <cite>principal_stresses[0]</cite> being the most compressional stress.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.angular_residual">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">angular_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#angular_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.angular_residual" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">angular_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#angular_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.angular_residual" title="Link to this definition"></a></dt>
 <dd><p>Compute the angle between the direction of the resolved shear
 stress predicted by the stress tensor and the direction of
 slip given by the strike/dip/rake data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stress_tensor</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – The Cauchy stress tensor.</p></li>
 <li><p><strong>strikes</strong> (<em>(</em><em>n_earthquakes</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em>) – Fault strikes.</p></li>
@@ -1140,10 +1149,10 @@ slip given by the strike/dip/rake data.</p>
 <li><p><strong>rakes</strong> (<em>(</em><em>n_earthquakes</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em>) – Fault rakes.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>angles</strong> – Angles between shear stress and slip.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(n_earthquakes) numpy.ndarray</p>
 </dd>
 </dl>
@@ -1151,7 +1160,7 @@ slip given by the strike/dip/rake data.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.aux_plane">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">aux_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#aux_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.aux_plane" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">aux_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#aux_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.aux_plane" title="Link to this definition"></a></dt>
 <dd><p>Get Strike and dip of second plane.</p>
 <p>Adapted from MATLAB script
 <a class="reference external" href="http://www.ceri.memphis.edu/people/olboyd/Software/Software.html">bb.m</a>
@@ -1162,21 +1171,21 @@ See Obspy project at &lt;<a class="reference external" href="https://github.com/
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.check_right_handedness">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">check_right_handedness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#check_right_handedness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.check_right_handedness" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">check_right_handedness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#check_right_handedness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.check_right_handedness" title="Link to this definition"></a></dt>
 <dd><p>Make sure the matrix of column vectors forms
 a right-handed basis. This is particularly important
 when re-ordering the principal stress directions
 based on their eigenvalues.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>basis</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – Matrix with column vectors that form the basis of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rh_basis</strong> – Matrix with column vectors that form the right-handed
 version of the input basis. One of the unit vectors
 might have been reversed in the process.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 3) numpy.ndarray</p>
 </dd>
 </dl>
@@ -1184,16 +1193,16 @@ might have been reversed in the process.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.compute_traction">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">compute_traction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#compute_traction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.compute_traction" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">compute_traction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#compute_traction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.compute_traction" title="Link to this definition"></a></dt>
 <dd><p>Compute traction and its normal and shear components on a given plane.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stress_tensor</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – Cauchy stress tensor.</p></li>
 <li><p><strong>normal</strong> (<em>(</em><em>n_earthquakes</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – Matrix of n_earthquakes row vectors of fault normals.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>traction</strong> (<em>(n_earthquakes, 3) numpy.ndarray</em>) – Tractions on the surfaces defined by normal.</p></li>
 <li><p><strong>normal_traction</strong> (<em>(n_earthquakes, 3) numpy.ndarray</em>) – Normal component of the tractions.</p></li>
@@ -1206,7 +1215,7 @@ might have been reversed in the process.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.errors_in_data">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">errors_in_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_strikes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_strikes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes_2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#errors_in_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.errors_in_data" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">errors_in_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_strikes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_strikes_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_dips_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jack_rakes_2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#errors_in_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.errors_in_data" title="Link to this definition"></a></dt>
 <dd><p>This routines was tailored for my applications.
 Use the multiple solutions obtained during the jackknife resampling
 of the focal mechanism inversion to compute the deviation of these
@@ -1222,11 +1231,11 @@ average the outputs.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.get_CI_levels">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">get_CI_levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_intervals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[95.0,</span> <span class="pre">90.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#get_CI_levels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.get_CI_levels" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">get_CI_levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_intervals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[95.0,</span> <span class="pre">90.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#get_CI_levels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.get_CI_levels" title="Link to this definition"></a></dt>
 <dd><p>Computes the 2d histogram in the stereographic space
 of a collection lines described by their azimuth and plunge.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>azimuths</strong> (<em>(</em><em>n_lines</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – Azimuths of the lines.</p></li>
 <li><p><strong>plunges</strong> (<em>(</em><em>n_lines</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – Plunges (angle from horizontal) of the lines.</p></li>
@@ -1238,7 +1247,7 @@ smooth confidence intervals.</p></li>
 <li><p><strong>plot</strong> (<em>boolean</em><em>, </em><em>default to False</em>) – If True, plot the 2d histogram.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>count</strong> (<em>(nbins, nbins) numpy.ndarray, integer, optional</em>) – 2D histogram of the lines dsecribed by azimuths and plunges.
 Only provided if <cite>return_count</cite> is True.</p></li>
@@ -1255,12 +1264,12 @@ Only provided if <cite>return_count</cite> is True.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.get_CI_levels_joint">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">get_CI_levels_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_intervals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[90.0,</span> <span class="pre">95.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#get_CI_levels_joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.get_CI_levels_joint" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">get_CI_levels_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence_intervals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[90.0,</span> <span class="pre">95.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#get_CI_levels_joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.get_CI_levels_joint" title="Link to this definition"></a></dt>
 <dd><p>Computes the 2d histogram in the stereographic space
 of a collection lines described by their azimuth and plunge.
 This is an EXPERIMENTAL function.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>azimuths</strong> (<em>(</em><em>n_lines</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – Azimuths of the lines.</p></li>
 <li><p><strong>plunges</strong> (<em>(</em><em>n_lines</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – Plunges (angle from horizontal) of the lines.</p></li>
@@ -1272,7 +1281,7 @@ smooth confidence intervals.</p></li>
 <li><p><strong>plot</strong> (<em>boolean</em><em>, </em><em>default to False</em>) – If True, plot the 2d histogram.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>count</strong> (<em>(nbins, nbins) numpy.ndarray, integer, optional</em>) – 2D histogram of the lines dsecribed by azimuths and plunges.
 Only provided if <cite>return_count</cite> is True.</p></li>
@@ -1289,13 +1298,13 @@ Only provided if <cite>return_count</cite> is True.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.get_bearing_plunge">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">get_bearing_plunge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hemisphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lower'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#get_bearing_plunge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.get_bearing_plunge" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">get_bearing_plunge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hemisphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lower'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#get_bearing_plunge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.get_bearing_plunge" title="Link to this definition"></a></dt>
 <dd><p>The vectors are in the coordinate system (x1, x2, x3):
 x1: north
 x2: west
 x3: upward</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u</strong> – Vector for which we want the bearing (azimuth) and plunge.</p></li>
 <li><p><strong>degrees</strong> (<em>boolean</em><em>, </em><em>default to True</em>) – If True, returns bearing and plunge in degrees.
@@ -1305,7 +1314,7 @@ with the lower hemisphere if <cite>hemisphere</cite> is ‘lower’, or
 with the upper hemisphere if <cite>hemisphere</cite> is ‘upper’.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>bearing</strong> (<em>float</em>) – Angle between the north and the line.</p></li>
 <li><p><strong>plunge</strong> (<em>float</em>) – Angle between the horizontal plane and the line.</p></li>
@@ -1317,11 +1326,11 @@ with the upper hemisphere if <cite>hemisphere</cite> is ‘upper’.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.hist2d">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">hist2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#hist2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.hist2d" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">hist2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plunges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#hist2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.hist2d" title="Link to this definition"></a></dt>
 <dd><p>Computes the 2d histogram in the stereographic space
 of a collection lines described by their azimuth and plunge.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>azimuths</strong> (<em>(</em><em>n_lines</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – Azimuths of the lines.</p></li>
 <li><p><strong>plunges</strong> (<em>(</em><em>n_lines</em><em>) </em><em>list</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>float</em>) – Plunges (angle from horizontal) of the lines.</p></li>
@@ -1338,27 +1347,27 @@ smooth confidence intervals.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.joint_CDF">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">joint_CDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#joint_CDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.joint_CDF" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">joint_CDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#joint_CDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.joint_CDF" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.kagan_angle">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">kagan_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensor2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#kagan_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.kagan_angle" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">kagan_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensor2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#kagan_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.kagan_angle" title="Link to this definition"></a></dt>
 <dd><p>Compute the minimum rotation about <em>some</em> axis required
 to match the two tensors. This angle is a measure of their
 difference.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tensor1</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – First tensor, e.g. moment or stress tensor.</p></li>
 <li><p><strong>tensor2</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – Second tensor, e.g. moment of stress tensor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rotation_angle</strong> – Smallest angle, in degrees, required to superimpose
 the two tensors.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>scalar float</p>
 </dd>
 </dl>
@@ -1366,14 +1375,14 @@ the two tensors.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.mean_angular_residual">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">mean_angular_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#mean_angular_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.mean_angular_residual" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">mean_angular_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#mean_angular_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.mean_angular_residual" title="Link to this definition"></a></dt>
 <dd><p>Mean of the absolute value of the angles returned by
 angular_residual. See angular_residual for more info.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.mean_kagan_angle">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">mean_kagan_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#mean_kagan_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.mean_kagan_angle" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">mean_kagan_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rakes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#mean_kagan_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.mean_kagan_angle" title="Link to this definition"></a></dt>
 <dd><p>Computes the mean kagan angle as a measure of dispersion.</p>
 <p>The mean kagan angle within a population of focal mechanisms
 described by strikes/dips/rakes. If strike0, dip0, and rake0
@@ -1383,7 +1392,7 @@ and the reference focal mechanism described by strike0/dip0/rake0.
 The mean kagan angle can be interpreted as a measure of dispersion
 within the population.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strikes</strong> (<em>numpy.ndarray</em><em> or </em><em>list</em><em>, </em><em>float</em>) – Strikes of the moment tensors.</p></li>
 <li><p><strong>dips</strong> (<em>numpy.ndarray</em><em> or </em><em>list</em><em>, </em><em>float</em>) – Dips of the moment tensors.</p></li>
@@ -1393,10 +1402,10 @@ within the population.</p>
 <li><p><strong>rake0</strong> (<em>scalar</em><em>, </em><em>float</em><em>, </em><em>default to None</em>) – Rake of the reference moment tensor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mean_angle</strong> – Mean kagan angle between the moment tensors given as input.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>scalar, float</p>
 </dd>
 </dl>
@@ -1404,7 +1413,7 @@ within the population.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.normal_slip_vectors">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">normal_slip_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inward'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#normal_slip_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.normal_slip_vectors" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">normal_slip_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inward'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#normal_slip_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.normal_slip_vectors" title="Link to this definition"></a></dt>
 <dd><p>Determine the normal and the slip vectors of the
 focal mechanism defined by (strike, dip, rake).
 From Stein and Wysession 2002.</p>
@@ -1417,7 +1426,7 @@ x1: north
 x2: west
 x3: upward</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strike</strong> (<em>float</em>) – Strike of the fault.</p></li>
 <li><p><strong>dip</strong> (<em>float</em>) – Dip of the fault.</p></li>
@@ -1429,7 +1438,7 @@ If ‘outward’, returns the outward normal of the HANGING wall,
 or, equivalently, the inward normal of the hanging wall.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>n</strong> (<em>(3) numpy.ndarray</em>) – The fault normal.</p></li>
 <li><p><strong>d</strong> (<em>(3) numpy.ndarray</em>) – The slip vector given as the direction of motion
@@ -1442,7 +1451,7 @@ of the hanging wall w.r.t. the foot wall.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.p_t_b_axes">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">p_t_b_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#p_t_b_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.p_t_b_axes" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">p_t_b_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#p_t_b_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.p_t_b_axes" title="Link to this definition"></a></dt>
 <dd><p>Determine the P (most compressive), T (least compressive)
 and B (intermediate, or neutral axis) axes
 from the normal and the slip vectors, following
@@ -1456,19 +1465,19 @@ x3: upward</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.principal_faults">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">principal_faults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#principal_faults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.principal_faults" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">principal_faults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">friction_coefficient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#principal_faults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.principal_faults" title="Link to this definition"></a></dt>
 <dd><p>Compute the orientation of the most unstable fault planes given
 a stress tensor and a coefficient of friction. These faults are
 called the principal faults.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stress_tensor</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – Cauchy stress tensor.</p></li>
 <li><p><strong>friction_coefficient</strong> (<em>scalar float</em>) – Coefficient of friction used for the Mohr-Coulomb
 failure criterion.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>n1</strong> (<em>(3, 1) numpy.ndarray</em>) – Normal of the first principal faults.</p></li>
 <li><p><strong>n2</strong> (<em>(3, 1) numpy.ndarray</em>) – Normal of the second principal faults. The two
@@ -1481,7 +1490,7 @@ faults form a pair of conjugate faults.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.quaternion">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#quaternion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.quaternion" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">quaternion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#quaternion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.quaternion" title="Link to this definition"></a></dt>
 <dd><p>Formula of quaternion of rotation matrix with <cite>t</cite> (least compressive),
 <cite>p</cite> (most compressive), <cite>b</cite> (neutral) components expressed in the
 (north, east, down) frame of reference.
@@ -1490,18 +1499,18 @@ Make sure (<cite>t</cite>, <cite>p</cite>, <cite>b</cite>) form a right-handed b
 This routine was copied from the _tpb2q routine of the Pyrocko Python
 project (see at <a class="reference external" href="https://pyrocko.org/docs/current/_modules/pyrocko/moment_tensor.html#kagan_angle">https://pyrocko.org/docs/current/_modules/pyrocko/moment_tensor.html#kagan_angle</a>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em><em> or </em><em>list</em>) – </p></li>
-<li><p><strong>p</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em><em> or </em><em>list</em>) – </p></li>
-<li><p><strong>b</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em><em> or </em><em>list</em>) – </p></li>
+<li><p><strong>t</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em><em> or </em><em>list</em>)</p></li>
+<li><p><strong>p</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em><em> or </em><em>list</em>)</p></li>
+<li><p><strong>b</strong> (<em>(</em><em>3</em><em>,</em><em>) </em><em>numpy.ndarray</em><em> or </em><em>list</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>quaternion</strong> – The quaternion that represents the rotation represented by
 the matrix (t, p, b), where t, p, b are column vectors.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(4,) numpy.ndarray</p>
 </dd>
 </dl>
@@ -1509,7 +1518,7 @@ the matrix (t, p, b), where t, p, b are column vectors.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.random_rotation">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">random_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">360.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#random_rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.random_rotation" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">random_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">360.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#random_rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.random_rotation" title="Link to this definition"></a></dt>
 <dd><p>Generate a random rotation matrix.</p>
 <dl class="simple">
 <dt>Generate a random rotation matrix by:</dt><dd><ol class="arabic simple">
@@ -1519,14 +1528,14 @@ the matrix (t, p, b), where t, p, b are column vectors.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>max_angle</strong> (<em>scalar float</em><em>, </em><em>default to 360</em>) – Upper bound of the uniform distribution from which the rotation
 angle is randomly drawn.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>R</strong> – Rotation matrix.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 3) numpy.ndarray</p>
 </dd>
 </dl>
@@ -1534,13 +1543,13 @@ angle is randomly drawn.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.reduced_stress_tensor">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">reduced_stress_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#reduced_stress_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.reduced_stress_tensor" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">reduced_stress_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">principal_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#reduced_stress_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.reduced_stress_tensor" title="Link to this definition"></a></dt>
 <dd><p>Computes a normalized stress tensor where the most
 and least compressive principal stresses are set to
 -1 and +1, respectively, and the intermediate stress
 is determined by the shape ratio.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>principal_directions</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray.</em>) – The three eigenvectors of the stress tensor, stored in
 a matrix as column vectors and ordered from
@@ -1549,31 +1558,74 @@ The direction of sigma_i is given by: <cite>principal_directions[:, i]</cite>.</
 <li><p><strong>R</strong> (<em>float</em>) – The shape ratio (sig1 - sig2)/(sig1 - sig3).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>stress_tensor</strong> – The stress tensor built from the principal directions
 and the shape ratio.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 3) numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ILSI.utils_stress.resolution_operator">
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">resolution_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_D_inv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_M_inv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_L</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#resolution_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.resolution_operator" title="Link to this definition"></a></dt>
+<dd><p>Calculate the resolution operator in the Tarantola-Valette framework.</p>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<p>Tarantola, Albert. Inverse problem theory and methods for model parameter
+estimation. Society for industrial and applied mathematics, 2005.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param G<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Forward modelling, linear operator.</p>
+</dd>
+<dt class="field-even">type G<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">param C_D_inv<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Inverse of the data+theory covarance matrix.</p>
+</dd>
+<dt class="field-even">type C_D_inv<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">param C_M_inv<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Inverse of the model covariance matrix.</p>
+</dd>
+<dt class="field-even">type C_M_inv<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">param return_L<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If not False, return the inverse operator L. Defaults to False.</p>
+</dd>
+<dt class="field-even">type return_L<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean, optional</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>R</strong> (<em>numpy.ndarray</em>) – Resolution operator.</p></li>
+<li><p><strong>L</strong> (<em>numpy.ndarray, optional</em>) – Inverse operator. Is returned only if <cite>return_L=True</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.rotation">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.rotation" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.rotation" title="Link to this definition"></a></dt>
 <dd><p>Compute the rotation matrix about axis with angle <cite>angle</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>axis</strong> – Axis about which the rotation is computed.</p></li>
 <li><p><strong>angle</strong> (<em>scalar</em><em>, </em><em>float</em>) – Angle, in degrees, of the rotation.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>R</strong> – Rotation matrix of angle <cite>angle</cite> degrees about <cite>axis</cite>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 3) numpy.ndarray, float</p>
 </dd>
 </dl>
@@ -1581,21 +1633,21 @@ and the shape ratio.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.round_cos">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">round_cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#round_cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.round_cos" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">round_cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#round_cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.round_cos" title="Link to this definition"></a></dt>
 <dd><p>Clip x so that it fits with the [-1,1] interval.</p>
 <p>If x is slightly outside the [-1,1] because of numerical
 imprecision, x is rounded, and can then be safely passed
 to arccos or arcsin. If x is truly outside of [-1,1], x
 is returned unchanged.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>scalar</em><em>, </em><em>float</em>) – Float variable that represents a cos or sin that
 is supposed to be within the [-1,1] interval.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>x_r</strong> – A rounded version of x, if necessary.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>scalar, float</p>
 </dd>
 </dl>
@@ -1603,7 +1655,7 @@ is supposed to be within the [-1,1] interval.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.shear_slip_angle_difference">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">shear_slip_angle_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#shear_slip_angle_difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.shear_slip_angle_difference" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">shear_slip_angle_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#shear_slip_angle_difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.shear_slip_angle_difference" title="Link to this definition"></a></dt>
 <dd><p>Return the angle difference between the slip vector
 from the focal mechanism solution and the shear traction
 on the fault determined from the inverted stress tensor.
@@ -1611,7 +1663,7 @@ Given that the stress inversion is made under the Wallace-Bott
 assumption, shear stress on the fault is parallel to slip, then
 this angle difference is a measure of misfit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stress_tensor</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray</em>) – The Cauchy stress tensor.</p></li>
 <li><p><strong>strike</strong> (<em>float</em>) – Strike of the fault.</p></li>
@@ -1619,10 +1671,10 @@ this angle difference is a measure of misfit.</p>
 <li><p><strong>rake</strong> (<em>float</em>) – Rake of the fault.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>angle</strong> – The angle between shear stress and slip, in degrees.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -1630,14 +1682,14 @@ this angle difference is a measure of misfit.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.stress_tensor_eigendecomposition">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">stress_tensor_eigendecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#stress_tensor_eigendecomposition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.stress_tensor_eigendecomposition" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">stress_tensor_eigendecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stress_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#stress_tensor_eigendecomposition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.stress_tensor_eigendecomposition" title="Link to this definition"></a></dt>
 <dd><p>Compute the eigendecomposition of stress tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>stress_tensor</strong> (<em>(</em><em>3</em><em>, </em><em>3</em><em>) </em><em>numpy.ndarray.</em>) – The stress tensor for which to solve the
 eigenvalue problem.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>principal_stresses</strong> (<em>(3,) numpy.ndarray.</em>) – The three eigenvalues of the stress tensor, ordered
 from most compressive (sigma1) to least compressive (sigma3).</p></li>
@@ -1653,20 +1705,20 @@ The direction of sigma_i is given by: <cite>principal_directions[:, i]</cite>.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.strike_dip_rake">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">strike_dip_rake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#strike_dip_rake"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.strike_dip_rake" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">strike_dip_rake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#strike_dip_rake"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.strike_dip_rake" title="Link to this definition"></a></dt>
 <dd><p>Invert the relationships between strike/dip/rake
 and normal (n) and slip (d) vectors found in Stein.
 n and d are required to be given as the default format
 returned by normal_slip_vectors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> – The outward pointing normal of the FOOT wall.</p></li>
 <li><p><strong>d</strong> – The slip direction of the hanging wall w.r.t.
 the foot wall.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>strike</strong> (<em>float</em>) – Strike of the fault, in degress.</p></li>
 <li><p><strong>dip</strong> (<em>float</em>) – Dip of the fault, in degrees.</p></li>
@@ -1679,22 +1731,22 @@ the foot wall.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ILSI.utils_stress.strike_dip_rake_to_mt">
-<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">strike_dip_rake_to_mt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#strike_dip_rake_to_mt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.strike_dip_rake_to_mt" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ILSI.utils_stress.</span></span><span class="sig-name descname"><span class="pre">strike_dip_rake_to_mt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ILSI/utils_stress.html#strike_dip_rake_to_mt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ILSI.utils_stress.strike_dip_rake_to_mt" title="Link to this definition"></a></dt>
 <dd><p>Compute the <em>normalized</em> moment tensor described by strike/dip/rake.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strike</strong> (<em>scalar</em><em>, </em><em>float</em>) – Strike of the input focal mechanism.</p></li>
 <li><p><strong>dip</strong> (<em>scalar</em><em>, </em><em>float</em>) – Dip of the input focal mechanism.</p></li>
 <li><p><strong>rake</strong> (<em>scalar</em><em>, </em><em>float</em>) – Rake of the input focal mechanism.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mt</strong> – Normalized moment tensor. Its columns are the
 (p, b, t) axes. Note: we return (p, b, t) to be
 consistent with our stress tensor convention (sig1, sig2, sig3).</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 3) numpy.ndarray, float</p>
 </dd>
 </dl>

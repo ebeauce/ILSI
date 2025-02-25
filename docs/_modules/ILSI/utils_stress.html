@@ -1,22 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ILSI.utils_stress &mdash; ILSI 1.1.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=58fbf978"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -27,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> ILSI
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ILSI
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -58,7 +61,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
       <li class="breadcrumb-item active">ILSI.utils_stress</li>
       <li class="wy-breadcrumbs-aside">
@@ -75,8 +78,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">LinAlgError</span>
 
-<div class="viewcode-block" id="A_phi_"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.A_phi_">[docs]</a><span class="k">def</span> <span class="nf">A_phi_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">,</span> <span class="n">principal_directions</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute A_phi as defined by Simpson 1997.</span>
+<div class="viewcode-block" id="A_phi_">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.A_phi_">[docs]</a>
+<span class="k">def</span> <span class="nf">A_phi_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">,</span> <span class="n">principal_directions</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute A_phi as defined by Simpson 1997.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
@@ -112,8 +117,11 @@
     <span class="n">A_phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">-</span> <span class="n">R</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">A_phi</span></div>
 
-<div class="viewcode-block" id="hist2d"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.hist2d">[docs]</a><span class="k">def</span> <span class="nf">hist2d</span><span class="p">(</span><span class="n">azimuths</span><span class="p">,</span> <span class="n">plunges</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">smoothing_sig</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="hist2d">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.hist2d">[docs]</a>
+<span class="k">def</span> <span class="nf">hist2d</span><span class="p">(</span><span class="n">azimuths</span><span class="p">,</span> <span class="n">plunges</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">smoothing_sig</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the 2d histogram in the stereographic space</span>
 <span class="sd">    of a collection lines described by their azimuth and plunge.</span>
 
@@ -160,7 +168,10 @@
     <span class="k">return</span> <span class="n">count</span><span class="p">,</span> <span class="n">lons_g</span><span class="p">,</span> <span class="n">lats_g</span></div>
 
 
-<div class="viewcode-block" id="joint_CDF"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.joint_CDF">[docs]</a><span class="k">def</span> <span class="nf">joint_CDF</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+
+<div class="viewcode-block" id="joint_CDF">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.joint_CDF">[docs]</a>
+<span class="k">def</span> <span class="nf">joint_CDF</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
     <span class="c1"># normalize the histogram</span>
     <span class="n">density</span> <span class="o">=</span> <span class="n">count</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
     <span class="c1"># integrate along first axis, and then along second axis</span>
@@ -169,7 +180,10 @@
     <span class="k">return</span> <span class="n">joint</span></div>
 
 
-<div class="viewcode-block" id="get_CI_levels"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_CI_levels">[docs]</a><span class="k">def</span> <span class="nf">get_CI_levels</span><span class="p">(</span>
+
+<div class="viewcode-block" id="get_CI_levels">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_CI_levels">[docs]</a>
+<span class="k">def</span> <span class="nf">get_CI_levels</span><span class="p">(</span>
     <span class="n">azimuths</span><span class="p">,</span>
     <span class="n">plunges</span><span class="p">,</span>
     <span class="n">confidence_intervals</span><span class="o">=</span><span class="p">[</span><span class="mf">95.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
@@ -178,7 +192,7 @@
     <span class="n">return_count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the 2d histogram in the stereographic space</span>
 <span class="sd">    of a collection lines described by their azimuth and plunge.</span>
 
@@ -244,7 +258,10 @@
         <span class="k">return</span> <span class="n">confidence_intervals</span></div>
 
 
-<div class="viewcode-block" id="get_CI_levels_joint"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_CI_levels_joint">[docs]</a><span class="k">def</span> <span class="nf">get_CI_levels_joint</span><span class="p">(</span>
+
+<div class="viewcode-block" id="get_CI_levels_joint">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_CI_levels_joint">[docs]</a>
+<span class="k">def</span> <span class="nf">get_CI_levels_joint</span><span class="p">(</span>
     <span class="n">azimuths</span><span class="p">,</span>
     <span class="n">plunges</span><span class="p">,</span>
     <span class="n">confidence_intervals</span><span class="o">=</span><span class="p">[</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">95.0</span><span class="p">],</span>
@@ -253,7 +270,7 @@
     <span class="n">return_count</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the 2d histogram in the stereographic space</span>
 <span class="sd">    of a collection lines described by their azimuth and plunge.</span>
 <span class="sd">    This is an EXPERIMENTAL function.</span>
@@ -330,8 +347,11 @@
         <span class="k">return</span> <span class="n">confidence_intervals</span></div>
 
 
-<div class="viewcode-block" id="angular_residual"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.angular_residual">[docs]</a><span class="k">def</span> <span class="nf">angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="angular_residual">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.angular_residual">[docs]</a>
+<span class="k">def</span> <span class="nf">angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the angle between the direction of the resolved shear</span>
 <span class="sd">    stress predicted by the stress tensor and the direction of</span>
 <span class="sd">    slip given by the strike/dip/rake data.</span>
@@ -360,8 +380,11 @@
     <span class="k">return</span> <span class="n">angles</span></div>
 
 
-<div class="viewcode-block" id="aux_plane"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.aux_plane">[docs]</a><span class="k">def</span> <span class="nf">aux_plane</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">r1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="aux_plane">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.aux_plane">[docs]</a>
+<span class="k">def</span> <span class="nf">aux_plane</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">r1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get Strike and dip of second plane.</span>
 
 <span class="sd">    Adapted from MATLAB script</span>
@@ -374,7 +397,7 @@
     <span class="n">r2d</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
     <span class="k">def</span> <span class="nf">_strike_dip</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds strike and dip of plane given normal vector having components n, e,</span>
 <span class="sd">        and u.</span>
 
@@ -436,8 +459,11 @@
     <span class="k">return</span> <span class="n">strike</span> <span class="o">%</span> <span class="mf">360.0</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span> <span class="o">%</span> <span class="mf">360.0</span></div>
 
 
-<div class="viewcode-block" id="check_right_handedness"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.check_right_handedness">[docs]</a><span class="k">def</span> <span class="nf">check_right_handedness</span><span class="p">(</span><span class="n">basis</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="check_right_handedness">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.check_right_handedness">[docs]</a>
+<span class="k">def</span> <span class="nf">check_right_handedness</span><span class="p">(</span><span class="n">basis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Make sure the matrix of column vectors forms</span>
 <span class="sd">    a right-handed basis. This is particularly important</span>
 <span class="sd">    when re-ordering the principal stress directions</span>
@@ -461,8 +487,11 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">vector1</span><span class="p">,</span> <span class="n">vector2</span><span class="p">,</span> <span class="n">vector3</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="compute_traction"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.compute_traction">[docs]</a><span class="k">def</span> <span class="nf">compute_traction</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute traction and its normal and shear components on a given plane.</span>
+
+<div class="viewcode-block" id="compute_traction">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.compute_traction">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_traction</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute traction and its normal and shear components on a given plane.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
@@ -486,7 +515,10 @@
     <span class="k">return</span> <span class="n">traction</span><span class="p">,</span> <span class="n">normal_traction</span><span class="p">,</span> <span class="n">shear_traction</span></div>
 
 
-<div class="viewcode-block" id="errors_in_data"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.errors_in_data">[docs]</a><span class="k">def</span> <span class="nf">errors_in_data</span><span class="p">(</span>
+
+<div class="viewcode-block" id="errors_in_data">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.errors_in_data">[docs]</a>
+<span class="k">def</span> <span class="nf">errors_in_data</span><span class="p">(</span>
     <span class="n">strike</span><span class="p">,</span>
     <span class="n">dip</span><span class="p">,</span>
     <span class="n">rake</span><span class="p">,</span>
@@ -497,7 +529,7 @@
     <span class="n">jack_dips_2</span><span class="p">,</span>
     <span class="n">jack_rakes_2</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This routines was tailored for my applications.</span>
 <span class="sd">    Use the multiple solutions obtained during the jackknife resampling</span>
 <span class="sd">    of the focal mechanism inversion to compute the deviation of these</span>
@@ -562,8 +594,11 @@
     <span class="k">return</span> <span class="n">dev_n</span><span class="p">,</span> <span class="n">dev_w</span><span class="p">,</span> <span class="n">dev_z</span></div>
 
 
-<div class="viewcode-block" id="get_bearing_plunge"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_bearing_plunge">[docs]</a><span class="k">def</span> <span class="nf">get_bearing_plunge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hemisphere</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="get_bearing_plunge">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.get_bearing_plunge">[docs]</a>
+<span class="k">def</span> <span class="nf">get_bearing_plunge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hemisphere</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The vectors are in the coordinate system (x1, x2, x3):</span>
 <span class="sd">    x1: north</span>
 <span class="sd">    x2: west</span>
@@ -611,8 +646,11 @@
         <span class="k">return</span> <span class="n">bearing</span><span class="p">,</span> <span class="n">plunge</span></div>
 
 
-<div class="viewcode-block" id="kagan_angle"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.kagan_angle">[docs]</a><span class="k">def</span> <span class="nf">kagan_angle</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="n">tensor2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="kagan_angle">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.kagan_angle">[docs]</a>
+<span class="k">def</span> <span class="nf">kagan_angle</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="n">tensor2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the minimum rotation about *some* axis required</span>
 <span class="sd">    to match the two tensors. This angle is a measure of their</span>
 <span class="sd">    difference.</span>
@@ -664,16 +702,22 @@
     <span class="k">return</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">min_angle</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="mean_angular_residual"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.mean_angular_residual">[docs]</a><span class="k">def</span> <span class="nf">mean_angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="mean_angular_residual">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.mean_angular_residual">[docs]</a>
+<span class="k">def</span> <span class="nf">mean_angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Mean of the absolute value of the angles returned by</span>
 <span class="sd">    angular_residual. See angular_residual for more info.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">angular_residual</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">)))</span></div>
 
 
-<div class="viewcode-block" id="mean_kagan_angle"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.mean_kagan_angle">[docs]</a><span class="k">def</span> <span class="nf">mean_kagan_angle</span><span class="p">(</span><span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">,</span> <span class="n">strike0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dip0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rake0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the mean kagan angle as a measure of dispersion.</span>
+
+<div class="viewcode-block" id="mean_kagan_angle">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.mean_kagan_angle">[docs]</a>
+<span class="k">def</span> <span class="nf">mean_kagan_angle</span><span class="p">(</span><span class="n">strikes</span><span class="p">,</span> <span class="n">dips</span><span class="p">,</span> <span class="n">rakes</span><span class="p">,</span> <span class="n">strike0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dip0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rake0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the mean kagan angle as a measure of dispersion.</span>
 
 <span class="sd">    The mean kagan angle within a population of focal mechanisms</span>
 <span class="sd">    described by strikes/dips/rakes. If strike0, dip0, and rake0</span>
@@ -722,8 +766,11 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angles</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="normal_slip_vectors"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.normal_slip_vectors">[docs]</a><span class="k">def</span> <span class="nf">normal_slip_vectors</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;inward&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="normal_slip_vectors">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.normal_slip_vectors">[docs]</a>
+<span class="k">def</span> <span class="nf">normal_slip_vectors</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;inward&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the normal and the slip vectors of the</span>
 <span class="sd">    focal mechanism defined by (strike, dip, rake).</span>
 <span class="sd">    From Stein and Wysession 2002.</span>
@@ -789,8 +836,11 @@
     <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span></div>
 
 
-<div class="viewcode-block" id="principal_faults"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.principal_faults">[docs]</a><span class="k">def</span> <span class="nf">principal_faults</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">friction_coefficient</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="principal_faults">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.principal_faults">[docs]</a>
+<span class="k">def</span> <span class="nf">principal_faults</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">friction_coefficient</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the orientation of the most unstable fault planes given</span>
 <span class="sd">    a stress tensor and a coefficient of friction. These faults are</span>
 <span class="sd">    called the principal faults.</span>
@@ -824,8 +874,11 @@
     <span class="k">return</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span></div>
 
 
-<div class="viewcode-block" id="p_t_b_axes"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.p_t_b_axes">[docs]</a><span class="k">def</span> <span class="nf">p_t_b_axes</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">slip</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="p_t_b_axes">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.p_t_b_axes">[docs]</a>
+<span class="k">def</span> <span class="nf">p_t_b_axes</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">slip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the P (most compressive), T (least compressive)</span>
 <span class="sd">    and B (intermediate, or neutral axis) axes</span>
 <span class="sd">    from the normal and the slip vectors, following</span>
@@ -846,8 +899,11 @@
     <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span></div>
 
 
-<div class="viewcode-block" id="quaternion"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.quaternion">[docs]</a><span class="k">def</span> <span class="nf">quaternion</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="quaternion">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.quaternion">[docs]</a>
+<span class="k">def</span> <span class="nf">quaternion</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Formula of quaternion of rotation matrix with `t` (least compressive),</span>
 <span class="sd">    `p` (most compressive), `b` (neutral) components expressed in the</span>
 <span class="sd">    (north, east, down) frame of reference.</span>
@@ -907,8 +963,11 @@
     <span class="k">return</span> <span class="n">q</span></div>
 
 
-<div class="viewcode-block" id="R_"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.R_">[docs]</a><span class="k">def</span> <span class="nf">R_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="R_">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.R_">[docs]</a>
+<span class="k">def</span> <span class="nf">R_</span><span class="p">(</span><span class="n">principal_stresses</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the shape ratio R=(sig1-sig2)/(sig1-sig3).</span>
 
 <span class="sd">    Parameters</span>
@@ -928,8 +987,11 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rotation"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.rotation">[docs]</a><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the rotation matrix about axis with angle `angle`.</span>
+
+<div class="viewcode-block" id="rotation">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.rotation">[docs]</a>
+<span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the rotation matrix about axis with angle `angle`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ------------</span>
@@ -969,8 +1031,11 @@
     <span class="k">return</span> <span class="n">R</span></div>
 
 
-<div class="viewcode-block" id="random_rotation"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.random_rotation">[docs]</a><span class="k">def</span> <span class="nf">random_rotation</span><span class="p">(</span><span class="n">max_angle</span><span class="o">=</span><span class="mf">360.0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate a random rotation matrix.</span>
+
+<div class="viewcode-block" id="random_rotation">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.random_rotation">[docs]</a>
+<span class="k">def</span> <span class="nf">random_rotation</span><span class="p">(</span><span class="n">max_angle</span><span class="o">=</span><span class="mf">360.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random rotation matrix.</span>
 
 <span class="sd">    Generate a random rotation matrix by:</span>
 <span class="sd">      1) Generate a random unit vector in 3D.</span>
@@ -997,8 +1062,11 @@
     <span class="k">return</span> <span class="n">R</span></div>
 
 
-<div class="viewcode-block" id="reduced_stress_tensor"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.reduced_stress_tensor">[docs]</a><span class="k">def</span> <span class="nf">reduced_stress_tensor</span><span class="p">(</span><span class="n">principal_directions</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="reduced_stress_tensor">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.reduced_stress_tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">reduced_stress_tensor</span><span class="p">(</span><span class="n">principal_directions</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes a normalized stress tensor where the most</span>
 <span class="sd">    and least compressive principal stresses are set to</span>
 <span class="sd">    -1 and +1, respectively, and the intermediate stress</span>
@@ -1031,8 +1099,46 @@
     <span class="k">return</span> <span class="n">stress_tensor</span></div>
 
 
-<div class="viewcode-block" id="round_cos"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.round_cos">[docs]</a><span class="k">def</span> <span class="nf">round_cos</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Clip x so that it fits with the [-1,1] interval.</span>
+<div class="viewcode-block" id="resolution_operator">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.resolution_operator">[docs]</a>
+<span class="k">def</span> <span class="nf">resolution_operator</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">C_D_inv</span><span class="p">,</span> <span class="n">C_M_inv</span><span class="p">,</span> <span class="n">return_L</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the resolution operator in the Tarantola-Valette framework.</span>
+
+<span class="sd">    Reference</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Tarantola, Albert. Inverse problem theory and methods for model parameter</span>
+<span class="sd">    estimation. Society for industrial and applied mathematics, 2005.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : numpy.ndarray</span>
+<span class="sd">        Forward modelling, linear operator.</span>
+<span class="sd">    C_D_inv : numpy.ndarray</span>
+<span class="sd">        Inverse of the data+theory covarance matrix.</span>
+<span class="sd">    C_M_inv : numpy.ndarray</span>
+<span class="sd">        Inverse of the model covariance matrix.</span>
+<span class="sd">    return_L : boolean, optional</span>
+<span class="sd">        If not False, return the inverse operator L. Defaults to False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    R : numpy.ndarray</span>
+<span class="sd">        Resolution operator.</span>
+<span class="sd">    L : numpy.ndarray, optional</span>
+<span class="sd">        Inverse operator. Is returned only if `return_L=True`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">((</span><span class="n">G</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">@</span> <span class="n">C_D_inv</span> <span class="o">@</span> <span class="n">G</span> <span class="o">+</span> <span class="n">C_M_inv</span><span class="p">)</span> <span class="o">@</span> <span class="p">((</span><span class="n">G</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">@</span> <span class="n">C_D_inv</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">L</span><span class="nd">@G</span>
+    <span class="k">if</span> <span class="n">return_L</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">R</span><span class="p">,</span> <span class="n">L</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">R</span></div>
+
+
+<div class="viewcode-block" id="round_cos">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.round_cos">[docs]</a>
+<span class="k">def</span> <span class="nf">round_cos</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clip x so that it fits with the [-1,1] interval.</span>
 
 <span class="sd">    If x is slightly outside the [-1,1] because of numerical</span>
 <span class="sd">    imprecision, x is rounded, and can then be safely passed</span>
@@ -1056,8 +1162,11 @@
         <span class="k">return</span> <span class="n">x</span></div>
 
 
-<div class="viewcode-block" id="stress_tensor_eigendecomposition"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.stress_tensor_eigendecomposition">[docs]</a><span class="k">def</span> <span class="nf">stress_tensor_eigendecomposition</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the eigendecomposition of stress tensor.</span>
+
+<div class="viewcode-block" id="stress_tensor_eigendecomposition">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.stress_tensor_eigendecomposition">[docs]</a>
+<span class="k">def</span> <span class="nf">stress_tensor_eigendecomposition</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the eigendecomposition of stress tensor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
@@ -1091,8 +1200,11 @@
     <span class="k">return</span> <span class="n">principal_stresses</span><span class="p">,</span> <span class="n">principal_directions</span></div>
 
 
-<div class="viewcode-block" id="strike_dip_rake"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.strike_dip_rake">[docs]</a><span class="k">def</span> <span class="nf">strike_dip_rake</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="strike_dip_rake">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.strike_dip_rake">[docs]</a>
+<span class="k">def</span> <span class="nf">strike_dip_rake</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Invert the relationships between strike/dip/rake</span>
 <span class="sd">    and normal (n) and slip (d) vectors found in Stein.</span>
 <span class="sd">    n and d are required to be given as the default format</span>
@@ -1144,8 +1256,11 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">strike</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.0</span><span class="p">,</span> <span class="n">dip</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">,</span> <span class="p">(</span><span class="n">rake</span> <span class="o">*</span> <span class="n">r2d</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.0</span></div>
 
 
-<div class="viewcode-block" id="strike_dip_rake_to_mt"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.strike_dip_rake_to_mt">[docs]</a><span class="k">def</span> <span class="nf">strike_dip_rake_to_mt</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the *normalized* moment tensor described by strike/dip/rake.</span>
+
+<div class="viewcode-block" id="strike_dip_rake_to_mt">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.strike_dip_rake_to_mt">[docs]</a>
+<span class="k">def</span> <span class="nf">strike_dip_rake_to_mt</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the *normalized* moment tensor described by strike/dip/rake.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
@@ -1180,8 +1295,11 @@
     <span class="k">return</span> <span class="n">mt</span></div>
 
 
-<div class="viewcode-block" id="shear_slip_angle_difference"><a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.shear_slip_angle_difference">[docs]</a><span class="k">def</span> <span class="nf">shear_slip_angle_difference</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="shear_slip_angle_difference">
+<a class="viewcode-back" href="../../api_automodule.html#ILSI.utils_stress.shear_slip_angle_difference">[docs]</a>
+<span class="k">def</span> <span class="nf">shear_slip_angle_difference</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">rake</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the angle difference between the slip vector</span>
 <span class="sd">    from the focal mechanism solution and the shear traction</span>
 <span class="sd">    on the fault determined from the inverted stress tensor.</span>
@@ -1216,6 +1334,7 @@
     <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">round_cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">*</span> <span class="n">shear_dir</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())))</span>
     <span class="c1"># return the result in degrees</span>
     <span class="k">return</span> <span class="n">angle</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span></div>
+
 </pre></div>
 
            </div>
