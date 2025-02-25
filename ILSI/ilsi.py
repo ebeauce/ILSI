@@ -346,8 +346,6 @@ def iterative_linear_si(
             [sigma[2], sigma[4], -sigma[0] - sigma[3]],
         ]
     )
-    # use `norm` from last iteration and normalize cov matrix
-    C_m_posterior /= norm**2
     # return output in dictionary
     output = {}
     output["stress_tensor"] = full_stress_tensor
@@ -363,6 +361,8 @@ def iterative_linear_si(
         output["principal_directions"] = principal_directions
     if return_stats:
         if method == "tarantola":
+            # use `norm` from last iteration and normalize cov matrix
+            C_m_posterior /= norm**2
             output["C_d_posterior"] = C_d_posterior
             output["C_m_posterior"] = C_m_posterior
             _, C_d_inv, _, C_m_inv = _check_apriori_covariances(
@@ -518,6 +518,8 @@ def Michael1984_inversion(
         output["principal_directions"] = principal_directions
     if return_stats:
         if method == "tarantola":
+            # use `norm` from last iteration and normalize cov matrix
+            C_m_posterior /= norm**2
             output["C_d_posterior"] = C_d_posterior
             output["C_m_posterior"] = C_m_posterior
             _, C_d_inv, _, C_m_inv = _check_apriori_covariances(
@@ -697,9 +699,9 @@ def inversion_one_set(
     avg_C_m_posterior /= float(n_random_selections)
     avg_C_d_posterior /= float(n_random_selections)
     avg_resolution_operator /= float(n_random_selections)
-    norm = np.sqrt(np.sum(avg_stress_tensor**2))
-    norm = 1 if norm == 0.0 else norm
-    avg_stress_tensor /= norm
+    #norm = np.sqrt(np.sum(avg_stress_tensor**2))
+    #norm = 1 if norm == 0.0 else norm
+    #avg_stress_tensor /= norm
     # return output in dictionary
     output = {}
     output["stress_tensor"] = avg_stress_tensor
