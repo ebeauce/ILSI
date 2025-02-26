@@ -279,15 +279,18 @@ def iterative_linear_si(
         method = "moore_penrose"
     # initialize shear magnitudes
     if method == "tarantola" and "m_prior" in Tarantola_kwargs:
-        shear = np.sqrt(
-            np.sum(
-                (G @ Tarantola_kwargs["m_prior"].astype("float32")).reshape(
-                    n_earthquakes, 3
+        if Tarantola_kwargs["m_prior"].sum() == 0.:
+            shear = np.ones(n_earthquakes, dtype=np.float32)
+        else:
+            shear = np.sqrt(
+                np.sum(
+                    (G @ Tarantola_kwargs["m_prior"].astype("float32")).reshape(
+                        n_earthquakes, 3
+                    )
+                    ** 2,
+                    axis=-1,
                 )
-                ** 2,
-                axis=-1,
             )
-        )
     else:
         shear = np.ones(n_earthquakes, dtype=np.float32)
     for j in range(max_n_iterations):
@@ -346,6 +349,10 @@ def iterative_linear_si(
             [sigma[2], sigma[4], -sigma[0] - sigma[3]],
         ]
     )
+    # normalize by trace of squared matrix
+    norm = np.sqrt(np.sum(np.diag(full_stress_tensor)**2))
+    norm = 1 if norm == 0.0 else norm
+    full_stress_tensor /= norm
     # return output in dictionary
     output = {}
     output["stress_tensor"] = full_stress_tensor
@@ -1355,6 +1362,11 @@ def inversion_one_set_instability(
     C_d_posterior /= float(n_averaging)
     C_m_posterior /= float(n_averaging)
     resolution_operator /= float(n_averaging)
+    ## normalize by trace of squared matrix
+    #norm = np.sqrt(np.sum(np.diag(final_stress_tensor)**2))
+    #norm = 1 if norm == 0.0 else norm
+    #final_stress_tensor /= norm
+    #C_m_posterior /= norm**2
     if friction_coefficient is None:
         friction_coefficient = final_friction_coefficient / float(n_averaging)
     # eigendecomposition of averaged stress tensor
