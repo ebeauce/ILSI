@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ILSI"
+dynamic = ["version"]
+description = "Package for iterative linear stress inversion."
+readme = "README.md"
+license = { text = "GPL" }
+requires-python = ">=3.6"
+authors = [
+    { name = "Eric Beaucé", email = "ebeauce@ldeo.columbia.edu" },
+]
+maintainers = [
+    { name = "Eric Beaucé", email = "ebeauce@ldeo.columbia.edu" },
+]
+keywords = ["focal mechanisms", "stress inversion"]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "mplstereonet",
+]
+
+[tool.setuptools.packages.find]
+include = ["ILSI*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "ILSI.__version__" }
+
+[tool.setuptools]
+zip-safe = false
+
+[project.urls]
+GitHub = "https://github.com/ILSI"
+Documentation = "https://https://ebeauce.github.io/ILSI"
+Issues = "https://github.com/ILSI/issues"

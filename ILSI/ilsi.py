@@ -1070,6 +1070,7 @@ def inversion_one_set_instability(
     shear_update_atol=1.0e-5,
     n_averaging=1,
     signed_instability=False,
+    auxiliary_planes=None,
     verbose=True,
     variable_shear=True,
     return_stats=False,
@@ -1206,9 +1207,12 @@ def inversion_one_set_instability(
         from mpl_toolkits.axes_grid1 import make_axes_locatable
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
-    strikes_2, dips_2, rakes_2 = np.asarray(
-        list(map(utils_stress.aux_plane, strikes, dips, rakes))
-    ).T
+    if auxiliary_planes is None:
+        strikes_2, dips_2, rakes_2 = np.asarray(
+            list(map(utils_stress.aux_plane, strikes, dips, rakes))
+        ).T
+    else:
+        strikes_2, dips_2, rakes_2 = auxiliary_planes
     # define shape variable
     n_earthquakes = strikes_1.shape[0]
     # define flat arrays

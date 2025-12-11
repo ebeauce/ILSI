@@ -67,19 +67,28 @@ def hist2d(azimuths, plunges, nbins=200, smoothing_sig=0, plot=False):
     # convert azimuths and plunges to longitudes and latitudes
     # on a stereographic plot
     lons, lats = mplstereonet.stereonet_math.line(plunges, azimuths)
-    count, lon_bins, lat_bins = np.histogram2d(
-        lons,
-        lats,
-        range=([-np.pi / 2.0, np.pi / 2.0], [-np.pi / 2.0, np.pi / 2.0]),
-        bins=nbins,
-    )
-    lons_g, lats_g = np.meshgrid(
-        (lon_bins[1:] + lon_bins[:-1]) / 2.0,
-        (lat_bins[1:] + lat_bins[:-1]) / 2.0,
-        indexing="ij",
-    )
-    if smoothing_sig > 0:
-        count = gaussian_filter(count, smoothing_sig)
+    #count, lon_bins, lat_bins = np.histogram2d(
+    #    lons,
+    #    lats,
+    #    range=([-np.pi / 2.0, np.pi / 2.0], [-np.pi / 2.0, np.pi / 2.0]),
+    #    #bins=nbins,
+    #    bins=(180, 90),
+    #)
+    #lons_g, lats_g = np.meshgrid(
+    #    (lon_bins[1:] + lon_bins[:-1]) / 2.0,
+    #    (lat_bins[1:] + lat_bins[:-1]) / 2.0,
+    #    indexing="ij",
+    #)
+    #if smoothing_sig > 0:
+    #    count = gaussian_filter(count, smoothing_sig)
+
+    lons_g, lats_g, count = mplstereonet.contouring.density_grid(
+            plunges, azimuths, measurement="lines", gridsize=nbins,# gridsize=(180, 90),
+            method="exponential_kamb", sigma=smoothing_sig
+            )
+    #print(lon_bins.shape, lat_bins.shape, count.shape)
+    #lons_g, lats_g = lon_bins, lat_bins
+
     if plot:
         fig = plt.figure("2d_histogram_stereo", figsize=(18, 9))
         ax = fig.add_subplot(111, projection="stereonet")
