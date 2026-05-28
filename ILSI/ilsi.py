@@ -988,9 +988,7 @@ def inversion_bootstrap(
     if input_fault_planes:
         strikes_2, dips_2, rakes_2 = strikes_1, dips_1, rakes_1
     else:
-        strikes_2, dips_2, rakes_2 = np.asarray(
-            list(map(utils_stress.aux_plane, strikes, dips, rakes))
-        ).T
+        strikes_2, dips_2, rakes_2 = utils_stress.aux_plane(strikes_1, dips_1, rakes_1)
     # define shape variables
     n_earthquakes = len(strikes_1)
     n_planes_per_ev = 2
