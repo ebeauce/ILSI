@@ -647,9 +647,10 @@ def inversion_one_set(
     if input_fault_planes:
         strikes_2, dips_2, rakes_2 = strikes_1, dips_1, rakes_1
     else:
-        strikes_2, dips_2, rakes_2 = np.asarray(
-            list(map(utils_stress.aux_plane, strikes, dips, rakes))
-        ).T
+        #strikes_2, dips_2, rakes_2 = np.asarray(
+        #    list(map(utils_stress.aux_plane, strikes, dips, rakes))
+        #).T
+        strikes_2, dips_2, rakes_2 = utils_stress.aux_plane(strikes, dips, rakes)
     # define shape variable
     n_earthquakes = len(strikes)
     # define flat arrays
@@ -1208,9 +1209,10 @@ def inversion_one_set_instability(
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
     if auxiliary_planes is None:
-        strikes_2, dips_2, rakes_2 = np.asarray(
-            list(map(utils_stress.aux_plane, strikes, dips, rakes))
-        ).T
+        #strikes_2, dips_2, rakes_2 = np.asarray(
+        #    list(map(utils_stress.aux_plane, strikes, dips, rakes))
+        #).T
+        strikes_2, dips_2, rakes_2 = utils_stress.aux_plane(strikes, dips, rakes)
     else:
         strikes_2, dips_2, rakes_2 = auxiliary_planes
     # define shape variable
@@ -1734,9 +1736,10 @@ def inversion_bootstrap_instability(
     """
     # compute auxiliary planes
     strikes_1, dips_1, rakes_1 = strikes, dips, rakes
-    strikes_2, dips_2, rakes_2 = np.asarray(
-        list(map(utils_stress.aux_plane, strikes, dips, rakes))
-    ).T
+    #strikes_2, dips_2, rakes_2 = np.asarray(
+    #    list(map(utils_stress.aux_plane, strikes, dips, rakes))
+    #).T
+    strikes_2, dips_2, rakes_2 = utils_stress.aux_plane(strikes, dips, rakes)
     # build reduced stress tensor from principal directions and shape ratio
     stress_tensor_main = utils_stress.reduced_stress_tensor(principal_directions, R)
     sigma_main = np.array(
