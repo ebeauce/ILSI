@@ -306,14 +306,18 @@ def _strike_dip(n, e, u):
     written by Andy Michael, Chen Ji and Oliver Boyd.
     """
     r2d = 180 / np.pi
-    n = np.atleast_1d(n)
-    e = np.atleast_1d(e)
-    u = np.atleast_1d(u)
+    n = np.atleast_1d(n).copy()
+    e = np.atleast_1d(e).copy()
+    u = np.atleast_1d(u).copy()
     downward = np.where(u < 0.)[0]
     if len(downward) > 0:
+        #n[downward] = -1. * n[downward]
+        #e[downward] = -1. * e[downward]
+        #u[downward] = -1. * u[downward]
         n[downward] *= -1.
         e[downward] *= -1.
         u[downward] *= -1.
+
 
     strike = np.rad2deg(np.arctan2(e, n))
     strike = (strike - 90) % 360
@@ -359,12 +363,6 @@ def aux_plane(s1, d1, r1):
 
     z = h1 * n1 + h2 * n2
     z = z / np.sqrt(h1 * h1 + h2 * h2)
-    # we might get above 1.0 only due to floating point
-    # precision. Clip for those cases.
-    #float64epsilon = 2.2204460492503131e-16
-    #if 1.0 < abs(z) < 1.0 + 100 * float64epsilon:
-    #    z = np.copysign(1.0, z)
-    #z = np.arccos(round_cos(z))
     z = np.arccos(
             np.clip(z, a_min=-1., a_max=1.)
             )
