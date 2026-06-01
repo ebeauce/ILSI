@@ -1938,48 +1938,48 @@ def _stress_inversion_instability(
     # ------------------------------
     # initialize variables
     n_earthquakes = len(strikes_1)
-    stress_tensor = stress_tensor0
-    stress_diff = 0.0
-    total_instability = 0.0
-    total_differential_instability = -100.0
-    instability = 0.1 * np.ones((n_earthquakes, 2), dtype=np.float32)
-    residuals = np.finfo(np.float32).max
+    stress_tensor1 = stress_tensor0
+    (
+        principal_stresses1,
+        principal_directions1,
+    ) = utils_stress.stress_tensor_eigendecomposition(stress_tensor1)
+    stress_diff1 = 0.0
+    total_instability1 = 0.0
+    total_differential_instability1 = -100.0
+    instability1 = 0.1 * np.ones((n_earthquakes, 2), dtype=np.float32)
+    residuals1 = np.finfo(np.float32).max
     best_residuals = np.finfo(np.float32).max
-    fault_strikes, fault_dips, fault_rakes = [np.zeros(n_earthquakes) for i in range(3)]
-    # C_m_post = np.zeros((5, 5), dtype=np.float32)
-    # C_d_post = np.zeros((3 * n_earthquakes, 3 * n_earthquakes), dtype=np.float32)
+    fault_strikes1, fault_dips1, fault_rakes1 = [np.zeros(n_earthquakes) for i in range(3)]
     weights = np.ones(3 * n_earthquakes, dtype=np.float32)
     # start the nodal plane selection loop
     for n in range(n_stress_iter):
-        # get stress state of previous iteration to determine the
-        # set of fault planes that maximize instability
-        (
-            principal_stresses,
-            principal_directions,
-        ) = utils_stress.stress_tensor_eigendecomposition(stress_tensor0)
-        R = utils_stress.R_(principal_stresses)
         # ------------
         # copy variables from previous iteration
-        stress_tensor0 = stress_tensor.copy()
-        total_instability0 = float(total_instability)
-        total_differential_instability0 = float(total_differential_instability)
-        instability0 = instability.copy()
-        stress_diff0 = float(stress_diff)
-        residuals0 = float(residuals)
+        stress_tensor0 = stress_tensor1.copy()
+        principal_stresses0 = principal_stresses1.copy()
+        principal_directions0 = principal_directions1.copy()
+        total_instability0 = float(total_instability1)
+        total_differential_instability0 = float(total_differential_instability1)
+        instability0 = instability1.copy()
+        stress_diff0 = float(stress_diff1)
+        residuals0 = float(residuals1)
         fault_strikes0, fault_dips0, fault_rakes0 = (
-            fault_strikes.copy(),
-            fault_dips.copy(),
-            fault_rakes.copy(),
+            fault_strikes1.copy(),
+            fault_dips1.copy(),
+            fault_rakes1.copy(),
         )
         # -----------
+        # get stress state of previous iteration to determine the
+        # set of fault planes that maximize instability
+        R0 = utils_stress.R_(principal_stresses0)
         (
-            instability,
-            fault_strikes,
-            fault_dips,
-            fault_rakes,
+            instability1,
+            fault_strikes1,
+            fault_dips1,
+            fault_rakes1,
         ) = compute_instability_parameter(
-            principal_directions,
-            R,
+            principal_directions0,
+            R0,
             friction_coefficient,
             strikes_1,
             dips_1,
@@ -1990,49 +1990,49 @@ def _stress_inversion_instability(
             signed_instability=signed_instability,
             return_fault_planes=True,
         )
-        total_instability = np.mean(np.max(instability, axis=-1))
+        total_instability1 = np.mean(np.max(instability1, axis=-1))
         if weighted:
             # ----------------------------------
             #    This feature is experimental.
             # ----------------------------------
             total_differential_instability = np.mean(
-                np.abs(instability[:, 1] - instability[:, 0])
+                np.abs(instability1[:, 1] - instability1[:, 0])
             )
             # decide to keep or not previous fault planes probabilisticly based
             # on the instability values
             # sigmoid probability:
-            X = total_differential_instability0 / total_differential_instability - 1.0
+            X = total_differential_instability0 / total_differential_instability1 - 1.0
             p0 = 1.0 / (1.0 + np.exp(-X))
             # print('Probability: {:.3f} (before: {:.2f}, now: {:.2f})'.format(p0, total_differential_instability0, total_differential_instability))
             R = np.random.random(n_earthquakes)
-            fault_strikes = np.float32(
+            fault_strikes1 = np.float32(
                 [
-                    fault_strikes0[i] if R[i] < p0 else fault_strikes[i]
+                    fault_strikes0[i] if R[i] < p0 else fault_strikes1[i]
                     for i in range(n_earthquakes)
                 ]
             )
-            fault_dips = np.float32(
+            fault_dips1 = np.float32(
                 [
-                    fault_dips0[i] if R[i] < p0 else fault_dips[i]
+                    fault_dips0[i] if R[i] < p0 else fault_dips1[i]
                     for i in range(n_earthquakes)
                 ]
             )
-            fault_rakes = np.float32(
+            fault_rakes1 = np.float32(
                 [
-                    fault_rakes0[i] if R[i] < p0 else fault_rakes[i]
+                    fault_rakes0[i] if R[i] < p0 else fault_rakes1[i]
                     for i in range(n_earthquakes)
                 ]
             )
-            instability = np.float32(
+            instability1 = np.float32(
                 [
-                    instability0[i] if R[i] < p0 else instability[i]
+                    instability0[i] if R[i] < p0 else instability1[i]
                     for i in range(n_earthquakes)
                 ]
             )
             # give more weights to focal mechanisms where the most unstable
             # nodal plane is well defined, i.e. has an instability parameter
             # clearly larger than the other plane
-            weights = np.repeat(np.abs(instability[:, 1] - instability[:, 0]), 3)
+            weights = np.repeat(np.abs(instability1[:, 1] - instability1[:, 0]), 3)
             if weights.sum() == 0.0:
                 weights = np.ones(3 * n_earthquakes, dtype=np.float32)
             # normalize the weights such that 1/max(weights) = 0.1 (which is
@@ -2055,46 +2055,48 @@ def _stress_inversion_instability(
             Tarantola_kwargs["C_d"] = np.diag(1.0 / weights)
         Tarantola_kwargs["C_d_inv"] = np.linalg.inv(Tarantola_kwargs["C_d"])
         if variable_shear:
-            output_ = iterative_linear_si(
-                fault_strikes,
-                fault_dips,
-                fault_rakes,
-                return_eigen=False,
+            output1 = iterative_linear_si(
+                fault_strikes1,
+                fault_dips1,
+                fault_rakes1,
+                return_eigen=True,
                 return_stats=True,
                 Tarantola_kwargs=Tarantola_kwargs,
                 max_n_iterations=max_n_iterations,
                 shear_update_atol=shear_update_atol,
             )
         else:
-            output_ = Michael1984_inversion(
-                fault_strikes,
-                fault_dips,
-                fault_rakes,
-                return_eigen=False,
+            output1 = Michael1984_inversion(
+                fault_strikes1,
+                fault_dips1,
+                fault_rakes1,
+                return_eigen=True,
                 return_stats=True,
                 Tarantola_kwargs=Tarantola_kwargs,
             )
-        stress_tensor = output_["stress_tensor"]
-        stress_diff = np.sum((output_["stress_tensor"] - stress_tensor0) ** 2)
+        stress_tensor1 = output1["stress_tensor"]
+        principal_stresses1 = output1["principal_stresses"]
+        principal_directions1 = output1["principal_directions"]
+        stress_diff1 = np.sum((stress_tensor1 - stress_tensor0) ** 2)
         if criterion_on_noconvergence == "residuals":
             # ------------------------------------
             # Compute residuals in case the instability loop doesn't converge
             # ------------------------------------
             # normal and slip vectors
             n_, d_ = utils_stress.normal_slip_vectors(
-                fault_strikes, fault_dips, fault_rakes
+                fault_strikes1, fault_dips1, fault_rakes1
             )
-            shear_mag = np.sqrt(np.sum(output_["predicted_shear_stress"] ** 2, axis=-1))
+            shear_mag = np.sqrt(np.sum(output1["predicted_shear_stress"] ** 2, axis=-1))
             if variable_shear:
                 res = (
-                    output_["predicted_shear_stress"] - shear_mag[:, np.newaxis] * d_.T
+                    output1["predicted_shear_stress"] - shear_mag[:, np.newaxis] * d_.T
                 ).reshape(-1, 1)
             else:
                 res = (
-                    output_["predicted_shear_stress"] - np.mean(shear_mag) * d_.T
+                    output1["predicted_shear_stress"] - np.mean(shear_mag) * d_.T
                 ).reshape(-1, 1)
-            residuals = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
-            if residuals < best_residuals:
+            residuals1 = (res.T @ Tarantola_kwargs["C_d_inv"] @ res)[0, 0]
+            if residuals1 < best_residuals:
                 # One possibility: update prior model at this stage
                 # Tarantola_kwargs["m_prior"] = np.array(
                 #    [
@@ -2106,11 +2108,11 @@ def _stress_inversion_instability(
                 #    ]
                 # ).reshape(-1, 1)
                 # store best results
-                best_residuals = float(residuals)
-                best_stress_tensor = output_["stress_tensor"].copy()
-                best_C_m_post = output_["C_m_posterior"].copy()
-                best_C_d_post = output_["C_d_posterior"].copy()
-                best_resolution_operator = output_["resolution_operator"].copy()
+                best_residuals = float(residuals1)
+                best_stress_tensor = output1["stress_tensor"].copy()
+                best_C_m_post = output1["C_m_posterior"].copy()
+                best_C_d_post = output1["C_d_posterior"].copy()
+                best_resolution_operator = output1["resolution_operator"].copy()
         if plot:
             fig = plt.figure("iteration_{:d}".format(n))
             ax1 = fig.add_subplot(2, 2, 1, projection="stereonet")
@@ -2118,7 +2120,7 @@ def _stress_inversion_instability(
             markers = ["o", "s", "v"]
             for k in range(3):
                 az, pl = utils_stress.get_bearing_plunge(
-                    output_["principal_directions[:, k]"]
+                    output1["principal_directions"][:, k]
                 )
                 ax1.line(
                     pl,
@@ -2131,11 +2133,10 @@ def _stress_inversion_instability(
             ax2 = fig.add_subplot(2, 2, 2, projection="stereonet")
             cNorm = Normalize(vmin=0.0, vmax=p.max())
             scalar_map = ScalarMappable(norm=cNorm, cmap="cividis")
-            # ax2.plane(fault_strikes, fault_dips, color=scalar_map.to_rgba(p), lw=2.0)
-            for ii in range(len(fault_strikes)):
+            for ii in range(len(fault_strikes1)):
                 ax2.plane(
-                    fault_strikes[ii],
-                    fault_dips[ii],
+                    fault_strikes1[ii],
+                    fault_dips1[ii],
                     color=scalar_map.to_rgba(p[ii]),
                     lw=2.0,
                 )
@@ -2149,30 +2150,26 @@ def _stress_inversion_instability(
                 "Stress tensor difference at iteration {:d}: {}.".format(n, stress_diff)
             )
             # print(stress_tensor)
-            (
-                principal_stresses,
-                principal_directions,
-            ) = utils_stress.stress_tensor_eigendecomposition(output_["stress_tensor"])
-            R = utils_stress.R_(principal_stresses)
+            R = utils_stress.R_(principal_stresses1)
             print("R={:.2f}, friction={:.2f}".format(R, friction_coefficient))
             print(
                 "Total instability: {:.2f}/Total differential instability: {:.2f}".format(
-                    total_instability, total_differential_instability
+                    total_instability1, total_differential_instability1
                 )
             )
             print(
                 "Average angle: {:.2f}".format(
                     utils_stress.mean_angular_residual(
-                        output_["stress_tensor"], fault_strikes, fault_dips, fault_rakes
+                        output1["stress_tensor"], fault_strikes1, fault_dips1, fault_rakes1
                     )
                 )
             )
             print("Squared residuals: {:.2e}".format(residuals))
-        if stress_diff < stress_tensor_update_atol:
+        if stress_diff1 < stress_tensor_update_atol:
             # stop stress instability loop
             break
     output = {}
-    if stress_diff >= stress_tensor_update_atol:
+    if stress_diff1 >= stress_tensor_update_atol:
         # did not convergence, get results from best stress tensor
         output["stress_tensor"] = best_stress_tensor
         output["C_m_posterior"] = best_C_m_post
@@ -2187,7 +2184,7 @@ def _stress_inversion_instability(
             print("Did not converge, return best (R={:.2f})".format(R))
     else:
         # output is the result of the last iteration
-        output = output_
+        output = output1
     return output
 
 
