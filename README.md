@@ -68,6 +68,8 @@ The two methods will install ILSI equally well. Method 1 only requires one comma
 
 ## Updates
 
+- v1.1.5: Fix bug introduced in v1.1.1 that prematurely ended the fault plane selection loop.
+
 - v1.1.4: The resolution operator is now included in the output.
 
 - v1.1.3: Moore-Penrose inverse is supported for variable shear stress.

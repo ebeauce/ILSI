@@ -296,6 +296,35 @@ def angular_residual(stress_tensor, strikes, dips, rakes):
         )
     return angles
 
+def _strike_dip(n, e, u):
+    """
+    Finds strike and dip of plane given normal vector having components n, e,
+    and u.
+
+    Adapted from MATLAB script
+    `bb.m <http://www.ceri.memphis.edu/people/olboyd/Software/Software.html>`_
+    written by Andy Michael, Chen Ji and Oliver Boyd.
+    """
+    r2d = 180 / np.pi
+    n = np.atleast_1d(n).copy()
+    e = np.atleast_1d(e).copy()
+    u = np.atleast_1d(u).copy()
+    downward = np.where(u < 0.)[0]
+    if len(downward) > 0:
+        #n[downward] = -1. * n[downward]
+        #e[downward] = -1. * e[downward]
+        #u[downward] = -1. * u[downward]
+        n[downward] *= -1.
+        e[downward] *= -1.
+        u[downward] *= -1.
+
+
+    strike = np.rad2deg(np.arctan2(e, n))
+    strike = (strike - 90) % 360
+    x = np.sqrt(n**2 + e**2)
+    dip = np.rad2deg(np.arctan2(x, u))
+    return strike.squeeze(), dip.squeeze()
+
 
 def aux_plane(s1, d1, r1):
     """
@@ -310,36 +339,11 @@ def aux_plane(s1, d1, r1):
     """
     r2d = 180 / np.pi
 
-    def _strike_dip(n, e, u):
-        """
-        Finds strike and dip of plane given normal vector having components n, e,
-        and u.
+    s1 = np.atleast_1d(s1)
+    d1 = np.atleast_1d(d1)
+    r1 = np.atleast_1d(r1)
 
-        Adapted from MATLAB script
-        `bb.m <http://www.ceri.memphis.edu/people/olboyd/Software/Software.html>`_
-        written by Andy Michael, Chen Ji and Oliver Boyd.
-        """
-        r2d = 180 / np.pi
-        if u < 0:
-            n = -n
-            e = -e
-            u = -u
-
-        strike = np.arctan2(e, n) * r2d
-        strike = strike - 90
-        while strike >= 360:
-            strike = strike - 360
-        while strike < 0:
-            strike = strike + 360
-        x = np.sqrt(np.power(n, 2) + np.power(e, 2))
-        dip = np.arctan2(x, u) * r2d
-        return (strike, dip)
-
-    # modified by me:
-    if r1 > 180.0:
-        # convert rake between 0 and 360
-        # to rake between -180 and +180
-        r1 = r1 - 360.0
+    r1[r1 > 180.] = r1[r1 > 180.] - 360.
 
     z = (s1 + 90) / r2d
     z2 = d1 / r2d
@@ -348,7 +352,7 @@ def aux_plane(s1, d1, r1):
     sl1 = -np.cos(z3) * np.cos(z) - np.sin(z3) * np.sin(z) * np.cos(z2)
     sl2 = np.cos(z3) * np.sin(z) - np.sin(z3) * np.cos(z) * np.cos(z2)
     sl3 = np.sin(z3) * np.sin(z2)
-    (strike, dip) = _strike_dip(sl2, sl1, sl3)
+    strike, dip = _strike_dip(sl2, sl1, sl3)
 
     n1 = np.sin(z) * np.sin(z2)  # normal vector to plane 1
     n2 = np.cos(z) * np.sin(z2)
@@ -359,17 +363,11 @@ def aux_plane(s1, d1, r1):
 
     z = h1 * n1 + h2 * n2
     z = z / np.sqrt(h1 * h1 + h2 * h2)
-    # we might get above 1.0 only due to floating point
-    # precision. Clip for those cases.
-    float64epsilon = 2.2204460492503131e-16
-    if 1.0 < abs(z) < 1.0 + 100 * float64epsilon:
-        z = np.copysign(1.0, z)
-    z = np.arccos(round_cos(z))
-    rake = 0
-    if sl3 > 0:
-        rake = z * r2d
-    if sl3 <= 0:
-        rake = -z * r2d
+    z = np.arccos(
+            np.clip(z, a_min=-1., a_max=1.)
+            )
+    rake = z * r2d
+    rake[sl3 <= 0.] *= -1.
     return strike % 360.0, dip, rake % 360.0
 
 
